@@ -223,6 +223,7 @@ export const CinematicHeroBanner: React.FC = () => {
         isTransitioning={isTransitioning}
         transitionDirection={transitionDirection}
         currentSlide={currentSlide}
+        prevSlide={prevSlide}
       />
 
       {/* 4. Editorial Narrative Content & CTAs */}
