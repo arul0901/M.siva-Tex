@@ -279,20 +279,29 @@
   pointer-events: none;
 }
 
-/* 5. Undulating Flowing Silk Wave Layer */
+/* 5. Undulating Flowing Silk Wave Layer (Foreground Fabric Animation) */
 .cinematic-hero-silk-wave-wrapper {
-  position: absolute;
-  inset: 0;
-  z-index: 10;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.cinematic-hero-silk-wave-svg {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+  z-index: 30; /* Elevates fabric wave over model images & lighting overlays */
+  pointer-events: none;
+  overflow: hidden;
+  display: none;
+}
+
+.cinematic-hero-silk-wave-wrapper.is-active {
+  display: block;
+}
+
+.cinematic-hero-silk-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
 }
 
 /* 6. Editorial Content Container */

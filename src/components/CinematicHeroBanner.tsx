@@ -222,6 +222,7 @@ export const CinematicHeroBanner: React.FC = () => {
       <FabricAnimation
         isTransitioning={isTransitioning}
         transitionDirection={transitionDirection}
+        currentSlide={currentSlide}
       />
 
       {/* 4. Editorial Narrative Content & CTAs */}
