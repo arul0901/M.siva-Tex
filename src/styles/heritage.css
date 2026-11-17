@@ -1,0 +1,17 @@
+/* ========================================================
+   Our Heritage Styles
+   ======================================================== */
+
+.heritage-container {
+  background-color: var(--color-warm-ivory, #FBF5EF);
+  color: var(--color-dark-text, #34252A);
+  min-height: 100vh;
+}
+
+.heritage-story-block {
+  background-color: #FFFFFF;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(199, 163, 106, 0.25);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  padding: 2.5rem;
+}

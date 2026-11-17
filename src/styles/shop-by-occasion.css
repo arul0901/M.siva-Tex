@@ -1,0 +1,400 @@
+/* ========================================================
+   Shop By Occasion Styles (M. SIVA-TEX)
+   ======================================================== */
+
+.occasion-section {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  background-color: var(--color-logo-beige, #F8F4ED);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .occasion-section {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+.occasion-container {
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .occasion-container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .occasion-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.occasion-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .occasion-grid {
+    grid-template-columns: repeat(12, 1fr);
+    gap: 2.5rem;
+  }
+}
+
+.occasion-sidebar {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .occasion-sidebar {
+    grid-column: span 3;
+  }
+}
+
+.occasion-eyebrow {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--color-rich-gold, #D4AF37);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.occasion-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.875rem;
+  line-height: 1.15;
+  color: var(--color-primary-maroon, #4D0007);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+@media (min-width: 640px) {
+  .occasion-title {
+    font-size: 2.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .occasion-title {
+    font-size: 3rem;
+  }
+}
+
+.occasion-title-italic {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-primary-maroon, #4D0007);
+}
+
+.occasion-divider {
+  height: 1px;
+  width: 3.5rem;
+  background-color: rgba(212, 175, 55, 0.6);
+}
+
+.occasion-desc {
+  font-size: 0.8125rem;
+  color: rgba(48, 34, 31, 0.8);
+  font-weight: 300;
+  line-height: 1.6;
+  max-width: 20rem;
+}
+
+@media (min-width: 640px) {
+  .occasion-desc {
+    font-size: 0.875rem;
+  }
+}
+
+.occasion-btn-wrap {
+  padding-top: 0.5rem;
+}
+
+.occasion-view-all-btn {
+  border: 1px solid var(--color-rich-gold, #D4AF37);
+  color: var(--color-primary-maroon, #4D0007);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 0.75rem 1.25rem;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 2px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.occasion-view-all-btn:hover {
+  background-color: var(--color-primary-maroon, #4D0007);
+  border-color: var(--color-primary-maroon, #4D0007);
+  color: #FDFBF7;
+}
+
+.occasion-mobile-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+}
+
+@media (min-width: 1024px) {
+  .occasion-mobile-nav {
+    display: none;
+  }
+}
+
+.occasion-nav-btn {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary-maroon, #4D0007);
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.occasion-nav-btn:hover {
+  background-color: var(--color-rich-gold, #D4AF37);
+  color: var(--color-primary-maroon, #4D0007);
+}
+
+.occasion-swipe-hint {
+  font-size: 11px;
+  color: rgba(48, 34, 31, 0.6);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-left: 0.5rem;
+}
+
+/* Cards Column */
+.occasion-cards-col {
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .occasion-cards-col {
+    grid-column: span 9;
+  }
+}
+
+.occasion-scroll-track {
+  display: flex;
+  align-items: stretch;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  padding-top: 0.5rem;
+  scroll-snap-type: x mandatory;
+}
+
+@media (min-width: 640px) {
+  .occasion-scroll-track {
+    gap: 1.25rem;
+  }
+}
+
+.occasion-card {
+  flex-shrink: 0;
+  width: 200px;
+  scroll-snap-align: start;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.5s ease;
+}
+
+@media (min-width: 480px) {
+  .occasion-card {
+    width: 220px;
+  }
+}
+
+@media (min-width: 640px) {
+  .occasion-card {
+    width: 240px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .occasion-card {
+    width: calc(20% - 16px);
+  }
+}
+
+.occasion-card:hover {
+  transform: translateY(-0.5rem);
+}
+
+.occasion-card-arch {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 15;
+  border-top-left-radius: 70px;
+  border-top-right-radius: 70px;
+  border-bottom-left-radius: 0.375rem;
+  border-bottom-right-radius: 0.375rem;
+  overflow: hidden;
+  background-color: var(--color-logo-ivory, #FAF7F2);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (min-width: 640px) {
+  .occasion-card-arch {
+    border-top-left-radius: 80px;
+    border-top-right-radius: 80px;
+  }
+}
+
+.occasion-card:hover .occasion-card-arch {
+  box-shadow: 0 20px 25px -5px rgba(77, 0, 7, 0.2);
+  border-color: var(--color-rich-gold, #D4AF37);
+}
+
+.occasion-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.occasion-card:hover .occasion-card-img {
+  transform: scale(1.08);
+}
+
+.occasion-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(0, 0, 0, 0.6) 100%);
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.occasion-card:hover .occasion-card-overlay {
+  opacity: 0.2;
+}
+
+.occasion-tag-wrap {
+  position: absolute;
+  top: 1rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.occasion-tag {
+  background-color: rgba(77, 0, 7, 0.9);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #FDFBF7;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+}
+
+.occasion-hover-btn-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  background: rgba(0, 0, 0, 0.2);
+  transition: opacity 0.3s ease;
+}
+
+.occasion-card:hover .occasion-hover-btn-wrap {
+  opacity: 1;
+}
+
+.occasion-hover-btn {
+  background-color: #FDFBF7;
+  color: var(--color-primary-maroon, #4D0007);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 2px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  transform: translateY(0.5rem);
+  transition: transform 0.3s ease;
+}
+
+.occasion-card:hover .occasion-hover-btn {
+  transform: translateY(0);
+}
+
+.occasion-label-box {
+  margin-top: 0.75rem;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 0.375rem;
+  padding: 0.625rem 0.5rem;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+}
+
+.occasion-card:hover .occasion-label-box {
+  background-color: var(--color-primary-maroon, #4D0007);
+  border-color: var(--color-primary-maroon, #4D0007);
+}
+
+.occasion-label-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--color-primary-maroon, #4D0007);
+  transition: color 0.3s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (min-width: 640px) {
+  .occasion-label-title {
+    font-size: 13px;
+  }
+}
+
+.occasion-card:hover .occasion-label-title {
+  color: #FDFBF7;
+}

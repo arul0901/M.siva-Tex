@@ -1,0 +1,58 @@
+/* ========================================================
+   Modals & Overlays Styles
+   ======================================================== */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 50;
+}
+
+.modal-container {
+  background-color: var(--color-warm-ivory, #FBF5EF);
+  border: 1px solid rgba(199, 163, 106, 0.4);
+  box-shadow: 0 25px 50px -12px rgba(50, 21, 29, 0.35);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+/* Quick View Modal */
+.quickview-container {
+  max-width: 56rem;
+  width: 100%;
+}
+
+/* Search Overlay */
+.search-overlay-input {
+  background: transparent;
+  border-bottom: 2px solid var(--color-champagne-gold, #C7A36A);
+  color: var(--color-dark-text, #34252A);
+  font-family: 'Cinzel', serif;
+  font-size: 1.5rem;
+  width: 100%;
+  padding: 0.75rem 0;
+}
+
+.search-overlay-input:focus {
+  outline: none;
+  border-bottom-color: var(--color-primary-burgundy, #451B25);
+}
+
+/* Concierge Video Modal */
+.concierge-modal-card {
+  background-color: #FFFFFF;
+  border-radius: 0.375rem;
+  border: 1px solid rgba(199, 163, 106, 0.3);
+  padding: 1.5rem;
+}
+
+/* Toast Container */
+.toast-card-gold {
+  background-color: var(--color-deep-wine, #32151D);
+  color: #FBF5EF;
+  border: 1px solid var(--color-champagne-gold, #C7A36A);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+}

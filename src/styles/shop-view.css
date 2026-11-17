@@ -1,0 +1,70 @@
+/* ========================================================
+   Shop View Styles & Color Swatches
+   ======================================================== */
+
+.shop-container {
+  background-color: var(--color-warm-ivory, #FBF5EF);
+  color: var(--color-dark-text, #34252A);
+}
+
+.shop-filter-card {
+  background-color: #FFFFFF;
+  border-radius: 0.375rem;
+  border: 1px solid rgba(199, 163, 106, 0.25);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04);
+}
+
+/* Color Swatches without inline style */
+.color-swatch-royal-purple {
+  background-color: #481A36;
+}
+
+.color-swatch-crimson-red {
+  background-color: #8B1E3F;
+}
+
+.color-swatch-emerald-green {
+  background-color: #1B4D3E;
+}
+
+.color-swatch-mustard-gold {
+  background-color: #B18A52;
+}
+
+.color-swatch-blush-pink {
+  background-color: #D9B7B1;
+}
+
+.color-swatch-peacock-blue {
+  background-color: #0E4D64;
+}
+
+.color-swatch-midnight-black {
+  background-color: #30221F;
+}
+
+.color-swatch-pista-green {
+  background-color: #A3B18A;
+}
+
+.shop-sort-select {
+  background-color: #FFFFFF;
+  border: 1px solid rgba(199, 163, 106, 0.3);
+  color: #34252A;
+  padding: 0.5rem 2rem 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  border-radius: 2px;
+}
+
+.shop-active-filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  background-color: #F3E5DC;
+  border: 1px solid rgba(199, 163, 106, 0.4);
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  color: #451B25;
+  font-weight: 500;
+}

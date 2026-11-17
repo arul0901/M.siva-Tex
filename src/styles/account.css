@@ -1,0 +1,51 @@
+/* ========================================================
+   Customer Account Styles
+   ======================================================== */
+
+.account-container {
+  background-color: var(--color-warm-ivory, #FBF5EF);
+  color: var(--color-dark-text, #34252A);
+  min-height: 100vh;
+}
+
+.account-order-card {
+  background-color: #FFFFFF;
+  border-radius: 0.375rem;
+  border: 1px solid rgba(199, 163, 106, 0.25);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  padding: 1.25rem;
+}
+
+.account-timeline-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-size: 0.6875rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.account-timeline-bullet {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.625rem;
+  font-weight: 700;
+  margin-bottom: 0.375rem;
+  transition: all 0.3s ease;
+}
+
+.account-timeline-bullet.completed {
+  background-color: var(--color-primary-burgundy, #451B25);
+  color: #FBF5EF;
+}
+
+.account-timeline-bullet.active {
+  background-color: var(--color-champagne-gold, #C7A36A);
+  color: #32151D;
+  box-shadow: 0 0 10px rgba(199, 163, 106, 0.4);
+}

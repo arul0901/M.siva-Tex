@@ -1,0 +1,49 @@
+/* ========================================================
+   Shop By Category Styles
+   ======================================================== */
+
+.category-scroll-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 1.5rem;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+@media (min-width: 640px) {
+  .category-scroll-container {
+    gap: 2rem;
+  }
+}
+
+.category-scroll-container::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.category-circle-frame {
+  position: relative;
+  width: 9rem;
+  height: 9rem;
+  border-radius: 9999px;
+  padding: 0.25rem;
+  border: 2px solid rgba(199, 163, 106, 0.3);
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 640px) {
+  .category-circle-frame {
+    width: 10rem;
+    height: 10rem;
+  }
+}
+
+.category-circle-frame:hover {
+  border-color: var(--color-champagne-gold, #C7A36A);
+  box-shadow: 0 0 25px rgba(199, 163, 106, 0.3);
+}

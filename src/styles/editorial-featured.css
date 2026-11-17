@@ -1,0 +1,368 @@
+/* ========================================================
+   Editorial Featured Two-Panel Section Styles (M. SIVA-TEX)
+   ======================================================== */
+
+.editorial-section {
+  width: 100%;
+  background-color: var(--color-primary-maroon, #4D0007);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.editorial-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 1024px) {
+  .editorial-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Left Bridal Panel - Maroon #4D0007 */
+.editorial-panel-bridal {
+  position: relative;
+  background-color: var(--color-primary-maroon, #4D0007);
+  color: #FDFBF7;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+  min-height: 520px;
+}
+
+@media (min-width: 640px) {
+  .editorial-panel-bridal {
+    padding: 3rem;
+    min-height: 580px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .editorial-panel-bridal {
+    padding: 4rem;
+    border-bottom: none;
+    border-right: 1px solid rgba(212, 175, 55, 0.3);
+  }
+}
+
+/* Right Heritage Panel - Radiant Temple Gold */
+.editorial-panel-heritage {
+  position: relative;
+  background: linear-gradient(135deg, #D4AF37 0%, #C7A36A 50%, #B18A52 100%);
+  color: var(--color-primary-maroon, #4D0007);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  min-height: 520px;
+}
+
+@media (min-width: 640px) {
+  .editorial-panel-heritage {
+    padding: 3rem;
+    min-height: 580px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .editorial-panel-heritage {
+    padding: 4rem;
+  }
+}
+
+/* Background image containers */
+.editorial-panel-img-wrap {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .editorial-panel-img-wrap {
+    width: 60%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .editorial-panel-img-wrap {
+    width: 58%;
+  }
+}
+
+.editorial-panel-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.editorial-panel-bridal:hover .editorial-panel-img,
+.editorial-panel-heritage:hover .editorial-panel-img {
+  transform: scale(1.05);
+}
+
+/* Gradient edge fades */
+.editorial-fade-maroon {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #4D0007 0%, rgba(77, 0, 7, 0.4) 60%, transparent 100%);
+  pointer-events: none;
+}
+
+.editorial-fade-gold {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #D4AF37 0%, rgba(199, 163, 106, 0.4) 60%, transparent 100%);
+  pointer-events: none;
+}
+
+.editorial-overlay-watermark {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(77, 0, 7, 0.95) 0%, rgba(77, 0, 7, 0.8) 60%, transparent 100%);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.editorial-overlay-gold {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(212, 175, 55, 0.95) 0%, rgba(199, 163, 106, 0.8) 60%, transparent 100%);
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* Content blocks */
+.editorial-panel-top {
+  position: relative;
+  z-index: 20;
+}
+
+.editorial-eyebrow-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--color-bright-gold, #ECBA51);
+  font-weight: 600;
+}
+
+@media (min-width: 640px) {
+  .editorial-eyebrow-gold {
+    font-size: 11px;
+  }
+}
+
+.editorial-eyebrow-maroon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--color-primary-maroon, #4D0007);
+  font-weight: 700;
+}
+
+@media (min-width: 640px) {
+  .editorial-eyebrow-maroon {
+    font-size: 11px;
+  }
+}
+
+.editorial-panel-body {
+  position: relative;
+  z-index: 20;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  max-width: 24rem;
+}
+
+@media (min-width: 640px) {
+  .editorial-panel-body {
+    max-width: 28rem;
+  }
+}
+
+.editorial-heading-bridal {
+  font-family: 'Cinzel', serif;
+  font-size: 1.875rem;
+  font-weight: 400;
+  line-height: 1.12;
+  color: #FDFBF7;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 640px) {
+  .editorial-heading-bridal {
+    font-size: 2.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .editorial-heading-bridal {
+    font-size: 3rem;
+  }
+}
+
+.editorial-heading-heritage {
+  font-family: 'Cinzel', serif;
+  font-size: 1.875rem;
+  font-weight: 400;
+  line-height: 1.12;
+  color: var(--color-primary-maroon, #4D0007);
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 640px) {
+  .editorial-heading-heritage {
+    font-size: 2.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .editorial-heading-heritage {
+    font-size: 3rem;
+  }
+}
+
+.editorial-heading-accent-gold {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-bright-gold, #ECBA51);
+}
+
+.editorial-heading-accent-maroon {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-maroon-deep, #2A0004);
+}
+
+.editorial-desc-bridal {
+  font-size: 0.75rem;
+  color: rgba(253, 251, 247, 0.85);
+  font-weight: 300;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 640px) {
+  .editorial-desc-bridal {
+    font-size: 0.875rem;
+  }
+}
+
+.editorial-desc-heritage {
+  font-size: 0.75rem;
+  color: rgba(77, 0, 7, 0.85);
+  font-weight: 400;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 640px) {
+  .editorial-desc-heritage {
+    font-size: 0.875rem;
+  }
+}
+
+/* CTA buttons */
+.editorial-cta-bridal {
+  background-color: var(--color-rich-gold, #D4AF37);
+  color: var(--color-primary-maroon, #4D0007);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-weight: 600;
+  padding: 0.875rem 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  border-radius: 2px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+
+@media (min-width: 640px) {
+  .editorial-cta-bridal {
+    font-size: 12px;
+  }
+}
+
+.editorial-cta-bridal:hover {
+  background-color: var(--color-bright-gold, #ECBA51);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+}
+
+.editorial-cta-heritage {
+  background-color: var(--color-primary-maroon, #4D0007);
+  color: #FDFBF7;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-weight: 600;
+  padding: 0.875rem 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  border-radius: 2px;
+  box-shadow: 0 4px 6px -1px rgba(77, 0, 7, 0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+
+@media (min-width: 640px) {
+  .editorial-cta-heritage {
+    font-size: 12px;
+  }
+}
+
+.editorial-cta-heritage:hover {
+  background-color: var(--color-maroon-dark, #360005);
+  box-shadow: 0 10px 15px -3px rgba(77, 0, 7, 0.4);
+}
+
+/* Bottom badges */
+.editorial-panel-badge-bridal {
+  position: relative;
+  z-index: 20;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(212, 175, 55, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--color-bright-gold, #ECBA51);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.editorial-panel-badge-heritage {
+  position: relative;
+  z-index: 20;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(77, 0, 7, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--color-primary-maroon, #4D0007);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 600;
+}

@@ -1,0 +1,72 @@
+/* ========================================================
+   Product Detail View Styles
+   ======================================================== */
+
+.pdp-container {
+  background-color: var(--color-warm-ivory, #FBF5EF);
+  color: var(--color-dark-text, #34252A);
+  min-height: 100vh;
+}
+
+.pdp-thumbnail-frame {
+  aspect-ratio: 1 / 1;
+  border-radius: 0.25rem;
+  overflow: hidden;
+  border: 1px solid rgba(199, 163, 106, 0.25);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pdp-thumbnail-frame:hover,
+.pdp-thumbnail-frame.active {
+  border-color: var(--color-champagne-gold, #C7A36A);
+  box-shadow: 0 0 10px rgba(199, 163, 106, 0.3);
+}
+
+.pdp-specs-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pdp-specs-row {
+  border-bottom: 1px solid rgba(199, 163, 106, 0.15);
+  padding: 0.75rem 0;
+}
+
+.pdp-cta-add-to-cart {
+  background-color: var(--color-primary-burgundy, #451B25);
+  color: #FBF5EF;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 1rem 2rem;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-shadow: 0 4px 6px -1px rgba(69, 27, 37, 0.2);
+}
+
+.pdp-cta-add-to-cart:hover {
+  background-color: #32151D;
+  box-shadow: 0 10px 15px -3px rgba(69, 27, 37, 0.3);
+}
+
+.pdp-cta-buy-now {
+  background-color: var(--color-champagne-gold, #C7A36A);
+  color: #32151D;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 1rem 2rem;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-shadow: 0 4px 6px -1px rgba(199, 163, 106, 0.2);
+}
+
+.pdp-cta-buy-now:hover {
+  background-color: #FBF5EF;
+  color: #32151D;
+}

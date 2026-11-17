@@ -1,0 +1,66 @@
+/* ========================================================
+   Cart Drawer Styles
+   ======================================================== */
+
+.cart-drawer-container {
+  background-color: var(--color-warm-ivory, #FBF5EF);
+  color: var(--color-dark-text, #34252A);
+  border-left: 1px solid rgba(199, 163, 106, 0.3);
+}
+
+.cart-drawer-header {
+  background-color: var(--color-primary-burgundy, #451B25);
+  color: #FBF5EF;
+  border-bottom: 1px solid rgba(199, 163, 106, 0.3);
+}
+
+.shipping-progress-track {
+  width: 100%;
+  background-color: var(--color-blush-beige, #F3E5DC);
+  height: 0.375rem;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.shipping-progress-fill {
+  background-color: var(--color-champagne-gold, #C7A36A);
+  height: 100%;
+  transition: width 0.5s ease;
+  border-radius: 9999px;
+}
+
+/* Percentage utility classes to avoid inline style={{ width: ... }} */
+.progress-w-0 { width: 0%; }
+.progress-w-5 { width: 5%; }
+.progress-w-10 { width: 10%; }
+.progress-w-15 { width: 15%; }
+.progress-w-20 { width: 20%; }
+.progress-w-25 { width: 25%; }
+.progress-w-30 { width: 30%; }
+.progress-w-35 { width: 35%; }
+.progress-w-40 { width: 40%; }
+.progress-w-45 { width: 45%; }
+.progress-w-50 { width: 50%; }
+.progress-w-55 { width: 55%; }
+.progress-w-60 { width: 60%; }
+.progress-w-65 { width: 65%; }
+.progress-w-70 { width: 70%; }
+.progress-w-75 { width: 75%; }
+.progress-w-80 { width: 80%; }
+.progress-w-85 { width: 85%; }
+.progress-w-90 { width: 90%; }
+.progress-w-95 { width: 95%; }
+.progress-w-100 { width: 100%; }
+
+.cart-item-card {
+  background-color: #FFFFFF;
+  border-radius: 0.375rem;
+  padding: 0.75rem;
+  border: 1px solid rgba(199, 163, 106, 0.2);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cart-item-card:hover {
+  border-color: rgba(199, 163, 106, 0.4);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}

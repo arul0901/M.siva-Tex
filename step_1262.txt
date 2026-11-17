@@ -1,0 +1,114 @@
+Created At: 2026-11-17T17:31:17+05:30
+Completed At: 2026-11-17T17:31:17+05:30
+Created At: 2026-11-17T17:31:17+05:30
+Completed At: 2026-11-17T17:31:17+05:30
+Showing lines 101-209 of 209
+101:         </motion.div>
+102:       </AnimatePresence>
+103: 
+104:       {/* Hero Content (Positioned on the Left for Editorial Luxury) */}
+105:       <div className="relative z-20 max-w-7xl mx-auto h-full px-6 sm:px-8 lg:px-12 flex items-center">
+106:         <div className="max-w-2xl text-ivory pt-10 sm:pt-0">
+107:           <AnimatePresence mode="wait">
+108:             <motion.div
+109:               key={slide.id}
+110:               initial={{ opacity: 0, y: 25 }}
+111:               animate={{ opacity: 1, y: 0 }}
+112:               exit={{ opacity: 0, y: -20 }}
+113:               transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
+114:               className="space-y-6"
+115:             >
+116:               {/* Eyebrow */}
+117:               <div className="inline-flex items-center gap-2 px-3 py-1 bg-burgundy/70 border border-gold/40 rounded-full backdrop-blur-md">
+118:                 <Sparkles className="w-3.5 h-3.5 text-gold animate-spin-slow" />
+119:                 <span className="text-[11px] sm:text-xs tracking-[0.25em] font-medium text-gold uppercase">
+120:                   {slide.eyebrow}
+121:                 </span>
+122:               </div>
+123: 
+124:               {/* Heading */}
+125:               <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-normal leading-[1.15] tracking-wide text-ivory">
+126:                 {slide.heading.split('\n').map((line, idx) => (
+127:                   <span key={idx} className="block">
+128:                     {idx === 1 ? (
+129:                       <span className="italic font-light text-gold-pale">{line}</span>
+130:                     ) : (
+131:                       line
+132:                     )}
+133:                   </span>
+134:                 ))}
+135:               </h1>
+136: 
+137:               {/* Description */}
+138:               <p className="text-sm sm:text-base text-beige-light/90 font-light leading-relaxed max-w-lg">
+139:                 {slide.description}
+140:               </p>
+141: 
+142:               {/* CTA and Slide Pill */}
+143:               <div className="pt-2 flex flex-wrap items-center gap-5">
+144:                 <button
+145:                   onClick={handleCtaClick}
+146:                   className="group relative inline-flex items-center gap-3 px-8 py-4 bg-gold text-brown-dark font-serif text-xs uppercase tracking-[0.22em] font-semibold overflow-hidden transition-all duration-300 hover:bg-gold-light hover:shadow-gold-glow"
+147:                 >
+148:                   <span>{slide.cta}</span>
+149:                   <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+150:                 </button>
+151: 
+152:                 <div className="hidden sm:flex items-center gap-2 text-xs text-gold-pale/80 font-serif italic border-l border-gold/30 pl-4">
+153:                   <span>{slide.tag}</span>
+154:                 </div>
+155:               </div>
+156:             </motion.div>
+157:           </AnimatePresence>
+158:         </div>
+159:       </div>
+160: 
+161:       {/* Navigation Controls */}
+162:       <div className="absolute z-20 bottom-8 left-6 sm:left-12 flex items-center gap-4">
+163:         {/* Minimal Navigation Arrows */}
+164:         <div className="flex items-center gap-2">
+165:           <button
+166:             onClick={prevSlide}
+167:             aria-label="Previous Slide"
+168:             className="w-10 h-10 rounded-full border border-gold/40 bg-burgundy/40 text-gold-pale flex items-center justify-center hover:bg-gold hover:text-burgundy transition-all duration-300 backdrop-blur-sm"
+169:           >
+170:             <ChevronLeft className="w-5 h-5" />
+171:           </button>
+172:           <button
+173:             onClick={nextSlide}
+174:             aria-label="Next Slide"
+175:             className="w-10 h-10 rounded-full border border-gold/40 bg-burgundy/40 text-gold-pale flex items-center justify-center hover:bg-gold hover:text-burgundy transition-all duration-300 backdrop-blur-sm"
+176:           >
+177:             <ChevronRight className="w-5 h-5" />
+178:           </button>
+179:         </div>
+180: 
+181:         {/* Slide Indicators */}
+182:         <div className="flex items-center gap-2 ml-4">
+183:           {HERO_SLIDES.map((s, idx) => (
+184:             <button
+185:               key={s.id}
+186:               onClick={() => setCurrentSlide(idx)}
+187:               aria-label={`Go to slide ${idx + 1}`}
+188:               className="group relative py-2"
+189:             >
+190:               <div
+191:                 className={`h-1 transition-all duration-500 rounded-full ${
+192:                   idx === currentSlide ? 'w-8 bg-gold shadow-gold-glow' : 'w-2.5 bg-ivory/40 group-hover:bg-ivory/70'
+193:                 }`}
+194:               />
+195:             </button>
+196:           ))}
+197:         </div>
+198:       </div>
+199: 
+200:       {/* Handcrafted Seal on bottom right */}
+201:       <div className="hidden md:flex absolute z-20 bottom-8 right-12 items-center gap-3 bg-burgundy/60 border border-gold/30 backdrop-blur-md px-4 py-2.5 rounded-sm">
+202:         <div className="w-2.5 h-2.5 rounded-full bg-gold animate-ping" />
+203:         <span className="text-[11px] font-serif uppercase tracking-[0.2em] text-gold-light">
+204:           Silk Mark Certified Handlooms
+205:         </span>
+206:       </div>
+207:     </section>
+208:   );
+209: };
