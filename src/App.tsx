@@ -1,7 +1,8 @@
 import React from 'react';
 import { useShop } from './context/ShopContext';
 import { Header } from './components/Header';
-import { HeroBanner } from './components/HeroBanner';
+// import { HeroBanner } from './components/HeroBanner'; // Previous banner disabled as requested
+import { CinematicHeroBanner } from './components/CinematicHeroBanner';
 
 // Redesigned Homepage Sections (Inspired by Master Luxury Reference)
 import { ShopByOccasion } from './components/ShopByOccasion';
@@ -39,8 +40,10 @@ export const App: React.FC = () => {
       <main className="flex-1">
         {currentView === 'home' && (
           <>
-            {/* 1. Cinematic Hero Banner (Completely Untouched as Requested) */}
-            <HeroBanner />
+            {/* 1. New Cinematic Animated Hero Banner (Faithfully matches Reference Video) */}
+            {/* Old banner disabled and commented out per strict instructions: */}
+            {/* <HeroBanner /> */}
+            <CinematicHeroBanner />
 
             {/* 2. Shop By Occasion (5 Arched Editorial Cards + Left Heading) */}
             <ShopByOccasion />
