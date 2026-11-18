@@ -49,20 +49,20 @@ export const QuickViewModal: React.FC = () => {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           transition={{ duration: 0.25 }}
-          className="relative bg-ivory border border-gold/30 shadow-2xl rounded-sm max-w-4xl w-full overflow-hidden z-10 text-brown-deep max-h-[90vh] flex flex-col md:flex-row"
+          className="relative bg-ivory border border-gold/30 shadow-2xl rounded-sm max-w-4xl w-full overflow-y-auto md:overflow-hidden z-10 text-brown-deep max-h-[92vh] flex flex-col md:flex-row"
         >
           {/* Close Button */}
           <button
             onClick={() => setQuickViewProduct(null)}
-            className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-ivory/80 text-burgundy hover:bg-burgundy hover:text-white flex items-center justify-center transition-colors"
+            className="absolute top-3 right-3 z-20 min-h-[44px] min-w-[44px] w-11 h-11 rounded-full bg-ivory/90 text-burgundy hover:bg-burgundy hover:text-white flex items-center justify-center transition-colors shadow-sm"
             aria-label="Close modal"
           >
             <X className="w-5 h-5" />
           </button>
 
           {/* Left: Product Imagery with Thumbnails */}
-          <div className="md:w-1/2 p-6 flex flex-col bg-beige/30 border-b md:border-b-0 md:border-r border-gold/20">
-            <div className="relative aspect-[3/4] w-full overflow-hidden rounded-sm bg-beige mb-3 shadow-inner">
+          <div className="md:w-1/2 p-4 sm:p-6 flex flex-col bg-beige/30 border-b md:border-b-0 md:border-r border-gold/20 shrink-0">
+            <div className="relative aspect-[4/3] sm:aspect-[3/4] max-h-[260px] sm:max-h-[380px] md:max-h-none w-full overflow-hidden rounded-sm bg-beige mb-3 shadow-inner">
               <img
                 src={activeImage}
                 alt={quickViewProduct.name}
@@ -74,12 +74,12 @@ export const QuickViewModal: React.FC = () => {
             </div>
 
             {/* Thumbnail selector */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-1">
+            <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
               {[quickViewProduct.primaryImage, quickViewProduct.secondaryImage, ...quickViewProduct.galleryImages.slice(0, 2)].map((img, idx) => (
                 <button
                   key={idx}
                   onClick={() => setSelectedImage(img)}
-                  className={`w-14 h-16 rounded-xs overflow-hidden border-2 shrink-0 transition-all ${
+                  className={`w-12 h-14 sm:w-14 sm:h-16 rounded-xs overflow-hidden border-2 shrink-0 transition-all ${
                     activeImage === img ? 'border-gold shadow-sm scale-102' : 'border-transparent opacity-70 hover:opacity-100'
                   }`}
                 >
@@ -168,17 +168,19 @@ export const QuickViewModal: React.FC = () => {
             <div className="space-y-3 pt-4 border-t border-gold/20">
               <div className="flex items-center gap-3">
                 {/* Quantity */}
-                <div className="flex items-center border border-gold/40 rounded-sm bg-white">
+                <div className="flex items-center border border-gold/40 rounded-sm bg-white min-h-[44px]">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="px-2.5 py-2 text-sm hover:text-gold"
+                    className="min-h-[44px] min-w-[36px] flex items-center justify-center px-2.5 py-2 text-sm hover:text-gold"
+                    aria-label="Decrease quantity"
                   >
                     -
                   </button>
                   <span className="px-3 text-xs font-semibold">{quantity}</span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    className="px-2.5 py-2 text-sm hover:text-gold"
+                    className="min-h-[44px] min-w-[36px] flex items-center justify-center px-2.5 py-2 text-sm hover:text-gold"
+                    aria-label="Increase quantity"
                   >
                     +
                   </button>
@@ -187,7 +189,7 @@ export const QuickViewModal: React.FC = () => {
                 {/* Add to Bag */}
                 <button
                   onClick={handleAddToCart}
-                  className="flex-1 py-3 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark font-serif text-xs uppercase tracking-[0.2em] font-semibold rounded-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-sm"
+                  className="flex-1 min-h-[44px] py-3 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark font-serif text-xs uppercase tracking-[0.15em] sm:tracking-[0.2em] font-semibold rounded-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-sm"
                 >
                   {added ? (
                     <>
@@ -205,7 +207,7 @@ export const QuickViewModal: React.FC = () => {
                 {/* Wishlist */}
                 <button
                   onClick={() => toggleWishlist(quickViewProduct)}
-                  className={`p-3 rounded-sm border transition-colors ${
+                  className={`min-h-[44px] min-w-[44px] p-3 rounded-sm border transition-colors flex items-center justify-center ${
                     inWishlist ? 'border-wine bg-wine text-ivory' : 'border-gold/40 text-burgundy hover:border-burgundy'
                   }`}
                   aria-label="Wishlist"
@@ -217,7 +219,7 @@ export const QuickViewModal: React.FC = () => {
               {/* View Full Product Details Link */}
               <button
                 onClick={handleViewFullPage}
-                className="w-full text-center text-xs font-serif uppercase tracking-widest text-burgundy hover:text-gold transition-colors py-1 flex items-center justify-center gap-1.5"
+                className="w-full min-h-[44px] text-center text-xs font-serif uppercase tracking-widest text-burgundy hover:text-gold transition-colors py-2 flex items-center justify-center gap-1.5"
               >
                 <span>View Complete Artisan Story & Saree Gallery</span>
                 <ArrowRight className="w-3.5 h-3.5" />

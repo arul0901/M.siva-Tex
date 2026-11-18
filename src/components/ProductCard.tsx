@@ -67,20 +67,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <button
           onClick={handleWishlist}
           aria-label={inWishlist ? "Remove from Wishlist" : "Save to Wishlist"}
-          className={`absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 z-10 shadow-sm ${
+          className={`absolute top-2.5 right-2.5 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 z-10 shadow-sm ${
             inWishlist
               ? 'bg-wine text-ivory'
-              : 'bg-ivory/80 text-burgundy hover:bg-ivory hover:text-wine'
+              : 'bg-ivory/90 text-burgundy hover:bg-ivory hover:text-wine'
           }`}
         >
           <Heart className={`w-4 h-4 ${inWishlist ? 'fill-current' : ''}`} />
         </button>
 
-        {/* Hover Quick Action Drawer at Bottom */}
-        <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-burgundy-dark/90 via-burgundy/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-between gap-2">
+        {/* Quick Action Drawer at Bottom (Touch accessible on mobile, hover on desktop) */}
+        <div className="absolute inset-x-0 bottom-0 p-2 sm:p-3 bg-gradient-to-t from-burgundy-dark/95 via-burgundy/70 to-transparent opacity-95 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-between gap-1.5 sm:gap-2">
           <button
             onClick={handleQuickView}
-            className="flex-1 py-2 px-3 bg-ivory/95 hover:bg-gold hover:text-white text-brown-deep text-[11px] font-serif uppercase tracking-wider font-semibold rounded-sm transition-colors flex items-center justify-center gap-1.5 shadow-sm"
+            className="flex-1 min-h-[40px] sm:min-h-[36px] py-2 px-2.5 bg-ivory/95 hover:bg-gold hover:text-white text-brown-deep text-[10px] sm:text-[11px] font-serif uppercase tracking-wider font-semibold rounded-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm"
           >
             <Eye className="w-3.5 h-3.5" />
             <span>Quick View</span>
@@ -88,8 +88,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
           <button
             onClick={handleAddToCart}
-            className="py-2 px-3 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark rounded-sm transition-colors flex items-center justify-center shadow-sm"
+            className="min-h-[40px] min-w-[40px] sm:min-h-[36px] sm:min-w-[36px] py-2 px-2.5 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark rounded-xs transition-colors flex items-center justify-center shadow-sm"
             title="Add to Cart"
+            aria-label="Add to Cart"
           >
             {isAdded ? <Check className="w-4 h-4 text-emerald-300" /> : <ShoppingBag className="w-4 h-4" />}
           </button>

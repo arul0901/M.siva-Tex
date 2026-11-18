@@ -433,3 +433,28 @@
 .footer-legal-sep {
   opacity: 0.5;
 }
+
+/* Mobile-First Touch & Spacing Enhancements */
+.footer-nav-link-btn,
+.footer-legal-btn {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.footer-social-icon-box {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.footer-newsletter-submit-btn {
+  min-height: 44px;
+}
+
+@media (max-width: 479px) {
+  .footer-legal-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1rem;
+  }
+}

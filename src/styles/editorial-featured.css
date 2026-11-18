@@ -279,9 +279,27 @@
 }
 
 /* CTA buttons */
+.editorial-cta-bridal,
+.editorial-cta-heritage {
+  min-height: 44px;
+}
+
+@media (max-width: 480px) {
+  .editorial-panel-bridal,
+  .editorial-panel-heritage {
+    padding: 1.5rem 1.125rem;
+    min-height: 440px;
+  }
+
+  .editorial-heading-bridal,
+  .editorial-heading-heritage {
+    font-size: 1.625rem;
+  }
+}
+
 .editorial-cta-bridal {
-  background-color: var(--color-rich-gold, #D4AF37);
-  color: var(--color-primary-maroon, #4D0007);
+  background-color: var(--color-champagne-gold, #D4AF37);
+  color: var(--color-maroon-dark, #360005);
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.2em;
@@ -289,6 +307,7 @@
   padding: 0.875rem 1.5rem;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.625rem;
   border-radius: 2px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);

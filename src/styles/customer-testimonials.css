@@ -202,6 +202,13 @@
   scroll-snap-align: start;
 }
 
+@media (max-width: 359px) {
+  .testimonial-card {
+    width: calc(100vw - 2.75rem);
+    padding: 1.25rem 1rem;
+  }
+}
+
 @media (min-width: 480px) {
   .testimonial-card {
     width: 320px;

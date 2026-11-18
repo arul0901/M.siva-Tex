@@ -77,18 +77,18 @@ export const ProductDetailView: React.FC = () => {
   ).slice(0, 4);
 
   return (
-    <div className="bg-ivory min-h-screen py-10">
+    <div className="bg-ivory min-h-screen py-6 sm:py-10 pb-28 sm:pb-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Breadcrumb Navigation */}
-        <div className="flex items-center gap-2 text-xs font-serif uppercase tracking-widest text-brown-deep/60 mb-8">
-          <button onClick={() => setCurrentView('home')} className="hover:text-burgundy">Home</button>
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs font-serif uppercase tracking-widest text-brown-deep/60 mb-6 sm:mb-8">
+          <button onClick={() => setCurrentView('home')} className="hover:text-burgundy min-h-[32px] flex items-center">Home</button>
           <span>/</span>
-          <button onClick={() => setCurrentView('shop')} className="hover:text-burgundy">Sarees</button>
+          <button onClick={() => setCurrentView('shop')} className="hover:text-burgundy min-h-[32px] flex items-center">Sarees</button>
           <span>/</span>
           <span className="text-gold font-bold">{selectedProduct.category}</span>
           <span>/</span>
-          <span className="truncate max-w-[200px] text-brown-deep">{selectedProduct.name}</span>
+          <span className="truncate max-w-[160px] sm:max-w-[200px] text-brown-deep">{selectedProduct.name}</span>
         </div>
 
         {/* Main Product Stage */}
@@ -231,12 +231,12 @@ export const ProductDetailView: React.FC = () => {
                     maxLength={6}
                     value={pincode}
                     onChange={(e) => setPincode(e.target.value)}
-                    placeholder="Enter 6-digit Indian PIN (e.g. 600001)"
-                    className="flex-1 px-3 py-1.5 text-xs bg-white border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
+                    placeholder="Enter 6-digit PIN (e.g. 600001)"
+                    className="flex-1 px-3 py-2 text-base sm:text-xs bg-white border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
                   />
                   <button
                     type="submit"
-                    className="px-4 py-1.5 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark text-xs font-serif uppercase tracking-wider font-semibold rounded-xs transition-colors shrink-0"
+                    className="min-h-[44px] px-4 py-2 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark text-xs font-serif uppercase tracking-wider font-semibold rounded-xs transition-colors shrink-0"
                   >
                     Check
                   </button>
@@ -250,39 +250,55 @@ export const ProductDetailView: React.FC = () => {
 
               {/* Action Buttons: Quantity, Add to Bag, Buy Now */}
               <div className="space-y-3 mb-8">
-                <div className="flex items-center gap-3">
-                  {/* Quantity */}
-                  <div className="flex items-center border border-gold/40 rounded-sm bg-white">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3">
+                  <div className="flex items-center gap-2.5">
+                    {/* Quantity */}
+                    <div className="flex items-center border border-gold/40 rounded-sm bg-white min-h-[44px]">
+                      <button
+                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                        className="min-h-[44px] min-w-[40px] px-3 py-2 text-sm hover:text-gold transition-colors flex items-center justify-center"
+                        aria-label="Decrease quantity"
+                      >
+                        -
+                      </button>
+                      <span className="px-3 text-xs font-bold font-sans">{quantity}</span>
+                      <button
+                        onClick={() => setQuantity(quantity + 1)}
+                        className="min-h-[44px] min-w-[40px] px-3 py-2 text-sm hover:text-gold transition-colors flex items-center justify-center"
+                        aria-label="Increase quantity"
+                      >
+                        +
+                      </button>
+                    </div>
+
+                    {/* Wishlist button on mobile next to quantity */}
                     <button
-                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="px-3 py-3 text-sm hover:text-gold transition-colors"
-                      aria-label="Decrease quantity"
+                      onClick={() => toggleWishlist(selectedProduct)}
+                      className={`sm:hidden min-h-[44px] min-w-[44px] flex-1 p-2.5 rounded-sm border transition-colors flex items-center justify-center gap-2 ${
+                        inWishlist
+                          ? 'border-wine bg-wine text-ivory'
+                          : 'border-gold/40 text-burgundy hover:border-burgundy bg-white'
+                      }`}
+                      aria-label="Wishlist"
                     >
-                      -
-                    </button>
-                    <span className="px-3 text-xs font-bold font-sans">{quantity}</span>
-                    <button
-                      onClick={() => setQuantity(quantity + 1)}
-                      className="px-3 py-3 text-sm hover:text-gold transition-colors"
-                      aria-label="Increase quantity"
-                    >
-                      +
+                      <Heart className={`w-4 h-4 ${inWishlist ? 'fill-current' : ''}`} />
+                      <span className="text-xs font-serif">{inWishlist ? 'Saved' : 'Save'}</span>
                     </button>
                   </div>
 
                   {/* Add to Bag */}
                   <button
                     onClick={handleAddToCart}
-                    className="flex-1 py-3.5 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark font-serif text-xs uppercase tracking-[0.2em] font-semibold rounded-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-luxury"
+                    className="flex-1 min-h-[44px] py-3.5 px-4 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark font-serif text-xs uppercase tracking-[0.15em] sm:tracking-[0.2em] font-semibold rounded-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-luxury"
                   >
-                    <ShoppingBag className="w-4 h-4" />
+                    <ShoppingBag className="w-4 h-4 shrink-0" />
                     <span>Add to Shopping Bag</span>
                   </button>
 
-                  {/* Wishlist */}
+                  {/* Wishlist on desktop */}
                   <button
                     onClick={() => toggleWishlist(selectedProduct)}
-                    className={`p-3.5 rounded-sm border transition-colors ${
+                    className={`hidden sm:flex min-h-[44px] min-w-[44px] p-3.5 rounded-sm border transition-colors items-center justify-center ${
                       inWishlist
                         ? 'border-wine bg-wine text-ivory'
                         : 'border-gold/40 text-burgundy hover:border-burgundy bg-white'
@@ -296,7 +312,7 @@ export const ProductDetailView: React.FC = () => {
                 {/* Instant Buy Now */}
                 <button
                   onClick={handleBuyNow}
-                  className="w-full py-3.5 bg-gold hover:bg-gold-light text-brown-dark font-serif text-xs uppercase tracking-[0.2em] font-bold rounded-sm transition-all duration-300 shadow-gold-glow flex items-center justify-center gap-2"
+                  className="w-full min-h-[44px] py-3.5 bg-gold hover:bg-gold-light text-brown-dark font-serif text-xs uppercase tracking-[0.2em] font-bold rounded-sm transition-all duration-300 shadow-gold-glow flex items-center justify-center gap-2"
                 >
                   <span>Buy Now — Instant Checkout</span>
                   <ArrowRight className="w-4 h-4" />
@@ -305,7 +321,7 @@ export const ProductDetailView: React.FC = () => {
                 {/* Virtual Video Salon CTA */}
                 <button
                   onClick={() => setIsConciergeOpen(true)}
-                  className="w-full py-2.5 border border-gold/40 text-burgundy hover:bg-beige/50 font-serif text-xs uppercase tracking-wider rounded-sm transition-colors flex items-center justify-center gap-2"
+                  className="w-full min-h-[44px] py-2.5 border border-gold/40 text-burgundy hover:bg-beige/50 font-serif text-xs uppercase tracking-wider rounded-sm transition-colors flex items-center justify-center gap-2"
                 >
                   <Sparkles className="w-3.5 h-3.5 text-gold" />
                   <span>Book 1-on-1 Live Video Drape Session</span>
@@ -450,6 +466,41 @@ export const ProductDetailView: React.FC = () => {
           </div>
         )}
 
+      </div>
+
+      {/* Mobile Sticky Bottom Action Bar (Fixed on mobile devices for seamless checkout) */}
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-ivory/95 border-t border-gold/30 px-3.5 py-2.5 flex items-center justify-between gap-2 shadow-2xl backdrop-blur-md pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+        <div className="min-w-0 pr-2">
+          <span className="text-[9px] uppercase font-serif text-brown-deep/60 block leading-tight">Price</span>
+          <span className="font-serif text-base font-bold text-burgundy truncate block">
+            ₹{selectedProduct.price.toLocaleString('en-IN')}
+          </span>
+        </div>
+        <div className="flex items-center gap-1.5 shrink-0">
+          <button
+            onClick={() => toggleWishlist(selectedProduct)}
+            className={`min-h-[44px] min-w-[44px] flex items-center justify-center p-2 rounded-xs border transition-colors ${
+              inWishlist ? 'border-wine bg-wine text-ivory' : 'border-gold/40 text-burgundy bg-white'
+            }`}
+            aria-label="Wishlist"
+          >
+            <Heart className={`w-4 h-4 ${inWishlist ? 'fill-current' : ''}`} />
+          </button>
+          <button
+            onClick={handleAddToCart}
+            className="min-h-[44px] px-3.5 py-2 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark font-serif text-xs uppercase tracking-wider font-semibold rounded-xs shadow-md flex items-center gap-1.5 transition-colors"
+          >
+            <ShoppingBag className="w-3.5 h-3.5" />
+            <span>Add to Bag</span>
+          </button>
+          <button
+            onClick={handleBuyNow}
+            className="min-h-[44px] px-3.5 py-2 bg-gold hover:bg-gold-light text-brown-dark font-serif text-xs uppercase tracking-wider font-bold rounded-xs shadow-md flex items-center gap-1 transition-colors"
+          >
+            <span>Buy</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
       </div>
     </div>
   );

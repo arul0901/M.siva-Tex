@@ -29,6 +29,18 @@ export const Header: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Prevent background scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+    return () => {
+      document.body.classList.remove('overflow-hidden');
+    };
+  }, [mobileMenuOpen]);
+
   const isHomeView = currentView === 'home';
   const headerStatusClass = !isHomeView || isScrolled ? 'scrolled' : 'transparent';
 
@@ -302,7 +314,7 @@ export const Header: React.FC = () => {
               {/* Account */}
               <button
                 onClick={() => setCurrentView('account')}
-                className="header-action-btn"
+                className="header-action-btn header-action-user-btn"
                 aria-label="Customer Account"
                 title="My Account & Orders"
               >
@@ -394,6 +406,17 @@ export const Header: React.FC = () => {
                     className="mobile-drawer-link-btn"
                   >
                     Home
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setSelectedCategoryFilter(null);
+                      setCurrentView('shop');
+                      setMobileMenuOpen(false);
+                    }}
+                    className="mobile-drawer-link-btn"
+                  >
+                    Shop All Sarees
                   </button>
 
                   <div className="pt-3 pb-2">

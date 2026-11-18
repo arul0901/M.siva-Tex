@@ -104,14 +104,14 @@ export const CheckoutView: React.FC = () => {
 
         {/* Stepper Progress Bar (Steps 1-3) */}
         {step !== 4 && (
-          <div className="max-w-2xl mx-auto mb-10">
+          <div className="max-w-2xl mx-auto mb-10 px-2 sm:px-0">
             <div className="flex items-center justify-between relative">
               <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gold/25 -translate-y-1/2 z-0" />
               
               {[
-                { num: 1, label: 'Delivery Address' },
-                { num: 2, label: 'Shipping Mode' },
-                { num: 3, label: 'Payment' }
+                { num: 1, full: 'Delivery Address', short: 'Address' },
+                { num: 2, full: 'Shipping Mode', short: 'Shipping' },
+                { num: 3, full: 'Payment Method', short: 'Payment' }
               ].map(s => (
                 <div key={s.num} className="relative z-10 flex flex-col items-center">
                   <div
@@ -123,8 +123,9 @@ export const CheckoutView: React.FC = () => {
                   >
                     {step > s.num ? <CheckCircle2 className="w-5 h-5 text-gold" /> : s.num}
                   </div>
-                  <span className={`text-[11px] font-serif uppercase tracking-wider mt-1.5 ${step >= s.num ? 'text-burgundy font-semibold' : 'text-brown-deep/50'}`}>
-                    {s.label}
+                  <span className={`text-[10px] sm:text-[11px] font-serif uppercase tracking-wider mt-1.5 text-center ${step >= s.num ? 'text-burgundy font-semibold' : 'text-brown-deep/50'}`}>
+                    <span className="hidden sm:inline">{s.full}</span>
+                    <span className="sm:hidden">{s.short}</span>
                   </span>
                 </div>
               ))}
@@ -247,7 +248,7 @@ export const CheckoutView: React.FC = () => {
                         required
                         value={formData.fullName}
                         onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                        className="w-full px-3 py-2 text-xs border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
+                        className="w-full px-3 py-2 text-base sm:text-xs border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
                       />
                     </div>
 
@@ -261,7 +262,7 @@ export const CheckoutView: React.FC = () => {
                           required
                           value={formData.phone}
                           onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                          className="w-full px-3 py-2 text-xs border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
+                          className="w-full px-3 py-2 text-base sm:text-xs border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
                         />
                       </div>
                       <div>
@@ -273,7 +274,7 @@ export const CheckoutView: React.FC = () => {
                           required
                           value={formData.email}
                           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                          className="w-full px-3 py-2 text-xs border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
+                          className="w-full px-3 py-2 text-base sm:text-xs border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
                         />
                       </div>
                     </div>
@@ -287,11 +288,11 @@ export const CheckoutView: React.FC = () => {
                         required
                         value={formData.street}
                         onChange={(e) => setFormData({ ...formData, street: e.target.value })}
-                        className="w-full px-3 py-2 text-xs border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
+                        className="w-full px-3 py-2 text-base sm:text-xs border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
                       />
                     </div>
 
-                    <div className="grid grid-cols-3 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                       <div>
                         <label className="block text-[10px] uppercase font-serif tracking-wider text-burgundy mb-1">
                           City *
@@ -301,7 +302,7 @@ export const CheckoutView: React.FC = () => {
                           required
                           value={formData.city}
                           onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                          className="w-full px-3 py-2 text-xs border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
+                          className="w-full px-3 py-2 text-base sm:text-xs border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
                         />
                       </div>
                       <div>
@@ -313,7 +314,7 @@ export const CheckoutView: React.FC = () => {
                           required
                           value={formData.state}
                           onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-                          className="w-full px-3 py-2 text-xs border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
+                          className="w-full px-3 py-2 text-base sm:text-xs border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
                         />
                       </div>
                       <div>
@@ -326,7 +327,7 @@ export const CheckoutView: React.FC = () => {
                           maxLength={6}
                           value={formData.pincode}
                           onChange={(e) => setFormData({ ...formData, pincode: e.target.value })}
-                          className="w-full px-3 py-2 text-xs border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
+                          className="w-full px-3 py-2 text-base sm:text-xs border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
                         />
                       </div>
                     </div>
@@ -334,7 +335,7 @@ export const CheckoutView: React.FC = () => {
                     <div className="pt-4">
                       <button
                         type="submit"
-                        className="w-full py-3.5 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark font-serif text-xs uppercase tracking-[0.2em] font-semibold rounded-sm transition-all flex items-center justify-center gap-2"
+                        className="w-full min-h-[44px] py-3.5 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark font-serif text-xs uppercase tracking-[0.2em] font-semibold rounded-sm transition-all flex items-center justify-center gap-2"
                       >
                         <span>Continue to Shipping Mode</span>
                         <ArrowRight className="w-4 h-4" />
@@ -475,7 +476,7 @@ export const CheckoutView: React.FC = () => {
                               value={formData.upiId}
                               onChange={(e) => setFormData({ ...formData, upiId: e.target.value })}
                               placeholder="username@upi"
-                              className="w-full max-w-sm px-3 py-1.5 text-xs bg-white border border-gold/30 rounded-xs focus:outline-none"
+                              className="w-full max-w-sm px-3 py-2 text-base sm:text-xs bg-white border border-gold/30 rounded-xs focus:outline-none"
                             />
                           </div>
                         )}
@@ -509,20 +510,20 @@ export const CheckoutView: React.FC = () => {
                               type="text"
                               value={formData.cardNumber}
                               onChange={(e) => setFormData({ ...formData, cardNumber: e.target.value })}
-                              className="w-full px-3 py-1.5 text-xs bg-white border border-gold/30 rounded-xs"
+                              className="w-full px-3 py-2 text-base sm:text-xs bg-white border border-gold/30 rounded-xs"
                             />
                             <div className="grid grid-cols-2 gap-2">
                               <input
                                 type="text"
                                 value={formData.cardExpiry}
                                 onChange={(e) => setFormData({ ...formData, cardExpiry: e.target.value })}
-                                className="w-full px-3 py-1.5 text-xs bg-white border border-gold/30 rounded-xs"
+                                className="w-full px-3 py-2 text-base sm:text-xs bg-white border border-gold/30 rounded-xs"
                               />
                               <input
                                 type="password"
                                 value={formData.cardCvv}
                                 onChange={(e) => setFormData({ ...formData, cardCvv: e.target.value })}
-                                className="w-full px-3 py-1.5 text-xs bg-white border border-gold/30 rounded-xs"
+                                className="w-full px-3 py-2 text-base sm:text-xs bg-white border border-gold/30 rounded-xs"
                               />
                             </div>
                           </div>

@@ -278,7 +278,7 @@ export const FabricAnimation: React.FC<FabricAnimationProps> = ({
     }
 
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(isMobile ? Math.min(window.devicePixelRatio, 1.5) : Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
@@ -321,6 +321,7 @@ export const FabricAnimation: React.FC<FabricAnimationProps> = ({
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
+      renderer.setPixelRatio(w < 768 ? Math.min(window.devicePixelRatio, 1.5) : Math.min(window.devicePixelRatio, 2));
       if (materialRef.current) {
         materialRef.current.uniforms.uIsMobile.value = w < 768 ? 1.0 : 0.0;
       }

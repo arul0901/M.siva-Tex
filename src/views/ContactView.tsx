@@ -109,16 +109,16 @@ export const ContactView: React.FC = () => {
               </p>
               <button
                 onClick={() => setIsConciergeOpen(true)}
-                className="w-full py-2.5 bg-gold hover:bg-gold-light text-brown-dark font-serif text-xs uppercase tracking-wider font-bold rounded-sm transition-colors"
+                className="w-full min-h-[44px] py-2.5 bg-gold hover:bg-gold-light text-brown-dark font-serif text-xs uppercase tracking-wider font-bold rounded-sm transition-colors flex items-center justify-center gap-2"
               >
-                Book Video Consultation
+                <span>Book Video Consultation</span>
               </button>
             </div>
 
           </div>
 
           {/* Right: Message Form (Col 6-12) */}
-          <div className="lg:col-span-7 bg-white p-8 rounded-sm border border-gold/30 shadow-sm">
+          <div className="lg:col-span-7 bg-white p-5 sm:p-8 rounded-sm border border-gold/30 shadow-sm">
             <h3 className="font-serif text-xl font-bold text-burgundy mb-2">
               Send a Concierge Inquiry
             </h3>
@@ -147,7 +147,7 @@ export const ContactView: React.FC = () => {
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       placeholder="Smt. / Ms. Name"
-                      className="w-full px-3 py-2 bg-ivory border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
+                      className="w-full px-3 py-2 text-base sm:text-xs bg-ivory border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
                     />
                   </div>
                   <div>
@@ -160,7 +160,7 @@ export const ContactView: React.FC = () => {
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       placeholder="+91 98400 00000"
-                      className="w-full px-3 py-2 bg-ivory border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
+                      className="w-full px-3 py-2 text-base sm:text-xs bg-ivory border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
                     />
                   </div>
                 </div>
@@ -176,7 +176,7 @@ export const ContactView: React.FC = () => {
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       placeholder="name@domain.com"
-                      className="w-full px-3 py-2 bg-ivory border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
+                      className="w-full px-3 py-2 text-base sm:text-xs bg-ivory border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
                     />
                   </div>
                   <div>
@@ -186,7 +186,7 @@ export const ContactView: React.FC = () => {
                     <select
                       value={formData.subject}
                       onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                      className="w-full px-3 py-2 bg-ivory border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
+                      className="w-full px-3 py-2 text-base sm:text-xs bg-ivory border border-gold/30 rounded-xs focus:outline-none focus:border-gold min-h-[44px]"
                     >
                       <option>Bridal Saree Inquiry</option>
                       <option>Pure Zari Authenticity & Certification</option>
@@ -207,13 +207,13 @@ export const ContactView: React.FC = () => {
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     placeholder="Tell us about your wedding date, preferred saree styles, color preferences, or any questions..."
-                    className="w-full px-3 py-2 bg-ivory border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
+                    className="w-full px-3 py-2 text-base sm:text-xs bg-ivory border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full py-3 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark font-serif text-xs uppercase tracking-[0.2em] font-semibold rounded-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-sm"
+                  className="w-full min-h-[44px] py-3 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark font-serif text-xs uppercase tracking-[0.2em] font-semibold rounded-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-sm"
                 >
                   <Send className="w-3.5 h-3.5" />
                   <span>Send Message to Concierge</span>

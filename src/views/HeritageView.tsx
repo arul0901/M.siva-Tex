@@ -108,7 +108,7 @@ export const HeritageView: React.FC = () => {
         <div className="text-center mt-20 pt-10 border-t border-gold/20">
           <button
             onClick={() => setCurrentView('shop')}
-            className="inline-flex items-center gap-2 px-8 py-4 bg-burgundy text-gold-pale hover:bg-gold hover:text-brown-dark font-serif text-xs uppercase tracking-[0.2em] font-semibold rounded-sm transition-all shadow-luxury"
+            className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-8 py-4 bg-burgundy text-gold-pale hover:bg-gold hover:text-brown-dark font-serif text-xs uppercase tracking-[0.2em] font-semibold rounded-sm transition-all shadow-luxury"
           >
             <span>Explore Handloom Masterpieces</span>
             <ArrowRight className="w-4 h-4" />

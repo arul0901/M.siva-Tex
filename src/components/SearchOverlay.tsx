@@ -60,16 +60,16 @@ export const SearchOverlay: React.FC = () => {
       <div className="fixed inset-0 z-50 flex flex-col bg-ivory text-brown-deep overflow-y-auto">
         
         {/* Top Header */}
-        <div className="max-w-5xl mx-auto w-full px-4 sm:px-6 py-6 flex items-center justify-between border-b border-gold/20">
+        <div className="max-w-5xl mx-auto w-full px-4 sm:px-6 py-4 sm:py-6 flex items-center justify-between border-b border-gold/20">
           <div className="flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-gold" />
             <span className="font-serif text-xs uppercase tracking-[0.25em] text-burgundy font-semibold">
-              Search M. Siva-Tex Boutique
+              Search Boutique
             </span>
           </div>
           <button
             onClick={() => setIsSearchOpen(false)}
-            className="p-2 text-brown-deep hover:text-burgundy transition-colors rounded-full hover:bg-beige"
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center p-2 text-brown-deep hover:text-burgundy transition-colors rounded-full hover:bg-beige"
             aria-label="Close search"
           >
             <X className="w-6 h-6" />
@@ -77,21 +77,22 @@ export const SearchOverlay: React.FC = () => {
         </div>
 
         {/* Search Input Bar */}
-        <div className="max-w-4xl mx-auto w-full px-4 sm:px-6 pt-10 pb-6">
+        <div className="max-w-4xl mx-auto w-full px-4 sm:px-6 pt-6 sm:pt-10 pb-6">
           <div className="relative border-b-2 border-gold pb-3 flex items-center gap-3">
-            <Search className="w-6 h-6 text-gold shrink-0" />
+            <Search className="w-5 h-5 sm:w-6 sm:h-6 text-gold shrink-0" />
             <input
               type="text"
               autoFocus
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search by weave, motif, color or occasion (e.g. Kanchipuram, Korvai, Crimson)..."
-              className="w-full font-serif text-lg sm:text-2xl bg-transparent placeholder-brown-deep/40 text-burgundy focus:outline-none"
+              placeholder="Search Kanchipuram, Banarasi, Crimson, Bridal..."
+              className="w-full font-serif text-base sm:text-2xl bg-transparent placeholder-brown-deep/40 text-burgundy focus:outline-none"
             />
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm('')}
-                className="text-brown-deep/40 hover:text-brown-deep p-1"
+                className="min-h-[44px] min-w-[44px] flex items-center justify-center text-brown-deep/40 hover:text-brown-deep p-1"
+                aria-label="Clear search input"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -107,7 +108,7 @@ export const SearchOverlay: React.FC = () => {
               <button
                 key={tag}
                 onClick={() => handleSelectTag(tag)}
-                className="px-3 py-1 bg-beige/50 hover:bg-gold hover:text-white border border-gold/20 text-xs font-serif rounded-full transition-colors"
+                className="min-h-[38px] px-3.5 py-1.5 bg-beige/50 hover:bg-gold hover:text-white border border-gold/20 text-xs font-serif rounded-full transition-colors flex items-center"
               >
                 {tag}
               </button>

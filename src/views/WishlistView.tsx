@@ -34,7 +34,7 @@ export const WishlistView: React.FC = () => {
             <div className="mt-6 flex items-center justify-center gap-4">
               <button
                 onClick={handleAddAllToCart}
-                className="px-6 py-2.5 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark font-serif text-xs uppercase tracking-wider font-semibold rounded-sm transition-all duration-300 flex items-center gap-2 shadow-sm"
+                className="w-full sm:w-auto min-h-[44px] px-6 py-2.5 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark font-serif text-xs uppercase tracking-wider font-semibold rounded-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-sm"
               >
                 <ShoppingBag className="w-4 h-4" />
                 <span>Move All to Shopping Bag</span>

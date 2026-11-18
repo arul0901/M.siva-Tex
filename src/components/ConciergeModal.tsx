@@ -51,12 +51,12 @@ export const ConciergeModal: React.FC = () => {
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="relative bg-ivory border border-gold/40 shadow-2xl rounded-sm max-w-xl w-full p-6 sm:p-8 z-10 text-brown-deep"
+          className="relative bg-ivory border border-gold/40 shadow-2xl rounded-sm max-w-xl w-full p-5 sm:p-8 z-10 text-brown-deep max-h-[92vh] overflow-y-auto"
         >
           {/* Close Button */}
           <button
             onClick={() => setIsConciergeOpen(false)}
-            className="absolute top-4 right-4 p-1.5 text-brown-deep/60 hover:text-burgundy transition-colors"
+            className="absolute top-3 right-3 min-h-[44px] min-w-[44px] flex items-center justify-center text-brown-deep/60 hover:text-burgundy transition-colors rounded-full hover:bg-beige"
             aria-label="Close modal"
           >
             <X className="w-5 h-5" />
@@ -105,7 +105,7 @@ export const ConciergeModal: React.FC = () => {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="Smt. / Ms. Name"
-                        className="w-full pl-8 pr-3 py-2 bg-white border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
+                        className="w-full pl-8 pr-3 py-2 text-base sm:text-xs bg-white border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
                       />
                     </div>
                   </div>
@@ -122,7 +122,7 @@ export const ConciergeModal: React.FC = () => {
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         placeholder="+91 98400 00000"
-                        className="w-full pl-8 pr-3 py-2 bg-white border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
+                        className="w-full pl-8 pr-3 py-2 text-base sm:text-xs bg-white border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
                       />
                     </div>
                   </div>
@@ -141,7 +141,7 @@ export const ConciergeModal: React.FC = () => {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="name@domain.com"
-                        className="w-full pl-8 pr-3 py-2 bg-white border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
+                        className="w-full pl-8 pr-3 py-2 text-base sm:text-xs bg-white border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
                       />
                     </div>
                   </div>
@@ -153,7 +153,7 @@ export const ConciergeModal: React.FC = () => {
                     <select
                       value={formData.occasion}
                       onChange={(e) => setFormData({ ...formData, occasion: e.target.value })}
-                      className="w-full px-3 py-2 bg-white border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
+                      className="w-full px-3 py-2 text-base sm:text-xs bg-white border border-gold/30 rounded-xs focus:outline-none focus:border-gold min-h-[44px]"
                     >
                       <option value="Bridal Muhurtham">Bridal Muhurtham</option>
                       <option value="Wedding Reception">Wedding Reception</option>
@@ -174,7 +174,7 @@ export const ConciergeModal: React.FC = () => {
                       required
                       value={formData.preferredDate}
                       onChange={(e) => setFormData({ ...formData, preferredDate: e.target.value })}
-                      className="w-full px-3 py-2 bg-white border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
+                      className="w-full px-3 py-2 text-base sm:text-xs bg-white border border-gold/30 rounded-xs focus:outline-none focus:border-gold min-h-[44px]"
                     />
                   </div>
 
@@ -185,7 +185,7 @@ export const ConciergeModal: React.FC = () => {
                     <select
                       value={formData.preferredTime}
                       onChange={(e) => setFormData({ ...formData, preferredTime: e.target.value })}
-                      className="w-full px-3 py-2 bg-white border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
+                      className="w-full px-3 py-2 text-base sm:text-xs bg-white border border-gold/30 rounded-xs focus:outline-none focus:border-gold min-h-[44px]"
                     >
                       <option>10:00 AM - 11:00 AM IST</option>
                       <option>11:30 AM - 12:30 PM IST</option>
@@ -205,13 +205,13 @@ export const ConciergeModal: React.FC = () => {
                     value={formData.notes}
                     onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                     placeholder="e.g. Royal Purple Korvai Kanchipuram, Crimson bridal silks with heavy zari pallu..."
-                    className="w-full px-3 py-2 bg-white border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
+                    className="w-full px-3 py-2 text-base sm:text-xs bg-white border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full py-3 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark font-serif text-xs uppercase tracking-[0.2em] font-semibold rounded-sm transition-all duration-300 mt-2 shadow-sm"
+                  className="w-full min-h-[44px] py-3.5 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark font-serif text-xs uppercase tracking-[0.2em] font-semibold rounded-sm transition-all duration-300 mt-2 shadow-sm"
                 >
                   Confirm Complimentary Session
                 </button>

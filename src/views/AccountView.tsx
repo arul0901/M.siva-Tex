@@ -24,16 +24,16 @@ export const AccountView: React.FC = () => {
             </h1>
           </div>
 
-          <div className="flex items-center gap-4 text-xs font-serif">
+          <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 sm:gap-4 text-xs font-serif w-full sm:w-auto">
             <button
               onClick={() => setCurrentView('wishlist')}
-              className="px-4 py-2 bg-beige/50 border border-gold/30 rounded-sm text-burgundy hover:bg-gold hover:text-white transition-colors"
+              className="min-h-[44px] flex-1 sm:flex-none px-4 py-2 bg-beige/50 border border-gold/30 rounded-sm text-burgundy hover:bg-gold hover:text-white transition-colors flex items-center justify-center text-center"
             >
               Saved Heirlooms ({wishlistCount})
             </button>
             <button
               onClick={() => setCurrentView('shop')}
-              className="px-4 py-2 bg-burgundy text-gold-pale rounded-sm hover:bg-burgundy-dark transition-colors"
+              className="min-h-[44px] flex-1 sm:flex-none px-4 py-2 bg-burgundy text-gold-pale rounded-sm hover:bg-burgundy-dark transition-colors flex items-center justify-center text-center"
             >
               Browse Catalog
             </button>
@@ -47,7 +47,7 @@ export const AccountView: React.FC = () => {
           <div className="lg:col-span-3 bg-white p-4 rounded-sm border border-gold/25 space-y-1">
             <button
               onClick={() => setActiveTab('orders')}
-              className={`w-full text-left px-4 py-2.5 rounded-xs text-xs font-serif uppercase tracking-wider flex items-center justify-between transition-colors ${
+              className={`min-h-[44px] w-full text-left px-4 py-2.5 rounded-xs text-xs font-serif uppercase tracking-wider flex items-center justify-between transition-colors ${
                 activeTab === 'orders' ? 'bg-burgundy text-gold-pale font-bold' : 'text-brown-deep/80 hover:bg-beige'
               }`}
             >
@@ -60,7 +60,7 @@ export const AccountView: React.FC = () => {
 
             <button
               onClick={() => setActiveTab('profile')}
-              className={`w-full text-left px-4 py-2.5 rounded-xs text-xs font-serif uppercase tracking-wider flex items-center justify-between transition-colors ${
+              className={`min-h-[44px] w-full text-left px-4 py-2.5 rounded-xs text-xs font-serif uppercase tracking-wider flex items-center justify-between transition-colors ${
                 activeTab === 'profile' ? 'bg-burgundy text-gold-pale font-bold' : 'text-brown-deep/80 hover:bg-beige'
               }`}
             >
@@ -73,7 +73,7 @@ export const AccountView: React.FC = () => {
 
             <button
               onClick={() => setActiveTab('addresses')}
-              className={`w-full text-left px-4 py-2.5 rounded-xs text-xs font-serif uppercase tracking-wider flex items-center justify-between transition-colors ${
+              className={`min-h-[44px] w-full text-left px-4 py-2.5 rounded-xs text-xs font-serif uppercase tracking-wider flex items-center justify-between transition-colors ${
                 activeTab === 'addresses' ? 'bg-burgundy text-gold-pale font-bold' : 'text-brown-deep/80 hover:bg-beige'
               }`}
             >
@@ -125,7 +125,7 @@ export const AccountView: React.FC = () => {
 
                       {/* Timeline Tracking */}
                       <div className="bg-beige/30 p-4 rounded-sm border border-gold/15">
-                        <div className="flex items-center justify-between text-[11px] font-serif uppercase tracking-wider text-brown-deep/80 mb-2">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between text-[11px] font-serif uppercase tracking-wider text-brown-deep/80 gap-1 mb-2">
                           <span className="flex items-center gap-1.5 text-gold-dark font-bold">
                             <Truck className="w-3.5 h-3.5" />
                             <span>Courier: BlueDart Insured Air ({order.trackingNumber})</span>
@@ -134,14 +134,14 @@ export const AccountView: React.FC = () => {
                         </div>
 
                         {/* Visual Progress Steps */}
-                        <div className="grid grid-cols-4 gap-2 pt-2 text-[10px] text-center font-serif">
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-2 pt-2 text-[10px] text-center font-serif">
                           {[
                             { name: 'Loom Inspection', done: true },
                             { name: 'Velvet Box Packed', done: true },
                             { name: 'In Transit', done: order.status === 'In Transit' || order.status === 'Delivered' },
                             { name: 'Doorstep Delivered', done: order.status === 'Delivered' }
                           ].map((step, idx) => (
-                            <div key={idx} className="flex flex-col items-center">
+                            <div key={idx} className="flex flex-col items-center p-1 bg-white/50 sm:bg-transparent rounded-xs">
                               <div
                                 className={`w-6 h-6 rounded-full flex items-center justify-center mb-1 text-[10px] ${
                                   step.done ? 'bg-burgundy text-gold-pale font-bold' : 'bg-beige text-brown-deep/40'
@@ -149,7 +149,7 @@ export const AccountView: React.FC = () => {
                               >
                                 {step.done ? '✓' : idx + 1}
                               </div>
-                              <span className={step.done ? 'text-burgundy font-semibold' : 'text-brown-deep/50'}>
+                              <span className={`leading-tight ${step.done ? 'text-burgundy font-semibold' : 'text-brown-deep/50'}`}>
                                 {step.name}
                               </span>
                             </div>

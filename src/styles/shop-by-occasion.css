@@ -41,14 +41,18 @@
 
 .occasion-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 2rem;
   align-items: center;
 }
 
+.occasion-grid > * {
+  min-width: 0;
+}
+
 @media (min-width: 1024px) {
   .occasion-grid {
-    grid-template-columns: repeat(12, 1fr);
+    grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: 2.5rem;
   }
 }
@@ -58,6 +62,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  min-width: 0;
 }
 
 @media (min-width: 1024px) {
@@ -163,8 +168,10 @@
 }
 
 .occasion-nav-btn {
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  min-width: 44px;
+  min-height: 44px;
   border-radius: 9999px;
   border: 1px solid rgba(212, 175, 55, 0.4);
   display: flex;
@@ -192,6 +199,7 @@
 /* Cards Column */
 .occasion-cards-col {
   width: 100%;
+  min-width: 0;
 }
 
 @media (min-width: 1024px) {

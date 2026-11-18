@@ -62,10 +62,10 @@ export const CartDrawer: React.FC = () => {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'tween', duration: 0.3 }}
-            className="fixed inset-y-0 right-0 w-full max-w-md bg-ivory shadow-2xl z-50 flex flex-col border-l border-gold/30 text-brown-deep"
+            className="fixed inset-y-0 right-0 w-full max-w-full sm:max-w-md bg-ivory shadow-2xl z-50 flex flex-col border-l border-gold/30 text-brown-deep"
           >
             {/* Header */}
-            <div className="p-5 border-b border-gold/20 flex items-center justify-between bg-burgundy text-ivory">
+            <div className="p-4 sm:p-5 border-b border-gold/20 flex items-center justify-between bg-burgundy text-ivory">
               <div className="flex items-center gap-2">
                 <ShoppingBag className="w-5 h-5 text-gold" />
                 <h3 className="font-serif text-base font-bold tracking-wider uppercase text-ivory">
@@ -74,7 +74,7 @@ export const CartDrawer: React.FC = () => {
               </div>
               <button
                 onClick={() => setIsCartOpen(false)}
-                className="p-1.5 text-ivory/70 hover:text-white transition-colors"
+                className="min-h-[44px] min-w-[44px] flex items-center justify-center text-ivory/70 hover:text-white transition-colors"
                 aria-label="Close cart"
               >
                 <X className="w-5 h-5" />
@@ -161,10 +161,11 @@ export const CartDrawer: React.FC = () => {
                           </h4>
                           <button
                             onClick={() => removeFromCart(item.product.id)}
-                            className="text-brown-deep/40 hover:text-wine p-0.5"
+                            className="min-h-[44px] min-w-[44px] flex items-center justify-center text-brown-deep/40 hover:text-wine -mr-2 -mt-2 transition-colors"
                             title="Remove item"
+                            aria-label="Remove item"
                           >
-                            <Trash2 className="w-3.5 h-3.5" />
+                            <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
                         <p className="text-[10px] text-brown-deep/60 mt-0.5">
@@ -177,20 +178,20 @@ export const CartDrawer: React.FC = () => {
                         <div className="flex items-center border border-gold/30 rounded-xs bg-ivory">
                           <button
                             onClick={() => updateCartQuantity(item.product.id, item.quantity - 1)}
-                            className="p-1 hover:text-gold transition-colors"
+                            className="min-h-[38px] min-w-[36px] flex items-center justify-center hover:text-gold transition-colors"
                             aria-label="Decrease quantity"
                           >
-                            <Minus className="w-3 h-3" />
+                            <Minus className="w-3.5 h-3.5" />
                           </button>
                           <span className="px-2 text-xs font-medium font-sans">
                             {item.quantity}
                           </span>
                           <button
                             onClick={() => updateCartQuantity(item.product.id, item.quantity + 1)}
-                            className="p-1 hover:text-gold transition-colors"
+                            className="min-h-[38px] min-w-[36px] flex items-center justify-center hover:text-gold transition-colors"
                             aria-label="Increase quantity"
                           >
-                            <Plus className="w-3 h-3" />
+                            <Plus className="w-3.5 h-3.5" />
                           </button>
                         </div>
 
@@ -206,7 +207,7 @@ export const CartDrawer: React.FC = () => {
 
             {/* Footer with Calculations and Checkout */}
             {cart.length > 0 && (
-              <div className="p-5 border-t border-gold/25 bg-beige/30 space-y-3">
+              <div className="p-4 sm:p-5 border-t border-gold/25 bg-beige/30 space-y-3">
                 
                 {/* Coupon Code Input */}
                 <form onSubmit={handleApplyCoupon} className="flex gap-2">
@@ -217,12 +218,12 @@ export const CartDrawer: React.FC = () => {
                       placeholder="Coupon (e.g. WELCOME10)"
                       value={inputCoupon}
                       onChange={(e) => setInputCoupon(e.target.value)}
-                      className="w-full pl-8 pr-3 py-1.5 bg-ivory border border-gold/40 text-xs text-brown-deep uppercase placeholder-brown-deep/40 focus:outline-none focus:border-gold rounded-sm"
+                      className="w-full pl-8 pr-3 py-2 text-base sm:text-xs bg-ivory border border-gold/40 text-brown-deep uppercase placeholder-brown-deep/40 focus:outline-none focus:border-gold rounded-sm"
                     />
                   </div>
                   <button
                     type="submit"
-                    className="px-4 py-1.5 bg-burgundy text-gold-pale hover:bg-gold hover:text-brown-dark text-xs font-serif uppercase tracking-wider font-semibold rounded-sm transition-colors shrink-0"
+                    className="min-h-[44px] px-4 py-2 bg-burgundy text-gold-pale hover:bg-gold hover:text-brown-dark text-xs font-serif uppercase tracking-wider font-semibold rounded-sm transition-colors shrink-0"
                   >
                     Apply
                   </button>
