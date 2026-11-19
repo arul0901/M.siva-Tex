@@ -5,10 +5,7 @@ import { HeroBanner } from './components/HeroBanner';
 
 // Redesigned Homepage Sections (Inspired by Master Luxury Reference)
 import { ShopByOccasion } from './components/ShopByOccasion';
-import { EditorialFeatured } from './components/EditorialFeatured';
-import { AccessoriesBanner } from './components/AccessoriesBanner';
 import { StylingSuggestions } from './components/StylingSuggestions';
-import { CuratedBestsellers } from './components/CuratedBestsellers';
 import { CustomerTestimonials } from './components/CustomerTestimonials';
 import { TrustService } from './components/TrustService';
 import { Footer } from './components/Footer';
@@ -39,28 +36,19 @@ export const App: React.FC = () => {
       <main className="flex-1">
         {currentView === 'home' && (
           <>
-            {/* 1. Cinematic Hero Banner (Completely Untouched as Requested) */}
+            {/* 1. Cinematic Hero Banner */}
             <HeroBanner />
 
-            {/* 2. Shop By Occasion (5 Arched Editorial Cards + Left Heading) */}
+            {/* 2. Shop By Occasion */}
             <ShopByOccasion />
 
-            {/* 3. Featured Collections — Two-Panel Editorial Section (Bridal Edit & Heritage Silks) */}
-            <EditorialFeatured />
-
-            {/* 4. Saree Accessories Feature Banner (Draped Silk Flat-Lay) */}
-            <AccessoriesBanner />
-
-            {/* 5. Styling Suggestions ("DRAPED YOUR WAY" — The Art of Styling) */}
+            {/* 3. Styling Suggestions ("DRAPED YOUR WAY" — The Art of Styling) */}
             <StylingSuggestions />
 
-            {/* 6. Curated Collections & Bestsellers (4-Quadrant Split Editorial Shopping Section) */}
-            <CuratedBestsellers />
-
-            {/* 7. Customer Testimonials ("LOVED BY OUR COMMUNITY" — 4 Cards with Gold Stars) */}
+            {/* 4. Customer Testimonials ("LOVED BY OUR COMMUNITY" — 4 Cards with Gold Stars) */}
             <CustomerTestimonials />
 
-            {/* 8. Trust and Service Section */}
+            {/* 5. Trust and Service Section */}
             <TrustService />
           </>
         )}
