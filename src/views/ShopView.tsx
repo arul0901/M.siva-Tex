@@ -1,10 +1,77 @@
-import React, { useState, useMemo } from 'react';
-import { SAREE_PRODUCTS, CATEGORIES_DATA } from '../data/sarees';
+import React, { useState, useMemo, useEffect } from 'react';
+import { SAREE_PRODUCTS } from '../data/sarees';
 import { ProductCard } from '../components/ProductCard';
 import { useShop } from '../context/ShopContext';
-import { Filter, SlidersHorizontal, X, ChevronDown, Sparkles, Grid, LayoutList, Eye, ShoppingBag, Heart } from 'lucide-react';
+import { 
+  FilterSortSidebar, 
+  FilterState, 
+  DynamicFilterCounts, 
+  COLOR_OPTIONS, 
+  CATEGORY_OPTIONS, 
+  FABRIC_OPTIONS, 
+  OCCASION_OPTIONS,
+  MIN_PRICE_BOUND,
+  MAX_PRICE_BOUND
+} from '../components/FilterSortSidebar';
+import { 
+  SlidersHorizontal, 
+  X, 
+  Sparkles, 
+  Grid, 
+  LayoutList, 
+  Eye, 
+  ShoppingBag, 
+  Heart,
+  RotateCcw
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import '../styles/shop-view.css';
+
+// Match terms for colors
+const COLOR_MATCH_TERMS: Record<string, string[]> = {
+  red: ['red', 'crimson', 'kumkum'],
+  maroon: ['maroon', 'wine', 'burgundy', 'aubergine'],
+  green: ['green', 'emerald', 'pista', 'olive'],
+  blue: ['blue', 'indigo', 'peacock', 'navy'],
+  pink: ['pink', 'blush', 'rani', 'rose'],
+  black: ['black', 'midnight', 'dark'],
+  gold: ['gold', 'mustard', 'champagne', 'metallic', 'yellow', 'zari'],
+  cream: ['cream', 'ivory', 'beige', 'off-white'],
+  purple: ['purple', 'violet', 'lavender', 'magenta']
+};
+
+const matchesColor = (p: typeof SAREE_PRODUCTS[0], colorId: string): boolean => {
+  const terms = COLOR_MATCH_TERMS[colorId] || [colorId];
+  const target = `${p.color} ${p.name} ${p.description}`.toLowerCase();
+  return terms.some(t => target.includes(t));
+};
+
+const matchesFabric = (p: typeof SAREE_PRODUCTS[0], fabric: string): boolean => {
+  const f = fabric.toLowerCase();
+  const target = `${p.fabric} ${p.category} ${p.weave}`.toLowerCase();
+  if (f === 'silk') return target.includes('silk') || target.includes('pattu') || target.includes('katan');
+  if (f === 'cotton') return target.includes('cotton') || target.includes('chanderi');
+  if (f === 'georgette') return target.includes('georgette') || target.includes('khaddi');
+  if (f === 'chiffon') return target.includes('chiffon');
+  if (f === 'organza') return target.includes('organza') || target.includes('kora');
+  if (f === 'tissue') return target.includes('tissue');
+  if (f === 'crepe') return target.includes('crepe');
+  return target.includes(f);
+};
+
+const matchesOccasion = (p: typeof SAREE_PRODUCTS[0], occasion: string): boolean => {
+  const occ = occasion.toLowerCase();
+  const occString = p.occasion.join(' ').toLowerCase();
+  const fullText = `${occString} ${p.category} ${p.weave} ${p.name}`.toLowerCase();
+  
+  if (occ === 'wedding') return /wedding|bridal|muhurtham|reception/i.test(fullText) || !!p.isBridal;
+  if (occ === 'bridal') return /bridal|muhurtham/i.test(fullText) || !!p.isBridal || p.category === 'Bridal Silk';
+  if (occ === 'festive') return /festive|puja|diwali/i.test(fullText);
+  if (occ === 'party wear') return /party|evening|reception/i.test(fullText);
+  if (occ === 'traditional') return /traditional|puja|muhurtham|korvai|kadwa/i.test(fullText);
+  if (occ === 'daily wear') return /casual|office|daily/i.test(fullText);
+  return fullText.includes(occ);
+};
 
 export const ShopView: React.FC = () => {
   const { 
@@ -20,59 +87,273 @@ export const ShopView: React.FC = () => {
   } = useShop();
 
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
-  const [sortBy, setSortBy] = useState<string>('featured');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
-  // Filter & Sort Logic (Category and Search)
+  // Unified Filter State
+  const [filters, setFilters] = useState<FilterState>({
+    categories: selectedCategoryFilter ? [selectedCategoryFilter] : [],
+    priceRange: [MIN_PRICE_BOUND, MAX_PRICE_BOUND],
+    colors: [],
+    fabrics: [],
+    occasions: [],
+    availability: 'all',
+    sortBy: 'recommended',
+  });
+
+  // Sync external selectedCategoryFilter from ShopContext (e.g. from header nav or homepage)
+  useEffect(() => {
+    if (selectedCategoryFilter) {
+      setFilters(prev => ({
+        ...prev,
+        categories: [selectedCategoryFilter]
+      }));
+    }
+  }, [selectedCategoryFilter]);
+
+  // Handlers for Filter Updates
+  const handleCategoryToggle = (categoryKey: string) => {
+    setFilters(prev => {
+      const exists = prev.categories.includes(categoryKey);
+      const updated = exists 
+        ? prev.categories.filter(c => c !== categoryKey)
+        : [...prev.categories, categoryKey];
+      
+      // Keep context synchronized
+      if (updated.length === 1) {
+        setSelectedCategoryFilter(updated[0]);
+      } else {
+        setSelectedCategoryFilter(null);
+      }
+      return { ...prev, categories: updated };
+    });
+  };
+
+  const handleCategorySelectAll = () => {
+    setFilters(prev => ({ ...prev, categories: [] }));
+    setSelectedCategoryFilter(null);
+  };
+
+  const handlePriceChange = (range: [number, number]) => {
+    setFilters(prev => ({ ...prev, priceRange: range }));
+  };
+
+  const handleColorToggle = (colorId: string) => {
+    setFilters(prev => ({
+      ...prev,
+      colors: prev.colors.includes(colorId)
+        ? prev.colors.filter(c => c !== colorId)
+        : [...prev.colors, colorId]
+    }));
+  };
+
+  const handleFabricToggle = (fabric: string) => {
+    setFilters(prev => ({
+      ...prev,
+      fabrics: prev.fabrics.includes(fabric)
+        ? prev.fabrics.filter(f => f !== fabric)
+        : [...prev.fabrics, fabric]
+    }));
+  };
+
+  const handleOccasionToggle = (occasion: string) => {
+    setFilters(prev => ({
+      ...prev,
+      occasions: prev.occasions.includes(occasion)
+        ? prev.occasions.filter(o => o !== occasion)
+        : [...prev.occasions, occasion]
+    }));
+  };
+
+  const handleAvailabilityChange = (val: 'all' | 'in_stock' | 'out_of_stock') => {
+    setFilters(prev => ({ ...prev, availability: val }));
+  };
+
+  const handleSortChange = (sortVal: string) => {
+    setFilters(prev => ({ ...prev, sortBy: sortVal }));
+  };
+
+  const handleClearAll = () => {
+    setFilters({
+      categories: [],
+      priceRange: [MIN_PRICE_BOUND, MAX_PRICE_BOUND],
+      colors: [],
+      fabrics: [],
+      occasions: [],
+      availability: 'all',
+      sortBy: 'recommended',
+    });
+    setSelectedCategoryFilter(null);
+    setSearchQuery('');
+  };
+
+  // Filter & Sort Execution Logic
   const filteredProducts = useMemo(() => {
     return SAREE_PRODUCTS.filter(product => {
-      // Category filter
-      if (selectedCategoryFilter && product.category !== selectedCategoryFilter) {
-        return false;
-      }
-      // Search query
+      // 1. Search Query
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
         const matches =
           product.name.toLowerCase().includes(q) ||
           product.category.toLowerCase().includes(q) ||
           product.fabric.toLowerCase().includes(q) ||
-          product.weave.toLowerCase().includes(q);
+          product.weave.toLowerCase().includes(q) ||
+          product.color.toLowerCase().includes(q);
         if (!matches) return false;
       }
+
+      // 2. Saree Weave / Category Filter
+      if (filters.categories.length > 0) {
+        if (!filters.categories.includes(product.category)) {
+          return false;
+        }
+      }
+
+      // 3. Price Range Filter
+      if (product.price < filters.priceRange[0] || product.price > filters.priceRange[1]) {
+        return false;
+      }
+
+      // 4. Color Filter
+      if (filters.colors.length > 0) {
+        const hasColor = filters.colors.some(colId => matchesColor(product, colId));
+        if (!hasColor) return false;
+      }
+
+      // 5. Fabric Filter
+      if (filters.fabrics.length > 0) {
+        const hasFabric = filters.fabrics.some(fab => matchesFabric(product, fab));
+        if (!hasFabric) return false;
+      }
+
+      // 6. Occasion Filter
+      if (filters.occasions.length > 0) {
+        const hasOccasion = filters.occasions.some(occ => matchesOccasion(product, occ));
+        if (!hasOccasion) return false;
+      }
+
+      // 7. Availability Filter
+      if (filters.availability === 'out_of_stock') {
+        return false; // All current products in stock
+      }
+
       return true;
     }).sort((a, b) => {
-      if (sortBy === 'price-low') return a.price - b.price;
-      if (sortBy === 'price-high') return b.price - a.price;
-      if (sortBy === 'rating') return b.rating - a.rating;
-      if (sortBy === 'newest') return (b.isNewArrival ? 1 : 0) - (a.isNewArrival ? 1 : 0);
-      return (b.isBestSeller ? 1 : 0) - (a.isBestSeller ? 1 : 0); // 'featured'
+      switch (filters.sortBy) {
+        case 'price-low':
+          return a.price - b.price;
+        case 'price-high':
+          return b.price - a.price;
+        case 'rating':
+          return b.rating - a.rating;
+        case 'newest':
+          return (b.isNewArrival ? 1 : 0) - (a.isNewArrival ? 1 : 0) || b.price - a.price;
+        case 'popularity':
+          return b.reviewCount - a.reviewCount || b.rating - a.rating;
+        case 'best-selling':
+          return (b.isBestSeller ? 1 : 0) - (a.isBestSeller ? 1 : 0) || b.rating - a.rating;
+        case 'recommended':
+        default:
+          const scoreA = (a.isBestSeller ? 3 : 0) + (a.isNewArrival ? 2 : 0) + a.rating;
+          const scoreB = (b.isBestSeller ? 3 : 0) + (b.isNewArrival ? 2 : 0) + b.rating;
+          return scoreB - scoreA;
+      }
     });
-  }, [selectedCategoryFilter, sortBy, searchQuery]);
+  }, [filters, searchQuery]);
 
-  const clearAllFilters = () => {
-    setSelectedCategoryFilter(null);
-    setSearchQuery('');
-  };
+  // Dynamic Product Counts Calculation (100% dynamic based on available products)
+  const filterCounts: DynamicFilterCounts = useMemo(() => {
+    const catCounts: Record<string, number> = {};
+    CATEGORY_OPTIONS.forEach(c => {
+      catCounts[c.key] = 0;
+    });
 
-  const activeFilterCount =
-    (selectedCategoryFilter ? 1 : 0) +
+    const colCounts: Record<string, number> = {};
+    COLOR_OPTIONS.forEach(c => {
+      colCounts[c.id] = 0;
+    });
+
+    const fabCounts: Record<string, number> = {};
+    FABRIC_OPTIONS.forEach(f => {
+      fabCounts[f] = 0;
+    });
+
+    const occCounts: Record<string, number> = {};
+    OCCASION_OPTIONS.forEach(o => {
+      occCounts[o] = 0;
+    });
+
+    let inStockCount = 0;
+
+    SAREE_PRODUCTS.forEach(p => {
+      if (catCounts[p.category] !== undefined) {
+        catCounts[p.category]++;
+      }
+
+      COLOR_OPTIONS.forEach(c => {
+        if (matchesColor(p, c.id)) {
+          colCounts[c.id]++;
+        }
+      });
+
+      FABRIC_OPTIONS.forEach(f => {
+        if (matchesFabric(p, f)) {
+          fabCounts[f]++;
+        }
+      });
+
+      OCCASION_OPTIONS.forEach(o => {
+        if (matchesOccasion(p, o)) {
+          occCounts[o]++;
+        }
+      });
+
+      inStockCount++;
+    });
+
+    return {
+      categories: catCounts,
+      colors: colCounts,
+      fabrics: fabCounts,
+      occasions: occCounts,
+      availability: {
+        in_stock: inStockCount,
+        out_of_stock: 0
+      },
+      total: SAREE_PRODUCTS.length,
+      filtered: filteredProducts.length
+    };
+  }, [filteredProducts.length]);
+
+  // Active filter tally for badges
+  const activeCount = 
+    filters.categories.length +
+    (filters.priceRange[0] > MIN_PRICE_BOUND || filters.priceRange[1] < MAX_PRICE_BOUND ? 1 : 0) +
+    filters.colors.length +
+    filters.fabrics.length +
+    filters.occasions.length +
+    (filters.availability !== 'all' ? 1 : 0) +
     (searchQuery ? 1 : 0);
 
   return (
     <div className="bg-ivory min-h-screen py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Breadcrumb & Header */}
+        {/* Breadcrumb & Luxury Catalog Header */}
         <div className="mb-8 border-b border-gold/20 pb-6">
           <div className="flex items-center gap-2 text-xs font-serif uppercase tracking-widest text-brown-deep/60 mb-2">
             <span>Home</span>
             <span>/</span>
             <span>Boutique Catalog</span>
-            {selectedCategoryFilter && (
+            {filters.categories.length === 1 && (
               <>
                 <span>/</span>
-                <span className="text-gold font-bold">{selectedCategoryFilter}</span>
+                <span className="text-gold font-bold">{filters.categories[0]}</span>
+              </>
+            )}
+            {filters.categories.length > 1 && (
+              <>
+                <span>/</span>
+                <span className="text-gold font-bold">{filters.categories.length} Categories</span>
               </>
             )}
           </div>
@@ -80,163 +361,228 @@ export const ShopView: React.FC = () => {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
               <h1 className="font-serif text-3xl sm:text-4xl text-burgundy font-normal tracking-wide">
-                {selectedCategoryFilter ? selectedCategoryFilter : 'All Handloom Sarees'}
+                {filters.categories.length === 1 
+                  ? filters.categories[0] 
+                  : filters.categories.length > 1 
+                    ? 'Curated Saree Collections' 
+                    : 'All Handloom Sarees'}
               </h1>
               <p className="text-xs sm:text-sm text-brown-deep/70 font-light mt-1">
                 Showing {filteredProducts.length} authentic handcrafted silk and artisanal handlooms.
               </p>
             </div>
 
-            {/* Mobile Filter Toggle & Sort */}
+            {/* Mobile Filter Toggle & Desktop View Mode */}
             <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-between sm:justify-start">
               <button
                 onClick={() => setMobileFilterOpen(true)}
-                className="lg:hidden min-h-[44px] px-3.5 py-2 bg-beige/60 hover:bg-beige border border-gold/40 rounded-sm text-xs font-serif uppercase tracking-wider text-burgundy flex items-center gap-2 transition-colors active:scale-98"
-                aria-label="Open collection filters"
+                className="lg:hidden min-h-[44px] px-3.5 py-2 bg-beige/60 hover:bg-beige border border-gold/40 rounded-sm text-xs font-serif uppercase tracking-wider text-burgundy flex items-center gap-2 transition-colors active:scale-98 shadow-xs"
+                aria-label="Open filter and sort drawer"
               >
                 <SlidersHorizontal className="w-3.5 h-3.5 text-gold" />
-                <span>Filters {activeFilterCount > 0 && `(${activeFilterCount})`}</span>
+                <span>Filters & Sort {activeCount > 0 && `(${activeCount})`}</span>
               </button>
 
-              {/* View Mode Toggle */}
-              <div className="hidden sm:flex items-center border border-gold/30 rounded-sm overflow-hidden bg-white">
+              {/* View Mode Toggle (Grid vs List) */}
+              <div className="hidden sm:flex items-center border border-gold/30 rounded-xs overflow-hidden bg-white shadow-xs">
                 <button
                   onClick={() => setViewMode('grid')}
-                  className={`min-h-[44px] min-w-[44px] flex items-center justify-center p-2 transition-colors ${viewMode === 'grid' ? 'bg-burgundy text-gold-pale' : 'text-brown-deep/60 hover:text-burgundy'}`}
+                  className={`min-h-[42px] min-w-[42px] flex items-center justify-center p-2 transition-colors ${
+                    viewMode === 'grid' ? 'bg-burgundy text-gold-pale' : 'text-brown-deep/60 hover:text-burgundy'
+                  }`}
                   title="Grid View"
                 >
                   <Grid className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => setViewMode('list')}
-                  className={`min-h-[44px] min-w-[44px] flex items-center justify-center p-2 transition-colors ${viewMode === 'list' ? 'bg-burgundy text-gold-pale' : 'text-brown-deep/60 hover:text-burgundy'}`}
+                  className={`min-h-[42px] min-w-[42px] flex items-center justify-center p-2 transition-colors ${
+                    viewMode === 'list' ? 'bg-burgundy text-gold-pale' : 'text-brown-deep/60 hover:text-burgundy'
+                  }`}
                   title="List View"
                 >
                   <LayoutList className="w-4 h-4" />
                 </button>
               </div>
-
-              {/* Sort By Dropdown */}
-              <div className="relative">
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="min-h-[44px] appearance-none bg-white border border-gold/30 rounded-sm pl-3 pr-8 py-2 text-xs font-serif uppercase tracking-wider text-burgundy focus:outline-none focus:border-gold cursor-pointer"
-                >
-                  <option value="featured">Featured Weaves</option>
-                  <option value="price-low">Price: Low to High</option>
-                  <option value="price-high">Price: High to Low</option>
-                  <option value="rating">Highest Rated</option>
-                  <option value="newest">New Arrivals</option>
-                </select>
-                <ChevronDown className="w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 text-gold pointer-events-none" />
-              </div>
             </div>
           </div>
 
-          {/* Active Filter Tags */}
-          {activeFilterCount > 0 && (
+          {/* Active Filter Tags Bar with Instant Clear */}
+          {activeCount > 0 && (
             <div className="flex flex-wrap items-center gap-2 mt-4 pt-4 border-t border-gold/15 text-xs">
-              <span className="font-serif text-brown-deep/60 uppercase tracking-wider text-[11px]">
+              <span className="font-serif text-brown-deep/60 uppercase tracking-wider text-[11px] font-semibold">
                 Active Filters:
               </span>
-              {selectedCategoryFilter && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-burgundy text-gold-pale rounded-xs font-serif text-[11px]">
-                  <span>{selectedCategoryFilter}</span>
-                  <button onClick={() => setSelectedCategoryFilter(null)}><X className="w-3 h-3" /></button>
+
+              {/* Category tags */}
+              {filters.categories.map(cat => (
+                <span 
+                  key={cat}
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-burgundy text-gold-pale rounded-xs font-serif text-[11px] shadow-xs"
+                >
+                  <span>{cat}</span>
+                  <button 
+                    onClick={() => handleCategoryToggle(cat)}
+                    className="hover:text-white transition-colors"
+                    aria-label={`Remove ${cat} filter`}
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              ))}
+
+              {/* Price range tag */}
+              {(filters.priceRange[0] > MIN_PRICE_BOUND || filters.priceRange[1] < MAX_PRICE_BOUND) && (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white border border-gold/40 text-burgundy rounded-xs font-serif text-[11px] shadow-xs">
+                  <span>Price: ₹{filters.priceRange[0].toLocaleString('en-IN')} – ₹{filters.priceRange[1].toLocaleString('en-IN')}</span>
+                  <button 
+                    onClick={() => handlePriceChange([MIN_PRICE_BOUND, MAX_PRICE_BOUND])}
+                    className="hover:text-wine transition-colors"
+                    aria-label="Reset price filter"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
                 </span>
               )}
+
+              {/* Color tags */}
+              {filters.colors.map(colId => {
+                const opt = COLOR_OPTIONS.find(c => c.id === colId);
+                return (
+                  <span 
+                    key={colId}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white border border-gold/40 text-burgundy rounded-xs font-serif text-[11px] shadow-xs"
+                  >
+                    <span 
+                      className="w-2.5 h-2.5 rounded-full inline-block border border-black/20"
+                      style={{ backgroundColor: opt?.hex || '#999' }}
+                    />
+                    <span>{opt?.name || colId}</span>
+                    <button 
+                      onClick={() => handleColorToggle(colId)}
+                      className="hover:text-wine transition-colors"
+                      aria-label={`Remove color ${opt?.name || colId}`}
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </span>
+                );
+              })}
+
+              {/* Fabric tags */}
+              {filters.fabrics.map(fab => (
+                <span 
+                  key={fab}
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white border border-gold/40 text-burgundy rounded-xs font-serif text-[11px] shadow-xs"
+                >
+                  <span>Fabric: {fab}</span>
+                  <button 
+                    onClick={() => handleFabricToggle(fab)}
+                    className="hover:text-wine transition-colors"
+                    aria-label={`Remove fabric ${fab}`}
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              ))}
+
+              {/* Occasion tags */}
+              {filters.occasions.map(occ => (
+                <span 
+                  key={occ}
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white border border-gold/40 text-burgundy rounded-xs font-serif text-[11px] shadow-xs"
+                >
+                  <span>Occasion: {occ}</span>
+                  <button 
+                    onClick={() => handleOccasionToggle(occ)}
+                    className="hover:text-wine transition-colors"
+                    aria-label={`Remove occasion ${occ}`}
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              ))}
+
+              {/* Availability tag */}
+              {filters.availability !== 'all' && (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white border border-gold/40 text-burgundy rounded-xs font-serif text-[11px] shadow-xs">
+                  <span>{filters.availability === 'in_stock' ? 'In Stock Only' : 'Out of Stock Only'}</span>
+                  <button 
+                    onClick={() => handleAvailabilityChange('all')}
+                    className="hover:text-wine transition-colors"
+                    aria-label="Reset availability"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              )}
+
+              {/* Search query tag */}
               {searchQuery && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-beige border border-gold/40 text-burgundy rounded-xs font-serif text-[11px]">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-beige border border-gold/40 text-burgundy rounded-xs font-serif text-[11px] shadow-xs">
                   <span>Search: "{searchQuery}"</span>
-                  <button onClick={() => setSearchQuery('')}><X className="w-3 h-3" /></button>
+                  <button 
+                    onClick={() => setSearchQuery('')}
+                    className="hover:text-wine transition-colors"
+                    aria-label="Clear search"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
                 </span>
               )}
+
+              {/* Clear all button */}
               <button
-                onClick={clearAllFilters}
-                className="text-xs text-wine underline hover:text-burgundy font-serif ml-2"
+                onClick={handleClearAll}
+                className="text-xs text-wine hover:text-burgundy hover:underline font-serif ml-2 flex items-center gap-1 font-medium"
               >
-                Clear All
+                <RotateCcw className="w-3 h-3" />
+                <span>Clear All</span>
               </button>
             </div>
           )}
         </div>
 
-        {/* Main Grid with Filter Sidebar */}
+        {/* Main Grid: Col 1-4 Unified Filter Container | Col 5-12 Products Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
-          {/* Desktop Filter Sidebar (Col 1-3) - Saree Weave / Category Only */}
-          <div className="hidden lg:block lg:col-span-3 bg-white/70 p-6 rounded-sm border border-gold/25 sticky top-28 space-y-6">
-            
-            <div className="flex items-center justify-between border-b border-gold/20 pb-3">
-              <h3 className="font-serif text-sm font-bold uppercase tracking-wider text-burgundy flex items-center gap-2">
-                <Filter className="w-4 h-4 text-gold" />
-                <span>Refine Collection</span>
-              </h3>
-              {selectedCategoryFilter && (
-                <button
-                  onClick={() => setSelectedCategoryFilter(null)}
-                  className="text-[11px] text-wine hover:underline font-serif"
-                >
-                  Reset
-                </button>
-              )}
-            </div>
-
-            {/* Saree Categories */}
-            <div>
-              <h4 className="font-serif text-xs font-bold uppercase tracking-wider text-burgundy mb-2.5">
-                Saree Weave / Category
-              </h4>
-              <div className="space-y-1.5 text-xs">
-                <button
-                  onClick={() => setSelectedCategoryFilter(null)}
-                  className={`w-full text-left py-1.5 px-2.5 rounded-xs flex items-center justify-between transition-colors ${
-                    selectedCategoryFilter === null ? 'bg-burgundy text-gold-pale font-medium' : 'text-brown-deep/80 hover:bg-beige'
-                  }`}
-                >
-                  <span>All Collections</span>
-                  <span className="text-[10px] opacity-75">{SAREE_PRODUCTS.length}</span>
-                </button>
-                {CATEGORIES_DATA.map(cat => (
-                  <button
-                    key={cat.id}
-                    onClick={() => setSelectedCategoryFilter(cat.categoryKey)}
-                    className={`w-full text-left py-1.5 px-2.5 rounded-xs flex items-center justify-between transition-colors ${
-                      selectedCategoryFilter === cat.categoryKey
-                        ? 'bg-burgundy text-gold-pale font-medium'
-                        : 'text-brown-deep/80 hover:bg-beige'
-                    }`}
-                  >
-                    <span>{cat.name}</span>
-                    <span className="text-[10px] opacity-75">{cat.count}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
+          {/* Desktop Filter & Sort Sidebar (Inside ONE unified container box) */}
+          <div className="hidden lg:block lg:col-span-4 xl:col-span-3.5">
+            <FilterSortSidebar
+              filters={filters}
+              counts={filterCounts}
+              onCategoryToggle={handleCategoryToggle}
+              onCategorySelectAll={handleCategorySelectAll}
+              onPriceChange={handlePriceChange}
+              onColorToggle={handleColorToggle}
+              onFabricToggle={handleFabricToggle}
+              onOccasionToggle={handleOccasionToggle}
+              onAvailabilityChange={handleAvailabilityChange}
+              onSortChange={handleSortChange}
+              onClearAll={handleClearAll}
+            />
           </div>
 
-          {/* Products Grid (Col 4-12) */}
-          <div className="lg:col-span-9">
+          {/* Products Grid & List Section (Col 4-12 on Desktop) */}
+          <div className="lg:col-span-8 xl:col-span-8.5">
             {filteredProducts.length === 0 ? (
-              <div className="bg-white/60 border border-gold/20 rounded-sm p-16 text-center space-y-4">
+              <div className="bg-white/70 border border-gold/25 rounded-xs p-16 text-center space-y-4 shadow-sm">
                 <Sparkles className="w-10 h-10 text-gold mx-auto" />
                 <h3 className="font-serif text-xl font-bold text-burgundy">
                   No Sarees Found Matching Your Filters
                 </h3>
                 <p className="text-xs text-brown-deep/70 max-w-md mx-auto leading-relaxed">
-                  Try adjusting the price slider or resetting some color/weave filters to explore our wider collection.
+                  We could not find any handloom sarees matching your exact criteria. Try adjusting your price slider or resetting some color, weave, or occasion selections.
                 </p>
                 <button
-                  onClick={clearAllFilters}
-                  className="px-6 py-2.5 bg-burgundy text-gold-pale font-serif text-xs uppercase tracking-wider font-semibold rounded-sm hover:bg-gold hover:text-brown-dark transition-colors"
+                  onClick={handleClearAll}
+                  className="px-6 py-2.5 bg-burgundy text-gold-pale font-serif text-xs uppercase tracking-wider font-semibold rounded-xs hover:bg-gold hover:text-brown-dark transition-colors shadow-sm"
                 >
                   Reset All Filters
                 </button>
               </div>
             ) : viewMode === 'grid' ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-7">
                 {filteredProducts.map(product => (
                   <ProductCard key={product.id} product={product} />
                 ))}
@@ -249,7 +595,7 @@ export const ShopView: React.FC = () => {
                   return (
                     <div
                       key={product.id}
-                      className="bg-white p-4 sm:p-6 rounded-sm border border-gold/20 flex flex-col sm:flex-row gap-5 sm:gap-6 shadow-xs hover:border-gold/50 transition-all"
+                      className="bg-white p-4 sm:p-6 rounded-xs border border-gold/20 flex flex-col sm:flex-row gap-5 sm:gap-6 shadow-xs hover:border-gold/50 transition-all"
                     >
                       <div
                         onClick={() => openProductDetail(product)}
@@ -333,7 +679,7 @@ export const ShopView: React.FC = () => {
 
       </div>
 
-      {/* Mobile Filter Slide-out Drawer */}
+      {/* Mobile Slide-in Filter Drawer (Full Luxury Container Experience) */}
       <AnimatePresence>
         {mobileFilterOpen && (
           <>
@@ -346,7 +692,7 @@ export const ShopView: React.FC = () => {
               className="fixed inset-0 bg-black/60 z-50 backdrop-blur-xs lg:hidden"
             />
 
-            {/* Drawer Container */}
+            {/* Slide-out Drawer Panel */}
             <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
@@ -354,75 +700,54 @@ export const ShopView: React.FC = () => {
               transition={{ type: 'tween', duration: 0.3 }}
               className="fixed inset-y-0 right-0 w-full max-w-sm sm:max-w-md bg-ivory shadow-2xl z-50 flex flex-col border-l border-gold/30 text-brown-deep lg:hidden"
             >
-              {/* Drawer Header */}
-              <div className="p-4 sm:p-5 border-b border-gold/25 flex items-center justify-between bg-burgundy text-gold-pale">
+              {/* Drawer Header with Title & Close Icon */}
+              <div className="p-4 sm:p-5 border-b border-gold/25 flex items-center justify-between bg-burgundy text-gold-pale shrink-0">
                 <div className="flex items-center gap-2">
-                  <Filter className="w-4 h-4 text-gold" />
+                  <SlidersHorizontal className="w-4 h-4 text-gold" />
                   <h3 className="font-serif text-sm font-bold uppercase tracking-wider text-ivory">
-                    Refine Sarees {activeFilterCount > 0 && `(${activeFilterCount})`}
+                    Filter & Sort {activeCount > 0 && `(${activeCount})`}
                   </h3>
                 </div>
                 <button
                   onClick={() => setMobileFilterOpen(false)}
-                  className="min-h-[44px] min-w-[44px] flex items-center justify-center text-ivory/70 hover:text-white transition-colors"
+                  className="min-h-[44px] min-w-[44px] flex items-center justify-center text-ivory/80 hover:text-white transition-colors"
                   aria-label="Close filter drawer"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
-              {/* Scrollable Filters Body - Saree Weave / Category Only */}
-              <div className="flex-1 overflow-y-auto p-5 space-y-6">
-                {/* Categories */}
-                <div>
-                  <h4 className="font-serif text-xs font-bold uppercase tracking-wider text-burgundy mb-2.5">
-                    Saree Weave / Category
-                  </h4>
-                  <div className="space-y-1.5 text-xs">
-                    <button
-                      onClick={() => {
-                        setSelectedCategoryFilter(null);
-                        setMobileFilterOpen(false);
-                      }}
-                      className={`min-h-[44px] w-full text-left py-2 px-3 rounded-xs flex items-center justify-between transition-colors ${
-                        selectedCategoryFilter === null ? 'bg-burgundy text-gold-pale font-medium' : 'text-brown-deep/80 hover:bg-beige bg-white/70 border border-gold/20'
-                      }`}
-                    >
-                      <span>All Collections</span>
-                      <span className="text-[10px] opacity-75">{SAREE_PRODUCTS.length}</span>
-                    </button>
-                    {CATEGORIES_DATA.map(cat => (
-                      <button
-                        key={cat.id}
-                        onClick={() => {
-                          setSelectedCategoryFilter(cat.categoryKey);
-                          setMobileFilterOpen(false);
-                        }}
-                        className={`min-h-[44px] w-full text-left py-2 px-3 rounded-xs flex items-center justify-between transition-colors ${
-                          selectedCategoryFilter === cat.categoryKey
-                            ? 'bg-burgundy text-gold-pale font-medium'
-                            : 'text-brown-deep/80 hover:bg-beige bg-white/70 border border-gold/20'
-                        }`}
-                      >
-                        <span>{cat.name}</span>
-                        <span className="text-[10px] opacity-75">{cat.count}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
+              {/* Scrollable Filters Body (Inside ONE Unified Container) */}
+              <div className="flex-1 overflow-y-auto p-4 sm:p-5">
+                <FilterSortSidebar
+                  filters={filters}
+                  counts={filterCounts}
+                  onCategoryToggle={handleCategoryToggle}
+                  onCategorySelectAll={handleCategorySelectAll}
+                  onPriceChange={handlePriceChange}
+                  onColorToggle={handleColorToggle}
+                  onFabricToggle={handleFabricToggle}
+                  onOccasionToggle={handleOccasionToggle}
+                  onAvailabilityChange={handleAvailabilityChange}
+                  onSortChange={handleSortChange}
+                  onClearAll={handleClearAll}
+                  onApplyFilters={() => setMobileFilterOpen(false)}
+                  isMobileDrawer={true}
+                />
               </div>
 
-              {/* Drawer Pinned Bottom Actions */}
-              <div className="p-4 border-t border-gold/25 bg-beige/40 flex items-center gap-3">
+              {/* Sticky Drawer Bottom Action Bar */}
+              <div className="p-4 border-t border-gold/25 bg-beige/60 flex items-center gap-3 shrink-0">
                 <button
-                  onClick={clearAllFilters}
-                  className="min-h-[44px] px-4 py-2.5 border border-gold/40 text-burgundy hover:bg-white text-xs font-serif uppercase tracking-wider font-semibold rounded-xs transition-colors shrink-0"
+                  onClick={handleClearAll}
+                  className="min-h-[44px] px-4 py-2.5 border border-gold/40 text-burgundy hover:bg-white text-xs font-serif uppercase tracking-wider font-semibold rounded-xs transition-colors shrink-0 flex items-center gap-1.5"
                 >
-                  Reset
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>Reset</span>
                 </button>
                 <button
                   onClick={() => setMobileFilterOpen(false)}
-                  className="min-h-[44px] flex-1 py-2.5 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark text-xs font-serif uppercase tracking-wider font-semibold rounded-xs transition-colors shadow-sm flex items-center justify-center gap-2"
+                  className="min-h-[44px] flex-1 py-2.5 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark text-xs font-serif uppercase tracking-wider font-semibold rounded-xs transition-colors shadow-sm flex items-center justify-center gap-2 font-bold"
                 >
                   <span>Apply Filters ({filteredProducts.length})</span>
                 </button>
@@ -434,4 +759,3 @@ export const ShopView: React.FC = () => {
     </div>
   );
 };
-
