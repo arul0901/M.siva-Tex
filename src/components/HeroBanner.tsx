@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useShop } from '../context/ShopContext';
 import { ChevronLeft, ChevronRight, Sparkles, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import heroWebm from '../assets/banner/hero.webm';
+import heroMp4 from '../assets/banner/hero-1.mp4';
 import '../styles/hero.css';
 
 const HERO_SLIDES = [
@@ -40,7 +42,19 @@ const HERO_SLIDES = [
 export const HeroBanner: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const { setCurrentView, setSelectedCategoryFilter } = useShop();
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {
+        if (videoRef.current) {
+          videoRef.current.muted = true;
+          videoRef.current.play().catch(() => {});
+        }
+      });
+    }
+  }, []);
 
   useEffect(() => {
     if (isHovered) return;
@@ -71,35 +85,25 @@ export const HeroBanner: React.FC = () => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Background Images with Crossfade and Gentle Zoom */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={slide.id}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1.2, ease: [0.25, 1, 0.5, 1] }}
-          className="absolute inset-0"
+      {/* Background Video with Luxury Gradients */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <video
+          ref={videoRef}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover object-top"
+          style={{ objectPosition: 'center top' }}
         >
-          {/* Zooming background image */}
-          <motion.div
-            initial={{ scale: 1.05 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 8, ease: 'easeOut' }}
-            className="w-full h-full"
-          >
-            <img
-              src={slide.image}
-              alt={slide.heading}
-              className="w-full h-full object-cover object-right md:object-[75%_center]"
-            />
-          </motion.div>
+          <source src={heroWebm} type="video/webm" />
+          <source src={heroMp4} type="video/mp4" />
+        </video>
 
-          {/* Luxury Editorial Overlay - Deep burgundy and warm shadows */}
-          <div className="absolute inset-0 bg-gradient-to-r from-burgundy-dark/95 via-burgundy/80 to-transparent lg:w-3/5" />
-          <div className="absolute inset-0 bg-gradient-to-t from-burgundy-dark/80 via-transparent to-black/30" />2026-11-17T17:31:17+05:30
-        </motion.div>
-      </AnimatePresence>
+        {/* Luxury Editorial Overlay - Deep burgundy and warm shadows */}
+        <div className="absolute inset-0 bg-gradient-to-r from-burgundy-dark/95 via-burgundy/80 to-transparent lg:w-3/5" />
+        <div className="absolute inset-0 bg-gradient-to-t from-burgundy-dark/85 via-transparent to-transparent" />
+      </div>
 
       {/* Hero Content (Positioned on the Left for Editorial Luxury) */}
       <div className="relative z-20 max-w-7xl mx-auto h-full px-6 sm:px-8 lg:px-12 flex items-center">
@@ -195,14 +199,6 @@ export const HeroBanner: React.FC = () => {
             </button>
           ))}
         </div>
-      </div>
-
-      {/* Handcrafted Seal on bottom right */}
-      <div className="hidden md:flex absolute z-20 bottom-8 right-12 items-center gap-3 bg-burgundy/60 border border-gold/30 backdrop-blur-md px-4 py-2.5 rounded-sm">
-        <div className="w-2.5 h-2.5 rounded-full bg-gold animate-ping" />
-        <span className="text-[11px] font-serif uppercase tracking-[0.2em] text-gold-light">
-          Silk Mark Certified Handlooms
-        </span>
       </div>
     </section>
   );

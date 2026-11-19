@@ -148,19 +148,6 @@ export const ShopByOccasion: React.FC = () => {
                     />
 
                     <div className="occasion-card-overlay" />
-
-                    <div className="occasion-tag-wrap">
-                      <span className="occasion-tag">
-                        {occ.tag}
-                      </span>
-                    </div>
-
-                    <div className="occasion-hover-btn-wrap">
-                      <span className="occasion-hover-btn">
-                        <span>Explore</span>
-                        <ArrowRight className="w-3 h-3" />
-                      </span>
-                    </div>
                   </div>
 
                   {/* Elegant Bottom Label Box */}
