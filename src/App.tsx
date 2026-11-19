@@ -5,6 +5,7 @@ import { Header } from './components/Header';
 import { CinematicHeroBanner } from './components/CinematicHeroBanner';
 
 // Redesigned Homepage Sections (Inspired by Master Luxury Reference)
+import { ShopByCategory } from './components/ShopByCategory';
 import { ShopByOccasion } from './components/ShopByOccasion';
 import { EditorialFeatured } from './components/EditorialFeatured';
 import { AccessoriesBanner } from './components/AccessoriesBanner';
@@ -45,7 +46,10 @@ export const App: React.FC = () => {
             {/* <HeroBanner /> */}
             <CinematicHeroBanner />
 
-            {/* 2. Shop By Occasion (5 Arched Editorial Cards + Left Heading) */}
+            {/* 2. Shop By Category (8 Saree Categories with Weave Details & Product Counts) */}
+            <ShopByCategory />
+
+            {/* 3. Shop By Occasion (5 Arched Editorial Cards + Left Heading) */}
             <ShopByOccasion />
 
             {/* 3. Featured Collections — Two-Panel Editorial Section (Bridal Edit & Heritage Silks) */}

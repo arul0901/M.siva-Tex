@@ -1,112 +1,156 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { useShop } from '../context/ShopContext';
-import { CATEGORIES_DATA } from '../data/sarees';
-import { ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { CATEGORIES_DATA, SAREE_PRODUCTS } from '../data/sarees';
+import { ArrowRight, Sparkles } from 'lucide-react';
 import '../styles/shop-by-category.css';
+
+// Curated high-res imagery for each of the 8 categories matching the exact counts from the reference
+const CATEGORY_DISPLAY_DATA = [
+  {
+    categoryKey: 'Kanchipuram Silk',
+    name: 'Kanchipuram Silk Sarees',
+    subtitle: 'Pure Mulberry Silk & Korvai Three-Shuttle Handloom',
+    image: '/assets/siva-tex/siva-sarees-kanchipuram-gold.jpg',
+    count: 24,
+    badge: 'Heritage Classic'
+  },
+  {
+    categoryKey: 'Banarasi Silk',
+    name: 'Banarasi Silk Sarees',
+    subtitle: 'Intricate Kadwa Zari Brocades of Varanasi',
+    image: '/assets/siva-tex/siva-sarees-banarasi-purple.jpg',
+    count: 18,
+    badge: 'Royal Brocades'
+  },
+  {
+    categoryKey: 'Soft Silk',
+    name: 'Soft Silk Sarees',
+    subtitle: 'Featherlight Drape with Luminous Pastel Sheen',
+    image: '/assets/siva-tex/siva-sarees-5.jpg',
+    count: 32,
+    badge: 'Everyday Luxury'
+  },
+  {
+    categoryKey: 'Cotton Sarees',
+    name: 'Cotton Sarees',
+    subtitle: 'Pure Chanderi & Breathable Chettinad Handloom Weaves',
+    image: 'https://images.unsplash.com/photo-1609357605129-26f69add5d6e?auto=format&fit=crop&w=800&q=85',
+    count: 15,
+    badge: 'Artisanal Handspun'
+  },
+  {
+    categoryKey: 'Georgette Sarees',
+    name: 'Georgette Sarees',
+    subtitle: 'Flowing Graceful Silhouette with Gold Zari Motifs',
+    image: '/assets/siva-tex/siva-sarees-4.jpg',
+    count: 19,
+    badge: 'Fluid Drape'
+  },
+  {
+    categoryKey: 'Chiffon Sarees',
+    name: 'Chiffon Sarees',
+    subtitle: 'Ethereal Sheer Elegance for Evening Milestone Soirees',
+    image: 'https://images.unsplash.com/photo-1614786269829-d24616faf56d?auto=format&fit=crop&w=800&q=85',
+    count: 14,
+    badge: 'Regal Twilight'
+  },
+  {
+    categoryKey: 'Organza Sarees',
+    name: 'Organza Sarees',
+    subtitle: 'Crisp Glass-Tissue Sheer with Intricate Needlecraft',
+    image: '/assets/siva-tex/siva-sarees-3.jpg',
+    count: 22,
+    badge: 'Contemporary Grace'
+  },
+  {
+    categoryKey: 'Bridal Silk',
+    name: 'Bridal Silk Sarees',
+    subtitle: 'Sacred Muhurtham Silks with 24K Gold Dipped Zari',
+    image: '/assets/siva-tex/siva-sarees-bridal-crimson.jpg',
+    count: 28,
+    badge: 'Bridal Trousseau'
+  }
+];
 
 export const ShopByCategory: React.FC = () => {
   const { setSelectedCategoryFilter, setCurrentView } = useShop();
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const scroll = (direction: 'left' | 'right') => {
-    if (scrollContainerRef.current) {
-      const scrollAmount = direction === 'left' ? -350 : 350;
-      scrollContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-    }
-  };
-
-  const handleCategorySelect = (categoryName: string) => {
-    setSelectedCategoryFilter(categoryName);
+  const handleCategorySelect = (categoryKey: string | null) => {
+    setSelectedCategoryFilter(categoryKey);
     setCurrentView('shop');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <section className="py-20 bg-ivory border-b border-gold/20 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="shop-by-category-section" id="shop-by-category">
+      <div className="shop-by-category-container">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
-          <div className="text-center md:text-left">
-            <div className="inline-flex items-center gap-1.5 text-gold font-medium text-xs tracking-[0.25em] uppercase mb-2">
+        <div className="shop-cat-header-wrap">
+          <div>
+            <div className="shop-cat-eyebrow">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Curated Handloom Edits</span>
+              <span>Saree Weave / Category</span>
             </div>
-            <h2 className="font-serif text-3xl sm:text-4xl text-burgundy font-normal tracking-wide">
-              Shop by Saree Collection
+            <h2 className="shop-cat-title">
+              Shop By <span className="shop-cat-title-italic">Category</span>
             </h2>
-            <p className="text-sm text-brown-deep/70 mt-2 font-light max-w-xl">
-              Explore authentic weaves categorized by regional heritage, silk purity, and timeless artisan craftsmanship.
+            <p className="shop-cat-subtitle">
+              Explore 8 authentic regional weaving traditions — each handloom masterpiece crafted by certified master artisans with pure mulberry silk and authentic gold zari.
             </p>
           </div>
 
-          {/* Scroll Navigation Arrows for Horizontal Carousel */}
-          <div className="hidden md:flex items-center gap-2 mt-4 md:mt-0">
-            <button
-              onClick={() => scroll('left')}
-              className="w-10 h-10 rounded-full border border-gold/40 text-burgundy flex items-center justify-center hover:bg-gold hover:text-ivory transition-colors"
-              aria-label="Scroll left"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => scroll('right')}
-              className="w-10 h-10 rounded-full border border-gold/40 text-burgundy flex items-center justify-center hover:bg-gold hover:text-ivory transition-colors"
-              aria-label="Scroll right"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
+          {/* View All Collections Button */}
+          <button
+            onClick={() => handleCategorySelect(null)}
+            className="shop-cat-all-btn"
+          >
+            <span>All Collections</span>
+            <span className="shop-cat-all-count">({SAREE_PRODUCTS.length})</span>
+            <ArrowRight className="w-4 h-4 ml-1" />
+          </button>
         </div>
 
-        {/* Horizontal Category Cards */}
-        <div
-          ref={scrollContainerRef}
-          className="category-scroll-container"
-        >
-          {CATEGORIES_DATA.map((cat, index) => (
-            <motion.div
-              key={cat.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.08 }}
-              className="snap-start shrink-0 flex flex-col items-center text-center group cursor-pointer w-44 sm:w-48"
+        {/* 8 Categories Grid */}
+        <div className="shop-cat-grid">
+          {CATEGORY_DISPLAY_DATA.map((cat) => (
+            <div
+              key={cat.categoryKey}
+              className="shop-cat-card group"
               onClick={() => handleCategorySelect(cat.categoryKey)}
             >
-              {/* Circular Product Image Container with Gold Ring */}
-              <div className="relative w-36 h-36 sm:w-40 sm:h-40 rounded-full p-1 border-2 border-gold/30 group-hover:border-gold transition-all duration-300 group-hover:shadow-gold-glow mb-4">
-                <div className="w-full h-full rounded-full overflow-hidden relative bg-beige">
-                  <img
-                    src={cat.image}
-                    alt={cat.name}
-                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-115"
-                  />
-                  <div className="absolute inset-0 bg-burgundy/10 group-hover:bg-transparent transition-colors duration-300" />
-                </div>
+              {/* Saree Image */}
+              <img
+                src={cat.image}
+                alt={cat.name}
+                className="shop-cat-card-img"
+                loading="lazy"
+              />
 
-                {/* Subtle Floating Badge */}
-                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-ivory border border-gold/40 px-2.5 py-0.5 rounded-full shadow-sm text-[9px] font-serif uppercase tracking-wider text-burgundy whitespace-nowrap">
-                  {cat.badge}
+              {/* Luxury Vignette Gradient Overlay */}
+              <div className="shop-cat-card-overlay" />
+
+              {/* Card Body */}
+              <div className="shop-cat-card-body">
+                <span className="shop-cat-count-badge">
+                  <span>{cat.count} Designs</span>
+                </span>
+                
+                <h3 className="shop-cat-card-title">
+                  {cat.name}
+                </h3>
+                
+                <p className="shop-cat-card-subtitle">
+                  {cat.subtitle}
+                </p>
+
+                <div className="shop-cat-explore-link">
+                  <span>Explore Weaves</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </div>
               </div>
-
-              {/* Category Name */}
-              <h3 className="font-serif text-sm sm:text-base font-semibold text-burgundy group-hover:text-gold-dark transition-colors mt-2 leading-tight">
-                {cat.name}
-              </h3>
-
-              {/* Short Descriptive Subtitle */}
-              <p className="text-[11px] text-brown-deep/70 font-light mt-1 max-w-[150px] leading-snug">
-                {cat.subtitle}
-              </p>
-            </motion.div>
+            </div>
           ))}
-        </div>
-
-        {/* Mobile Swipe Cue */}
-        <div className="flex md:hidden items-center justify-center gap-1.5 mt-2 text-xs text-gold font-serif italic">
-          <span>&larr; Swipe to explore all 8 handloom collections &rarr;</span>
         </div>
 
       </div>
