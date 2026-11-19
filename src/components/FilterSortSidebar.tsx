@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import { 
-  Filter, 
   ChevronDown, 
   RotateCcw, 
   Check, 
-  SlidersHorizontal, 
-  Sparkles,
-  ArrowUpDown
+  Sparkles
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -106,10 +103,9 @@ interface FilterSortSidebarProps {
   onFabricToggle: (fabric: string) => void;
   onOccasionToggle: (occasion: string) => void;
   onAvailabilityChange: (val: 'all' | 'in_stock' | 'out_of_stock') => void;
-  onSortChange: (sortVal: string) => void;
   onClearAll: () => void;
   onApplyFilters?: () => void;
-  isMobileDrawer?: boolean;
+  isDrawer?: boolean;
 }
 
 export const FilterSortSidebar: React.FC<FilterSortSidebarProps> = ({
@@ -122,10 +118,9 @@ export const FilterSortSidebar: React.FC<FilterSortSidebarProps> = ({
   onFabricToggle,
   onOccasionToggle,
   onAvailabilityChange,
-  onSortChange,
   onClearAll,
   onApplyFilters,
-  isMobileDrawer = false,
+  isDrawer = true,
 }) => {
   // Collapsible Accordion states
   const [openSections, setOpenSections] = useState<{ [key: string]: boolean }>({
@@ -187,15 +182,6 @@ export const FilterSortSidebar: React.FC<FilterSortSidebarProps> = ({
     onPriceChange([min, max]);
   };
 
-  // Calculate active filter count
-  const activeCount = 
-    filters.categories.length +
-    (filters.priceRange[0] > MIN_PRICE_BOUND || filters.priceRange[1] < MAX_PRICE_BOUND ? 1 : 0) +
-    filters.colors.length +
-    filters.fabrics.length +
-    filters.occasions.length +
-    (filters.availability !== 'all' ? 1 : 0);
-
   const isAllCategoriesSelected = filters.categories.length === 0;
 
   // Slider progress percentages
@@ -203,77 +189,9 @@ export const FilterSortSidebar: React.FC<FilterSortSidebarProps> = ({
   const maxPercent = ((filters.priceRange[1] - MIN_PRICE_BOUND) / (MAX_PRICE_BOUND - MIN_PRICE_BOUND)) * 100;
 
   return (
-    <aside 
-      className={`luxury-unified-filter-container ${isMobileDrawer ? 'mobile-drawer-view' : ''}`}
-      aria-label="Collection Filters and Sorting"
-    >
-      {/* 1. Header: Filter Icon + REFINE COLLECTION */}
-      <div className="filter-header-bar">
-        <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-full bg-burgundy/5 border border-gold/40 flex items-center justify-center text-gold">
-            <Filter className="w-3.5 h-3.5" />
-          </div>
-          <div>
-            <h2 className="font-serif text-xs sm:text-sm font-semibold uppercase tracking-[0.18em] text-burgundy flex items-center gap-2">
-              <span>Refine Collection</span>
-              {activeCount > 0 && (
-                <span className="inline-flex items-center justify-center px-1.5 py-0.5 text-[10px] font-sans font-semibold rounded-full bg-burgundy text-gold-pale">
-                  {activeCount}
-                </span>
-              )}
-            </h2>
-            <p className="text-[10px] text-brown-deep/60 font-sans tracking-wide">
-              {counts.filtered} of {counts.total} Handloom Sarees
-            </p>
-          </div>
-        </div>
-
-        {activeCount > 0 && (
-          <button
-            onClick={onClearAll}
-            className="text-[11px] font-serif text-wine hover:text-burgundy hover:underline tracking-wider uppercase flex items-center gap-1 transition-colors min-h-[36px] px-1"
-            title="Reset all filters"
-          >
-            <RotateCcw className="w-3 h-3" />
-            <span>Reset</span>
-          </button>
-        )}
-      </div>
-
-      <div className="filter-divider" />
-
-      {/* 2. Sort By Section (Integrated inside SAME container) */}
-      <div className="filter-section-block">
-        <div className="flex items-center justify-between mb-2">
-          <label htmlFor="filter-sort-select" className="font-serif text-[11px] font-bold uppercase tracking-[0.16em] text-burgundy flex items-center gap-1.5">
-            <ArrowUpDown className="w-3 h-3 text-gold" />
-            <span>Sort By</span>
-          </label>
-          <span className="text-[10px] font-sans text-brown-deep/50 uppercase tracking-wider">
-            Reorder Grid
-          </span>
-        </div>
-
-        <div className="relative">
-          <select
-            id="filter-sort-select"
-            value={filters.sortBy}
-            onChange={(e) => onSortChange(e.target.value)}
-            className="w-full appearance-none min-h-[42px] bg-white border border-gold/35 hover:border-gold focus:border-gold focus:ring-1 focus:ring-gold/40 rounded-xs pl-3.5 pr-9 py-2 text-xs font-serif text-burgundy tracking-wide cursor-pointer transition-colors shadow-xs"
-          >
-            {SORT_OPTIONS.map(opt => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-          <ChevronDown className="w-3.5 h-3.5 text-gold absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none transition-transform" />
-        </div>
-      </div>
-
-      <div className="filter-divider" />
-
-      {/* 3. Saree Weave / Category (Collapsible Accordion) */}
+    <div className={`filter-drawer-body-container ${isDrawer ? 'drawer-mode' : ''}`}>
+      
+      {/* 1. Saree Weave / Category (Collapsible Accordion) */}
       <div className="filter-accordion-item">
         <button
           type="button"
@@ -359,7 +277,7 @@ export const FilterSortSidebar: React.FC<FilterSortSidebarProps> = ({
 
       <div className="filter-divider" />
 
-      {/* 4. Price Range (Collapsible Accordion) */}
+      {/* 2. Price Range (Collapsible Accordion) */}
       <div className="filter-accordion-item">
         <button
           type="button"
@@ -516,7 +434,7 @@ export const FilterSortSidebar: React.FC<FilterSortSidebarProps> = ({
 
       <div className="filter-divider" />
 
-      {/* 5. Colour (Collapsible Accordion with Interactive Swatches) */}
+      {/* 3. Colour (Collapsible Accordion with Interactive Swatches) */}
       <div className="filter-accordion-item">
         <button
           type="button"
@@ -600,7 +518,7 @@ export const FilterSortSidebar: React.FC<FilterSortSidebarProps> = ({
 
       <div className="filter-divider" />
 
-      {/* 6. Fabric (Collapsible Accordion with Luxury Checkboxes) */}
+      {/* 4. Fabric (Collapsible Accordion with Luxury Checkboxes) */}
       <div className="filter-accordion-item">
         <button
           type="button"
@@ -668,7 +586,7 @@ export const FilterSortSidebar: React.FC<FilterSortSidebarProps> = ({
 
       <div className="filter-divider" />
 
-      {/* 7. Occasion (Collapsible Accordion with Luxury Checkboxes) */}
+      {/* 5. Occasion (Collapsible Accordion with Luxury Checkboxes) */}
       <div className="filter-accordion-item">
         <button
           type="button"
@@ -736,7 +654,7 @@ export const FilterSortSidebar: React.FC<FilterSortSidebarProps> = ({
 
       <div className="filter-divider" />
 
-      {/* 8. Availability (Collapsible Accordion) */}
+      {/* 6. Availability (Collapsible Accordion) */}
       <div className="filter-accordion-item">
         <button
           type="button"
@@ -814,31 +732,6 @@ export const FilterSortSidebar: React.FC<FilterSortSidebarProps> = ({
         </AnimatePresence>
       </div>
 
-      <div className="filter-divider" />
-
-      {/* 9 & 10. Clear All & Apply Action Buttons inside container */}
-      <div className="filter-action-group pt-2 space-y-2">
-        <button
-          type="button"
-          onClick={onApplyFilters}
-          className="w-full min-h-[44px] py-2.5 px-4 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark rounded-xs font-serif text-xs uppercase tracking-[0.15em] font-semibold transition-all duration-300 shadow-sm flex items-center justify-center gap-2 active:scale-98"
-        >
-          <Sparkles className="w-3.5 h-3.5 text-gold-pale" />
-          <span>Apply Filters ({counts.filtered})</span>
-        </button>
-
-        {activeCount > 0 && (
-          <button
-            type="button"
-            onClick={onClearAll}
-            className="w-full min-h-[38px] py-2 px-3 bg-white hover:bg-beige/60 border border-gold/40 text-burgundy rounded-xs font-serif text-xs uppercase tracking-wider font-medium transition-colors flex items-center justify-center gap-1.5"
-          >
-            <RotateCcw className="w-3 h-3 text-gold" />
-            <span>Clear All Filters</span>
-          </button>
-        )}
-      </div>
-
-    </aside>
+    </div>
   );
 };

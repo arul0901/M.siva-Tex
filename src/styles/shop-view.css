@@ -1,5 +1,5 @@
 /* ========================================================
-   Shop View Styles & Luxury Unified Filter Container
+   Shop View Styles & Top-Right Toolbar + Slide-in Drawer
    ======================================================== */
 
 .shop-container {
@@ -8,61 +8,179 @@
 }
 
 /* ========================================================
-   ONE Unified Filter & Sort Container
+   Top-Right Toolbar Buttons & Dropdown
    ======================================================== */
 
-.luxury-unified-filter-container {
-  background-color: #FAF7F2;
-  background-image: radial-gradient(circle at 10% 10%, rgba(212, 175, 55, 0.04) 0%, transparent 60%);
+.toolbar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 42px;
+  padding: 0.5rem 0.95rem;
+  background-color: #FFFFFF;
   border: 1px solid rgba(212, 175, 55, 0.35);
-  border-radius: 4px;
-  box-shadow: 
-    0 4px 24px -2px rgba(77, 0, 7, 0.05),
-    0 0 0 1px rgba(212, 175, 55, 0.12);
-  padding: 1.25rem 1.15rem;
-  color: #34252A;
-  position: sticky;
-  top: 7rem;
-  max-height: calc(100vh - 128px);
-  overflow-y: auto;
-  overscroll-behavior: contain;
+  border-radius: 2px;
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #4D0007;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: all 0.25s ease;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
-/* Scrollbar for filter container */
-.luxury-unified-filter-container::-webkit-scrollbar {
-  width: 4px;
+.toolbar-btn:hover {
+  background-color: #FAF7F2;
+  border-color: #D4AF37;
+  color: #360005;
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.15);
 }
 
-.luxury-unified-filter-container::-webkit-scrollbar-track {
-  background: rgba(212, 175, 55, 0.06);
-  border-radius: 4px;
+.toolbar-btn.toolbar-btn-active {
+  background-color: #4D0007;
+  border-color: #4D0007;
+  color: #FAF7F2;
+  box-shadow: 0 2px 8px rgba(77, 0, 7, 0.25);
 }
 
-.luxury-unified-filter-container::-webkit-scrollbar-thumb {
-  background: rgba(212, 175, 55, 0.4);
-  border-radius: 4px;
+.toolbar-btn.toolbar-btn-active .toolbar-btn-icon {
+  color: #D4AF37;
 }
 
-.luxury-unified-filter-container::-webkit-scrollbar-thumb:hover {
-  background: rgba(212, 175, 55, 0.7);
+.toolbar-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.15rem;
+  height: 1.15rem;
+  padding: 0 0.25rem;
+  border-radius: 9999px;
+  background-color: #D4AF37;
+  color: #4D0007;
+  font-family: 'Jost', system-ui, sans-serif;
+  font-size: 0.625rem;
+  font-weight: 700;
+  line-height: 1;
 }
 
-/* Mobile drawer mode overrides */
-.luxury-unified-filter-container.mobile-drawer-view {
-  position: static;
-  max-height: none;
-  box-shadow: none;
-  border: none;
-  background: transparent;
-  padding: 0;
-  overflow-y: visible;
+/* Sort Dropdown Menu */
+.sort-dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  width: 14.5rem;
+  background-color: #FFFFFF;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 2px;
+  box-shadow: 0 10px 30px -4px rgba(77, 0, 7, 0.12), 0 0 0 1px rgba(212, 175, 55, 0.15);
+  z-index: 50;
+  overflow: hidden;
+  padding: 0.35rem 0;
 }
 
-/* Header bar */
-.filter-header-bar {
+.sort-dropdown-item {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0.6rem 0.95rem;
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 0.725rem;
+  color: #34252A;
+  text-align: left;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sort-dropdown-item:hover {
+  background-color: #FAF7F2;
+  color: #4D0007;
+  padding-left: 1.1rem;
+}
+
+.sort-dropdown-item.active {
+  background-color: #4D0007;
+  color: #FAF7F2;
+  font-weight: 600;
+}
+
+/* ========================================================
+   Slide-in Filter Drawer (Full Luxury Right-Side Experience)
+   ======================================================== */
+
+.filter-drawer-panel {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  max-width: 28rem;
+  background-color: #FAF7F2;
+  background-image: radial-gradient(circle at 10% 10%, rgba(212, 175, 55, 0.05) 0%, transparent 60%);
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.25);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid rgba(212, 175, 55, 0.35);
+  color: #34252A;
+}
+
+@media (min-width: 640px) {
+  .filter-drawer-panel {
+    max-width: 32rem;
+  }
+}
+
+.filter-drawer-header {
+  padding: 1.15rem 1.35rem;
+  background-color: #4D0007;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.35);
+  color: #FAF7F2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.filter-drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.35rem;
+  overscroll-behavior: contain;
+}
+
+/* Custom Scrollbar for Drawer */
+.filter-drawer-body::-webkit-scrollbar {
+  width: 5px;
+}
+
+.filter-drawer-body::-webkit-scrollbar-track {
+  background: rgba(212, 175, 55, 0.05);
+}
+
+.filter-drawer-body::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.35);
+  border-radius: 4px;
+}
+
+.filter-drawer-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 175, 55, 0.65);
+}
+
+.filter-drawer-footer {
+  padding: 1rem 1.35rem;
+  border-top: 1px solid rgba(212, 175, 55, 0.25);
+  background-color: #F5EFEB;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.03);
 }
 
 /* Subtle luxury divider */
@@ -74,12 +192,7 @@
     rgba(212, 175, 55, 0.32) 50%, 
     rgba(212, 175, 55, 0.05) 100%
   );
-  margin: 0.85rem 0;
-}
-
-/* Section block */
-.filter-section-block {
-  padding: 0.15rem 0;
+  margin: 0.95rem 0;
 }
 
 /* Accordion trigger button */
@@ -88,7 +201,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.35rem 0;
+  padding: 0.4rem 0;
   cursor: pointer;
   background: transparent;
   border: none;
@@ -105,7 +218,7 @@
   align-items: center;
   gap: 0.5rem;
   font-family: 'Cinzel', Georgia, serif;
-  font-size: 0.725rem;
+  font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.14em;
@@ -133,7 +246,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.4rem 0.5rem;
+  padding: 0.45rem 0.6rem;
   border-radius: 2px;
   background-color: transparent;
   border: 1px solid transparent;
@@ -241,7 +354,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.35rem 0.5rem;
+  padding: 0.4rem 0.6rem;
   border-radius: 2px;
   background-color: transparent;
   border: 1px solid transparent;
@@ -257,18 +370,4 @@
 .luxury-checkbox-row.row-active {
   background-color: rgba(77, 0, 7, 0.05);
   border-color: rgba(212, 175, 55, 0.35);
-}
-
-/* Active filter pill */
-.shop-active-filter-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  padding: 0.25rem 0.625rem;
-  background-color: #F3E5DC;
-  border: 1px solid rgba(199, 163, 106, 0.4);
-  border-radius: 9999px;
-  font-size: 0.6875rem;
-  color: #451B25;
-  font-weight: 500;
 }
