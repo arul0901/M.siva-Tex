@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SareeProduct } from '../types';
 import { useShop } from '../context/ShopContext';
-import { Heart, Eye, ShoppingBag, Star, Check } from 'lucide-react';
+import { Heart, Star } from 'lucide-react';
 import '../styles/product-card.css';
 
 interface ProductCardProps {
@@ -9,27 +9,14 @@ interface ProductCardProps {
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const { openProductDetail, addToCart, toggleWishlist, isInWishlist, setQuickViewProduct } = useShop();
+  const { openProductDetail, toggleWishlist, isInWishlist } = useShop();
   const [isHovered, setIsHovered] = useState(false);
-  const [isAdded, setIsAdded] = useState(false);
 
   const inWishlist = isInWishlist(product.id);
-
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    addToCart(product, 1);
-    setIsAdded(true);
-    setTimeout(() => setIsAdded(false), 2000);
-  };
 
   const handleWishlist = (e: React.MouseEvent) => {
     e.stopPropagation();
     toggleWishlist(product);
-  };
-
-  const handleQuickView = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setQuickViewProduct(product);
   };
 
   return (
@@ -75,26 +62,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         >
           <Heart className={`w-4 h-4 ${inWishlist ? 'fill-current' : ''}`} />
         </button>
-
-        {/* Quick Action Drawer at Bottom (Touch accessible on mobile, hover on desktop) */}
-        <div className="absolute inset-x-0 bottom-0 p-2 sm:p-3 bg-gradient-to-t from-burgundy-dark/95 via-burgundy/70 to-transparent opacity-95 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-between gap-1.5 sm:gap-2">
-          <button
-            onClick={handleQuickView}
-            className="flex-1 min-h-[40px] sm:min-h-[36px] py-2 px-2.5 bg-ivory/95 hover:bg-gold hover:text-white text-brown-deep text-[10px] sm:text-[11px] font-serif uppercase tracking-wider font-semibold rounded-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm"
-          >
-            <Eye className="w-3.5 h-3.5" />
-            <span>Quick View</span>
-          </button>
-
-          <button
-            onClick={handleAddToCart}
-            className="min-h-[40px] min-w-[40px] sm:min-h-[36px] sm:min-w-[36px] py-2 px-2.5 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark rounded-xs transition-colors flex items-center justify-center shadow-sm"
-            title="Add to Cart"
-            aria-label="Add to Cart"
-          >
-            {isAdded ? <Check className="w-4 h-4 text-emerald-300" /> : <ShoppingBag className="w-4 h-4" />}
-          </button>
-        </div>
       </div>
 
       {/* Product Details */}
