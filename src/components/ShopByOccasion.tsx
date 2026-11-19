@@ -73,7 +73,7 @@ export const ShopByOccasion: React.FC = () => {
   };
 
   return (
-    <section className="occasion-section">
+    <section className="occasion-section" id="shop-by-occasion">
       <div className="occasion-container">
         <div className="occasion-grid">
           

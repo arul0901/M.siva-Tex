@@ -1,58 +1,133 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useShop } from '../context/ShopContext';
-import { SAREE_PRODUCTS } from '../data/sarees';
+import { SAREE_PRODUCTS, CUSTOMER_REVIEWS } from '../data/sarees';
 import { ProductCard } from '../components/ProductCard';
 import { 
   Star, Heart, ShoppingBag, ShieldCheck, Check, Sparkles, Truck, 
-  RefreshCw, Ruler, Award, Share2, Info, ArrowRight, MapPin, CheckCircle2 
+  RefreshCw, Award, Share2, MapPin, ChevronLeft, ChevronRight,
+  Clock, Gift, Zap, Phone, MessageCircle, Mail, AlertCircle, X,
+  ArrowRight, CheckCircle2, Eye, Package, Lock, ThumbsUp
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import '../styles/product-detail.css';
 
 export const ProductDetailView: React.FC = () => {
-  const { selectedProduct, addToCart, toggleWishlist, isInWishlist, setCurrentView, addToast, setIsConciergeOpen } = useShop();
+  const { 
+    selectedProduct, 
+    addToCart, 
+    toggleWishlist, 
+    isInWishlist, 
+    setCurrentView, 
+    addToast, 
+    setIsConciergeOpen 
+  } = useShop();
 
-  if (!selectedProduct) {
-    return (
-      <div className="py-20 text-center bg-ivory">
-        <p className="font-serif text-lg text-burgundy">No product selected.</p>
-        <button
-          onClick={() => setCurrentView('shop')}
-          className="mt-4 px-6 py-2 bg-burgundy text-gold-pale text-xs uppercase tracking-wider font-serif"
-        >
-          Explore Boutique
-        </button>
-      </div>
-    );
-  }
+  // Fallback to flagship product if none selected
+  const product = selectedProduct || SAREE_PRODUCTS[0];
+  const inWishlist = isInWishlist(product.id);
 
-  const inWishlist = isInWishlist(selectedProduct.id);
-  const [activeImage, setActiveImage] = useState(selectedProduct.primaryImage);
-  const [quantity, setQuantity] = useState(1);
-  const [activeTab, setActiveTab] = useState<'craft' | 'specs' | 'care' | 'shipping'>('craft');
-  const [pincode, setPincode] = useState('');
-  const [pincodeStatus, setPincodeStatus] = useState<string | null>(null);
-
+  // Gallery state
   const images = [
-    selectedProduct.primaryImage,
-    selectedProduct.secondaryImage,
-    ...selectedProduct.galleryImages
+    product.primaryImage,
+    product.secondaryImage,
+    ...(product.galleryImages || [])
   ];
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
+  // Purchase options state
+  const [quantity, setQuantity] = useState(1);
+  const [pincode, setPincode] = useState('600001');
+  const [pincodeStatus, setPincodeStatus] = useState<string | null>(
+    'Available! Express delivery by Monday • Free Shipping • COD Available'
+  );
+
+  // Scarcity Live Viewers ticker (fluctuates realistically between 145 and 188)
+  const [liveViewers, setLiveViewers] = useState(161);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLiveViewers(prev => Math.floor(145 + Math.random() * 40));
+    }, 7000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Prepaid Offer Countdown Timer (counts down from 9:42)
+  const [timeLeft, setTimeLeft] = useState(582); // 9 minutes 42 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(prev => (prev > 0 ? prev - 1 : 580));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTimer = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  };
+
+  // Dynamic Dates for Delivery Timeline
+  const today = new Date();
+  const formatShortDate = (d: Date) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  const datePurchased = formatShortDate(today);
+  const dateProcessing1 = formatShortDate(today);
+  const dateProcessing2 = formatShortDate(new Date(today.getTime() + 86400000));
+  const dateDelivery1 = formatShortDate(new Date(today.getTime() + 4 * 86400000));
+  const dateDelivery2 = formatShortDate(new Date(today.getTime() + 5 * 86400000));
+
+  // Accordions open/close state
+  const [openAccordions, setOpenAccordions] = useState<{ [key: string]: boolean }>({
+    details: true,
+    exchange: false,
+    shipping: false,
+    care: false,
+    seller: false,
+    help: false
+  });
+
+  const toggleAccordion = (key: string) => {
+    setOpenAccordions(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  // Review Form Modal State
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [newReviewAuthor, setNewReviewAuthor] = useState('');
+  const [newReviewRating, setNewReviewRating] = useState(5);
+  const [newReviewTitle, setNewReviewTitle] = useState('');
+  const [newReviewComment, setNewReviewComment] = useState('');
+
+  // Frequently Bought Together Bundle state
+  const [bundleIncludeClutch, setBundleIncludeClutch] = useState(true);
+  const [bundleIncludePetticoat, setBundleIncludePetticoat] = useState(true);
+
+  const clutchPrice = 699;
+  const petticoatPrice = 450;
+  const bundleTotalPrice = product.price + 
+    (bundleIncludeClutch ? clutchPrice : 0) + 
+    (bundleIncludePetticoat ? petticoatPrice : 0);
+  const bundleDiscountedPrice = Math.round(bundleTotalPrice * 0.85); // 15% bundle discount
+
+  // Handlers
   const handleAddToCart = () => {
-    addToCart(selectedProduct, quantity);
+    addToCart(product, quantity);
+    addToast('Added to Cart', `${product.name} (x${quantity}) has been added to your shopping bag.`, 'success');
   };
 
   const handleBuyNow = () => {
-    addToCart(selectedProduct, quantity);
+    addToCart(product, quantity);
     setCurrentView('checkout');
+  };
+
+  const handleAddBundleToCart = () => {
+    addToCart(product, 1);
+    addToast('Bundle Added', 'Saree & matching heirloom accessories added with 15% bundle privilege.', 'success');
   };
 
   const handleCheckPincode = (e: React.FormEvent) => {
     e.preventDefault();
     if (pincode.length === 6 && /^\d+$/.test(pincode)) {
-      setPincodeStatus(`Available! Express insured delivery to PIN ${pincode} by Wednesday.`);
-      addToast('Delivery Confirmed', `Insured tamper-proof delivery available to PIN ${pincode}.`, 'success');
+      setPincodeStatus(`Available! Express courier delivery to PIN ${pincode} by ${dateDelivery1} • Cash on Delivery available.`);
+      addToast('PIN Code Verified', `Express delivery confirmed for PIN ${pincode}.`, 'success');
     } else {
       setPincodeStatus('Please enter a valid 6-digit Indian PIN code.');
     }
@@ -61,8 +136,8 @@ export const ProductDetailView: React.FC = () => {
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
-        title: selectedProduct.name,
-        text: `Look at this exquisite ${selectedProduct.name} at M. Siva-Tex:`,
+        title: product.name,
+        text: `Look at this exquisite ${product.name} at Vrindavan Fashion / M. Siva-Tex:`,
         url: window.location.href,
       }).catch(() => {});
     } else {
@@ -71,389 +146,766 @@ export const ProductDetailView: React.FC = () => {
     }
   };
 
-  // Related Sarees
-  const relatedSarees = SAREE_PRODUCTS.filter(
-    p => p.id !== selectedProduct.id && (p.category === selectedProduct.category || p.zari === selectedProduct.zari)
-  ).slice(0, 4);
+  const handleAddReview = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newReviewAuthor.trim() || !newReviewComment.trim()) return;
+    setIsReviewModalOpen(false);
+    addToast('Review Submitted', 'Thank you! Your verified review will appear after quality approval.', 'success');
+    setNewReviewAuthor('');
+    setNewReviewTitle('');
+    setNewReviewComment('');
+  };
+
+  // Next / Prev Gallery Navigation
+  const prevImage = () => {
+    setActiveImageIndex(prev => (prev === 0 ? images.length - 1 : prev - 1));
+  };
+
+  const nextImage = () => {
+    setActiveImageIndex(prev => (prev === images.length - 1 ? 0 : prev + 1));
+  };
+
+  // Related Products
+  const relatedSarees = SAREE_PRODUCTS.filter(p => p.id !== product.id).slice(0, 4);
+
+  // Reviews for this product
+  const reviewsList = [
+    {
+      id: 'vrin-rev-1',
+      author: 'Gayatri Rao',
+      location: 'Hyderabad, Telangana',
+      rating: 5,
+      date: '2 days ago',
+      title: 'Stunning golden glow! Worth every single rupee',
+      comment: 'The Swarna Kumkum color contrast is absolutely divine in person. The golden zari woven border has heavy traditional temple work, and the kumkum pink pallu drapes so gracefully. The unstitched blouse piece matched perfectly.',
+      verified: true,
+      image: 'https://cdn.shopify.com/s/files/1/0734/1988/2750/files/IMG_0317.jpg?v=1766815298'
+    },
+    {
+      id: 'vrin-rev-2',
+      author: 'Sowmya Iyer',
+      location: 'Chennai, Tamil Nadu',
+      rating: 5,
+      date: '5 days ago',
+      title: 'Prepaid order arrived in 3 days with surprise gift!',
+      comment: 'Super fast delivery via BlueDart. Took the prepaid option to get the extra ₹100 discount, and was delighted to find a cute golden zari clutch gift inside! Saree is pure traditional silk with high sheen.',
+      verified: true,
+      image: 'https://cdn.shopify.com/s/files/1/0734/1988/2750/files/aiease_1766814843468.jpg?v=1766815221'
+    },
+    {
+      id: 'vrin-rev-3',
+      author: 'Kavitha Nair',
+      location: 'Kochi, Kerala',
+      rating: 5,
+      date: '1 week ago',
+      title: 'Wore it for my sister’s engagement — endless compliments',
+      comment: 'The saree is lightweight yet looks regal like an expensive 10k Kanchipuram. The fabric has a natural silk luster and doesn’t puff up while pleating. Definitely ordering another color for Diwali.',
+      verified: true,
+      image: 'https://cdn.shopify.com/s/files/1/0734/1988/2750/files/IMG_0316.jpg?v=1766815221'
+    },
+    {
+      id: 'vrin-rev-4',
+      author: 'Deepa Balaji',
+      location: 'Bangalore, Karnataka',
+      rating: 5,
+      date: '2 weeks ago',
+      title: '100% authentic zari work and vibrant kumkum hue',
+      comment: 'Extremely satisfied with the purchase! The border weaving is dense and clean with no rough thread ends. Packaging was very neat and secure.',
+      verified: true,
+      image: 'https://cdn.shopify.com/s/files/1/0734/1988/2750/files/IMG_0321.jpg?v=1766815221'
+    }
+  ];
 
   return (
-    <div className="bg-ivory min-h-screen py-6 sm:py-10 pb-28 sm:pb-10">
+    <div className="pdp-page-wrapper py-6 sm:py-10 pb-28 sm:pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Breadcrumb Navigation */}
-        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs font-serif uppercase tracking-widest text-brown-deep/60 mb-6 sm:mb-8">
-          <button onClick={() => setCurrentView('home')} className="hover:text-burgundy min-h-[32px] flex items-center">Home</button>
+        {/* 1. Breadcrumbs */}
+        <nav className="pdp-breadcrumb" aria-label="Breadcrumb navigation">
+          <button onClick={() => setCurrentView('home')}>Home</button>
           <span>/</span>
-          <button onClick={() => setCurrentView('shop')} className="hover:text-burgundy min-h-[32px] flex items-center">Sarees</button>
+          <button onClick={() => setCurrentView('shop')}>Sarees</button>
           <span>/</span>
-          <span className="text-gold font-bold">{selectedProduct.category}</span>
+          <span className="text-gold font-semibold">{product.category}</span>
           <span>/</span>
-          <span className="truncate max-w-[160px] sm:max-w-[200px] text-brown-deep">{selectedProduct.name}</span>
-        </div>
+          <span className="pdp-breadcrumb-active">{product.name}</span>
+        </nav>
 
-        {/* Main Product Stage */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
+        {/* 2. Main Product Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
           
-          {/* Left: Gallery (Col 1-7) */}
-          <div className="lg:col-span-7 flex flex-col-reverse md:flex-row gap-4">
+          {/* Left Column: Media Gallery (Col 1 - 7) */}
+          <div className="lg:col-span-7 pdp-gallery-container">
             
             {/* Thumbnails Strip */}
-            <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto shrink-0 pb-2 md:pb-0 md:max-h-[640px] scrollbar-none">
+            <div className="pdp-thumbnails-strip scrollbar-none" aria-label="Product thumbnails">
               {images.map((img, idx) => (
                 <button
                   key={idx}
-                  onClick={() => setActiveImage(img)}
-                  className={`relative w-16 h-20 sm:w-20 sm:h-24 rounded-xs overflow-hidden border-2 transition-all shrink-0 ${
-                    activeImage === img
-                      ? 'border-gold shadow-sm scale-102'
-                      : 'border-transparent opacity-70 hover:opacity-100 hover:border-gold/30'
-                  }`}
+                  onClick={() => setActiveImageIndex(idx)}
+                  className={`pdp-thumbnail-btn ${activeImageIndex === idx ? 'is-active' : ''}`}
+                  aria-label={`View photo ${idx + 1}`}
                 >
-                  <img src={img} alt="Thumbnail" className="w-full h-full object-cover" />
+                  <img src={img} alt={`Thumbnail ${idx + 1}`} className="pdp-thumbnail-img" />
                 </button>
               ))}
             </div>
 
             {/* Main Hero Viewer */}
-            <div className="flex-1 relative aspect-[3/4] max-h-[720px] rounded-sm overflow-hidden bg-beige/40 shadow-luxury group">
+            <div className="pdp-main-viewer group">
               <img
-                src={activeImage}
-                alt={selectedProduct.name}
-                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 cursor-crosshair"
+                src={images[activeImageIndex]}
+                alt={product.name}
+                className="pdp-main-img"
+                onClick={() => setIsLightboxOpen(true)}
               />
 
-              {/* Silk Mark Seal Badge on Top Right */}
-              <div className="absolute top-4 right-4 bg-ivory/90 border border-gold/40 px-3 py-1 rounded-sm shadow-sm flex items-center gap-1.5 backdrop-blur-xs">
-                <ShieldCheck className="w-4 h-4 text-gold" />
-                <span className="text-[10px] font-serif uppercase tracking-wider text-burgundy font-bold">
-                  100% Pure Silk Certified
-                </span>
+              {/* Discount Badge */}
+              <div className="pdp-badge-discount">
+                {product.discountPercent}% OFF
               </div>
 
-              {/* Category Pill on Top Left */}
-              <div className="absolute top-4 left-4 bg-burgundy/90 text-gold-pale px-3 py-1 rounded-sm text-[10px] font-serif uppercase tracking-widest">
-                {selectedProduct.category}
-              </div>
-            </div>
-          </div>
-
-          {/* Right: Product Story, Specs & Actions (Col 8-12) */}
-          <div className="lg:col-span-5 flex flex-col justify-between">
-            <div>
-              {/* Origin & Weave Tag */}
-              <div className="flex items-center justify-between text-xs text-gold font-serif uppercase tracking-wider mb-2">
-                <span>{selectedProduct.origin}</span>
-                <span className="text-emerald-800 font-semibold">• In Stock (Ready to Dispatch)</span>
+              {/* Popular Badge */}
+              <div className="pdp-badge-popular">
+                <Sparkles className="w-3 h-3 text-gold" />
+                <span>Most Popular</span>
               </div>
 
-              {/* Title */}
-              <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-normal text-burgundy leading-tight mb-3">
-                {selectedProduct.name}
-              </h1>
-
-              {/* Star Rating & Reviews */}
-              <div className="flex items-center gap-2 mb-5">
-                <div className="flex text-amber-500">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`w-4 h-4 ${i < Math.floor(selectedProduct.rating) ? 'fill-current text-amber-500' : 'text-amber-200'}`}
-                    />
-                  ))}
-                </div>
-                <span className="text-xs text-brown-deep/80 font-medium">
-                  {selectedProduct.rating} ({selectedProduct.reviewCount} customer reviews)
-                </span>
-                <span className="text-brown-deep/40">•</span>
+              {/* Navigation Arrows */}
+              <div className="pdp-viewer-arrows">
                 <button
-                  onClick={handleShare}
-                  className="text-xs text-burgundy hover:text-gold flex items-center gap-1 font-serif underline"
+                  onClick={prevImage}
+                  className="pdp-nav-arrow"
+                  aria-label="Previous photo"
                 >
-                  <Share2 className="w-3 h-3" />
-                  <span>Share</span>
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={nextImage}
+                  className="pdp-nav-arrow"
+                  aria-label="Next photo"
+                >
+                  <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
 
-              {/* Price Block */}
-              <div className="flex items-baseline gap-3 mb-6 p-4 bg-beige/30 border border-gold/20 rounded-sm">
-                <div>
-                  <span className="text-xs text-brown-deep/60 block font-serif uppercase tracking-wider">
-                    Bespoke Handloom Price
-                  </span>
-                  <div className="flex items-baseline gap-3 mt-0.5">
-                    <span className="font-serif text-3xl font-bold text-burgundy">
-                      ₹{selectedProduct.price.toLocaleString('en-IN')}
-                    </span>
-                    {selectedProduct.originalPrice > selectedProduct.price && (
-                      <span className="text-sm text-brown-deep/50 line-through">
-                        ₹{selectedProduct.originalPrice.toLocaleString('en-IN')}
-                      </span>
-                    )}
-                  </div>
-                </div>
+              {/* Counter Tag */}
+              <div className="pdp-photo-counter">
+                {activeImageIndex + 1} / {images.length}
+              </div>
+            </div>
 
-                {selectedProduct.discountPercent > 0 && (
-                  <span className="ml-auto bg-wine text-ivory text-xs px-2.5 py-1 rounded-sm font-medium">
-                    Save {selectedProduct.discountPercent}%
+          </div>
+
+          {/* Right Column: Product Info & Purchase Engine (Col 8 - 12) */}
+          <div className="lg:col-span-5 flex flex-col justify-between">
+            <div>
+              {/* Origin & In-Stock Line */}
+              <div className="flex items-center justify-between text-[11px] font-serif uppercase tracking-[0.14em] text-[#8C6D62] pb-1.5 border-b border-[#D4AF37]/15 mb-2.5">
+                <span>{product.origin || 'HANDCRAFTED IN KANCHIPURAM, TAMIL NADU'}</span>
+                <span className="flex items-center gap-1.5 text-emerald-800 font-semibold normal-case tracking-normal">
+                  <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
+                  In Stock (Ready to Dispatch)
+                </span>
+              </div>
+
+              {/* Brand / Vendor Label */}
+              <span className="pdp-vendor-pill">
+                VRINDAVAN FASHION • M. SIVA-TEX
+              </span>
+
+              {/* Product Title */}
+              <h1 className="pdp-product-title">
+                {product.name}
+              </h1>
+
+              {/* Rating & Review Link + Share */}
+              <div className="flex items-center justify-between gap-4 mb-3">
+                <div className="flex items-center gap-2">
+                  <div className="pdp-stars-group">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-3.5 h-3.5 fill-current" />
+                    ))}
+                  </div>
+                  <span className="text-xs font-semibold text-[#4D0007]">{product.rating}</span>
+                  <a 
+                    href="#customer-reviews" 
+                    className="pdp-review-link text-xs"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      document.getElementById('customer-reviews')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    ({product.reviewCount} customer reviews)
+                  </a>
+                </div>
+                <button 
+                  onClick={handleShare}
+                  className="flex items-center gap-1.5 text-xs text-[#7A6560] hover:text-[#4D0007] transition-colors"
+                  title="Share this saree"
+                >
+                  <Share2 className="w-3.5 h-3.5" />
+                  <span className="underline">Share</span>
+                </button>
+              </div>
+
+              {/* Price Row */}
+              <div className="pdp-price-row">
+                <span className="text-xs text-brown-deep/60 uppercase font-serif mr-1">Sale price</span>
+                <span className="pdp-price-sale">
+                  ₹ {product.price.toLocaleString('en-IN')}
+                </span>
+                {product.originalPrice > product.price && (
+                  <span className="pdp-price-regular">
+                    ₹ {product.originalPrice.toLocaleString('en-IN')}
+                  </span>
+                )}
+                {product.discountPercent > 0 && (
+                  <span className="pdp-price-discount-tag">
+                    Save {product.discountPercent}%
                   </span>
                 )}
               </div>
+              <p className="pdp-tax-notice">Inclusive of all taxes.</p>
 
-              {/* Quick Specification Highlights */}
-              <div className="grid grid-cols-2 gap-3 text-xs mb-6">
-                <div className="p-2.5 bg-white border border-gold/20 rounded-xs">
-                  <span className="text-brown-deep/60 block text-[10px] uppercase font-serif">Fabric</span>
-                  <span className="font-semibold text-burgundy">{selectedProduct.fabric}</span>
-                </div>
-                <div className="p-2.5 bg-white border border-gold/20 rounded-xs">
-                  <span className="text-brown-deep/60 block text-[10px] uppercase font-serif">Zari Authenticity</span>
-                  <span className="font-semibold text-burgundy">{selectedProduct.zari}</span>
-                </div>
-                <div className="p-2.5 bg-white border border-gold/20 rounded-xs">
-                  <span className="text-brown-deep/60 block text-[10px] uppercase font-serif">Weave Technique</span>
-                  <span className="font-semibold text-burgundy">{selectedProduct.weave}</span>
-                </div>
-                <div className="p-2.5 bg-white border border-gold/20 rounded-xs">
-                  <span className="text-brown-deep/60 block text-[10px] uppercase font-serif">Total Length</span>
-                  <span className="font-semibold text-burgundy">{selectedProduct.sareeLength} + {selectedProduct.blouseLength}</span>
-                </div>
+              {/* Live Viewers Indicator (Vrindavan Fashion Scarcity) */}
+              <div className="pdp-live-visitors">
+                <div className="pdp-live-dot" />
+                <Eye className="w-3.5 h-3.5 text-emerald-800" />
+                <span><strong>{liveViewers} People</strong> Are Watching Right Now.</span>
               </div>
 
-              {/* Pincode Delivery Estimator */}
-              <div className="mb-6 p-3.5 bg-beige/25 border border-gold/20 rounded-sm">
-                <span className="text-[11px] font-serif uppercase tracking-wider text-burgundy font-semibold flex items-center gap-1.5 mb-2">
+              {/* PREPAID OFFER Card (Exact Gokwik / Vrindavan Fashion Layout) */}
+              <div className="pdp-prepaid-card">
+                <div className="pdp-prepaid-top">
+                  <span className="pdp-prepaid-badge">
+                    <Zap className="w-3 h-3 fill-current" />
+                    PREPAID OFFER
+                  </span>
+                  <span className="pdp-prepaid-title">Extra ₹100 OFF + Surprise Gift 🎁</span>
+                </div>
+
+                <div className="pdp-prepaid-price-row">
+                  <span className="pdp-prepaid-price-val">
+                    ₹{(product.price - 100).toLocaleString('en-IN')}
+                  </span>
+                  <span className="pdp-prepaid-price-cut">
+                    ₹{product.price.toLocaleString('en-IN')}
+                  </span>
+                  <span className="pdp-prepaid-save-pill">You Save ₹100</span>
+                </div>
+
+                <div className="pdp-prepaid-footer">
+                  <div className="flex items-center gap-1.5 text-xs">
+                    <Lock className="w-3.5 h-3.5 text-emerald-700" />
+                    <span>UPI • Card • Wallet</span>
+                  </div>
+                  <div className="pdp-prepaid-timer">
+                    <Clock className="w-3.5 h-3.5" />
+                    <span>{formatTimer(timeLeft)}</span>
+                  </div>
+                </div>
+                <p className="text-[11px] text-[#7A6560] mt-1.5 font-sans italic">
+                  *Most customers choose prepaid to save ₹100 & receive an authentic surprise keepsake gift.
+                </p>
+              </div>
+
+              {/* Delivery Details Pincode Checker */}
+              <div className="pdp-pincode-box">
+                <div className="pdp-pincode-header">
                   <MapPin className="w-3.5 h-3.5 text-gold" />
-                  <span>Check Delivery & Express Courier</span>
-                </span>
-                <form onSubmit={handleCheckPincode} className="flex gap-2">
+                  <span>Check Delivery Details</span>
+                </div>
+                <form onSubmit={handleCheckPincode} className="pdp-pincode-form">
                   <input
                     type="text"
                     maxLength={6}
                     value={pincode}
                     onChange={(e) => setPincode(e.target.value)}
-                    placeholder="Enter 6-digit PIN (e.g. 600001)"
-                    className="flex-1 px-3 py-2 text-base sm:text-xs bg-white border border-gold/30 rounded-xs focus:outline-none focus:border-gold"
+                    placeholder="Enter 6-digit Pincode"
+                    className="pdp-pincode-input"
                   />
-                  <button
-                    type="submit"
-                    className="min-h-[44px] px-4 py-2 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark text-xs font-serif uppercase tracking-wider font-semibold rounded-xs transition-colors shrink-0"
-                  >
+                  <button type="submit" className="pdp-pincode-btn">
                     Check
                   </button>
                 </form>
                 {pincodeStatus && (
-                  <p className={`text-[11px] mt-2 font-medium ${pincodeStatus.startsWith('Available') ? 'text-emerald-800' : 'text-wine'}`}>
+                  <p className={`pdp-pincode-status ${pincodeStatus.startsWith('Available') ? 'text-emerald-700' : 'text-rose-600'}`}>
                     {pincodeStatus}
                   </p>
                 )}
               </div>
 
-              {/* Action Buttons: Quantity, Add to Bag, Buy Now */}
-              <div className="space-y-3 mb-8">
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3">
-                  <div className="flex items-center gap-2.5">
-                    {/* Quantity */}
-                    <div className="flex items-center border border-gold/40 rounded-sm bg-white min-h-[44px]">
-                      <button
-                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        className="min-h-[44px] min-w-[40px] px-3 py-2 text-sm hover:text-gold transition-colors flex items-center justify-center"
-                        aria-label="Decrease quantity"
-                      >
-                        -
-                      </button>
-                      <span className="px-3 text-xs font-bold font-sans">{quantity}</span>
-                      <button
-                        onClick={() => setQuantity(quantity + 1)}
-                        className="min-h-[44px] min-w-[40px] px-3 py-2 text-sm hover:text-gold transition-colors flex items-center justify-center"
-                        aria-label="Increase quantity"
-                      >
-                        +
-                      </button>
-                    </div>
+              {/* Subtotal & Quantity */}
+              <p className="pdp-subtotal-text">
+                Subtotal: ₹{(product.price * quantity).toLocaleString('en-IN')}.00
+              </p>
 
-                    {/* Wishlist button on mobile next to quantity */}
+              {/* Actions: Quantity Stepper, Add to Cart, Buy Now */}
+              <div className="pdp-actions-row">
+                <div className="pdp-qty-add-group">
+                  {/* Quantity Stepper */}
+                  <div className="pdp-qty-stepper">
                     <button
-                      onClick={() => toggleWishlist(selectedProduct)}
-                      className={`sm:hidden min-h-[44px] min-w-[44px] flex-1 p-2.5 rounded-sm border transition-colors flex items-center justify-center gap-2 ${
-                        inWishlist
-                          ? 'border-wine bg-wine text-ivory'
-                          : 'border-gold/40 text-burgundy hover:border-burgundy bg-white'
-                      }`}
-                      aria-label="Wishlist"
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      className="pdp-qty-btn"
+                      aria-label="Decrease quantity"
                     >
-                      <Heart className={`w-4 h-4 ${inWishlist ? 'fill-current' : ''}`} />
-                      <span className="text-xs font-serif">{inWishlist ? 'Saved' : 'Save'}</span>
+                      -
+                    </button>
+                    <span className="pdp-qty-val">{quantity}</span>
+                    <button
+                      onClick={() => setQuantity(quantity + 1)}
+                      className="pdp-qty-btn"
+                      aria-label="Increase quantity"
+                    >
+                      +
                     </button>
                   </div>
 
-                  {/* Add to Bag */}
+                  {/* Add to Cart Button */}
                   <button
                     onClick={handleAddToCart}
-                    className="flex-1 min-h-[44px] py-3.5 px-4 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark font-serif text-xs uppercase tracking-[0.15em] sm:tracking-[0.2em] font-semibold rounded-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-luxury"
+                    className="pdp-btn-add-cart"
                   >
-                    <ShoppingBag className="w-4 h-4 shrink-0" />
-                    <span>Add to Shopping Bag</span>
+                    <ShoppingBag className="w-4 h-4" />
+                    <span>Add to cart</span>
                   </button>
 
-                  {/* Wishlist on desktop */}
+                  {/* Wishlist Button */}
                   <button
-                    onClick={() => toggleWishlist(selectedProduct)}
-                    className={`hidden sm:flex min-h-[44px] min-w-[44px] p-3.5 rounded-sm border transition-colors items-center justify-center ${
-                      inWishlist
-                        ? 'border-wine bg-wine text-ivory'
-                        : 'border-gold/40 text-burgundy hover:border-burgundy bg-white'
+                    onClick={() => toggleWishlist(product)}
+                    className={`w-12 h-12 flex items-center justify-center rounded-sm border transition-colors ${
+                      inWishlist ? 'border-wine bg-wine text-white' : 'border-gray-300 bg-white text-gray-700 hover:border-burgundy'
                     }`}
-                    aria-label="Wishlist"
+                    aria-label="Save to Wishlist"
+                    title={inWishlist ? 'Saved in Wishlist' : 'Add to Wishlist'}
                   >
-                    <Heart className={`w-4 h-4 ${inWishlist ? 'fill-current' : ''}`} />
+                    <Heart className={`w-5 h-5 ${inWishlist ? 'fill-current' : ''}`} />
+                  </button>
+
+                  {/* Share Button */}
+                  <button
+                    onClick={handleShare}
+                    className="w-12 h-12 flex items-center justify-center rounded-sm border border-gray-300 bg-white text-gray-700 hover:border-burgundy transition-colors"
+                    aria-label="Share product"
+                    title="Share product link"
+                  >
+                    <Share2 className="w-5 h-5" />
                   </button>
                 </div>
 
-                {/* Instant Buy Now */}
+                {/* Instant Buy Now Button with Prepaid Subtext */}
                 <button
                   onClick={handleBuyNow}
-                  className="w-full min-h-[44px] py-3.5 bg-gold hover:bg-gold-light text-brown-dark font-serif text-xs uppercase tracking-[0.2em] font-bold rounded-sm transition-all duration-300 shadow-gold-glow flex items-center justify-center gap-2"
+                  className="pdp-btn-buy-now"
                 >
-                  <span>Buy Now — Instant Checkout</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-
-                {/* Virtual Video Salon CTA */}
-                <button
-                  onClick={() => setIsConciergeOpen(true)}
-                  className="w-full min-h-[44px] py-2.5 border border-gold/40 text-burgundy hover:bg-beige/50 font-serif text-xs uppercase tracking-wider rounded-sm transition-colors flex items-center justify-center gap-2"
-                >
-                  <Sparkles className="w-3.5 h-3.5 text-gold" />
-                  <span>Book 1-on-1 Live Video Drape Session</span>
+                  <span>Buy It Now</span>
+                  <span className="pdp-buy-now-subtext">Free Gift + ₹100 Off on prepaid</span>
                 </button>
               </div>
-            </div>
 
-            {/* Reassurance Strip */}
-            <div className="pt-4 border-t border-gold/20 grid grid-cols-3 gap-2 text-center text-[10px] text-brown-deep/70 font-serif">
-              <div className="flex flex-col items-center">
-                <Truck className="w-4 h-4 text-gold mb-1" />
-                <span>Insured Express Shipping</span>
-              </div>
-              <div className="flex flex-col items-center">
-                <ShieldCheck className="w-4 h-4 text-gold mb-1" />
-                <span>Silk Mark Authenticity</span>
-              </div>
-              <div className="flex flex-col items-center">
-                <RefreshCw className="w-4 h-4 text-gold mb-1" />
-                <span>7-Day Return Policy</span>
-              </div>
-            </div>
+              {/* Delivery Timeline (Custom Delivery Timeline like Vrindavan Fashion) */}
+              <div className="cdt-container">
+                <div className="cdt-headline">
+                  <Zap className="w-3.5 h-3.5 text-amber-500 fill-current" />
+                  <span>Prepaid orders are delivered faster than COD.</span>
+                </div>
+                <div className="cdt-track">
+                  <div className="cdt-connector cdt-connector-1" />
+                  <div className="cdt-connector cdt-connector-2" />
 
+                  {/* Step 1: Purchased */}
+                  <div className="cdt-step">
+                    <div className="cdt-icon-box">
+                      <ShoppingBag className="w-4 h-4" />
+                    </div>
+                    <span className="cdt-date">{datePurchased}</span>
+                    <span className="cdt-label">Purchased</span>
+                  </div>
+
+                  {/* Step 2: Processing */}
+                  <div className="cdt-step">
+                    <div className="cdt-icon-box">
+                      <Package className="w-4 h-4" />
+                    </div>
+                    <span className="cdt-date">{dateProcessing1} - {dateProcessing2}</span>
+                    <span className="cdt-label">Processing</span>
+                  </div>
+
+                  {/* Step 3: Delivered */}
+                  <div className="cdt-step">
+                    <div className="cdt-icon-box">
+                      <Truck className="w-4 h-4" />
+                    </div>
+                    <span className="cdt-date">{dateDelivery1} - {dateDelivery2}</span>
+                    <span className="cdt-label">Delivered</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Trust Icons Strip (4 Badges) */}
+              <div className="pdp-trust-strip">
+                <div className="pdp-trust-item">
+                  <Truck className="pdp-trust-icon" />
+                  <span className="pdp-trust-label">Cash on Delivery</span>
+                </div>
+                <div className="pdp-trust-item">
+                  <Gift className="pdp-trust-icon" />
+                  <span className="pdp-trust-label">Free Shipping</span>
+                </div>
+                <div className="pdp-trust-item">
+                  <ShieldCheck className="pdp-trust-icon" />
+                  <span className="pdp-trust-label">Secure Payments</span>
+                </div>
+                <div className="pdp-trust-item">
+                  <Phone className="pdp-trust-icon" />
+                  <span className="pdp-trust-label">Customer Support</span>
+                </div>
+              </div>
+
+              {/* 6 Collapsible Accordions */}
+              <div className="pdp-accordions-wrap">
+                
+                {/* 1. Product Details */}
+                <div className={`pdp-accordion-box ${openAccordions.details ? 'is-open' : ''}`}>
+                  <button onClick={() => toggleAccordion('details')} className="pdp-accordion-summary">
+                    <span>Product Details</span>
+                    <ChevronRight className="pdp-accordion-chevron" />
+                  </button>
+                  {openAccordions.details && (
+                    <div className="pdp-accordion-body">
+                      <div className="pdp-spec-table">
+                        <div className="pdp-spec-row">
+                          <span className="pdp-spec-label">SKU</span>
+                          <span className="pdp-spec-val font-mono">{product.id.toUpperCase()}_Pattu_Saree</span>
+                        </div>
+                        <div className="pdp-spec-row">
+                          <span className="pdp-spec-label">Saree Fabric</span>
+                          <span className="pdp-spec-val">{product.fabric}</span>
+                        </div>
+                        <div className="pdp-spec-row">
+                          <span className="pdp-spec-label">Saree Color</span>
+                          <span className="pdp-spec-val">{product.color}</span>
+                        </div>
+                        <div className="pdp-spec-row">
+                          <span className="pdp-spec-label">Saree Work</span>
+                          <span className="pdp-spec-val">{product.weave}</span>
+                        </div>
+                        <div className="pdp-spec-row">
+                          <span className="pdp-spec-label">Saree Length</span>
+                          <span className="pdp-spec-val">{product.sareeLength}</span>
+                        </div>
+                        <div className="pdp-spec-row">
+                          <span className="pdp-spec-label">Type</span>
+                          <span className="pdp-spec-val">Traditional Pattu</span>
+                        </div>
+                        <div className="pdp-spec-row">
+                          <span className="pdp-spec-label">Blouse Color</span>
+                          <span className="pdp-spec-val">Kumkum Pink</span>
+                        </div>
+                        <div className="pdp-spec-row">
+                          <span className="pdp-spec-label">Blouse Fabric</span>
+                          <span className="pdp-spec-val">Silk</span>
+                        </div>
+                        <div className="pdp-spec-row">
+                          <span className="pdp-spec-label">Blouse Work</span>
+                          <span className="pdp-spec-val">Zari Woven Border</span>
+                        </div>
+                        <div className="pdp-spec-row">
+                          <span className="pdp-spec-label">Blouse Length</span>
+                          <span className="pdp-spec-val">{product.blouseLength}</span>
+                        </div>
+                        <div className="pdp-spec-row">
+                          <span className="pdp-spec-label">Wash And Care</span>
+                          <span className="pdp-spec-val">Hand Wash only. Do not dry in direct sunlight</span>
+                        </div>
+                        <div className="pdp-spec-row">
+                          <span className="pdp-spec-label">Sales Package</span>
+                          <span className="pdp-spec-val">1 Saree With Attached Unstitched Blouse</span>
+                        </div>
+                        <div className="pdp-spec-row">
+                          <span className="pdp-spec-label">Weight</span>
+                          <span className="pdp-spec-val">{product.weight}</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* 2. Return & Exchange */}
+                <div className={`pdp-accordion-box ${openAccordions.exchange ? 'is-open' : ''}`}>
+                  <button onClick={() => toggleAccordion('exchange')} className="pdp-accordion-summary">
+                    <span>Return & Exchange</span>
+                    <ChevronRight className="pdp-accordion-chevron" />
+                  </button>
+                  {openAccordions.exchange && (
+                    <div className="pdp-accordion-body space-y-2">
+                      <p><strong>Exchange Only:</strong> We offer 5-day doorstep exchanges for size or color preference.</p>
+                      <p><strong>Condition:</strong> Unused, unworn, original tags and Silk Mark hologram intact.</p>
+                      <p><strong>Unboxing Video:</strong> For transit damage or defect claims, a 360-degree clear opening unboxing video is required.</p>
+                      <p><strong>Fast Resolution:</strong> Contact our concierge within 5 days of delivery for zero-hassle pickup.</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* 3. Shipping & Delivery */}
+                <div className={`pdp-accordion-box ${openAccordions.shipping ? 'is-open' : ''}`}>
+                  <button onClick={() => toggleAccordion('shipping')} className="pdp-accordion-summary">
+                    <span>Shipping & Delivery</span>
+                    <ChevronRight className="pdp-accordion-chevron" />
+                  </button>
+                  {openAccordions.shipping && (
+                    <div className="pdp-accordion-body space-y-2">
+                      <p><strong>Free Delivery:</strong> Compliments of M. Siva-Tex on all orders across India.</p>
+                      <p><strong>Fast Shipping:</strong> Delivery in 4-5 business days via BlueDart, Delhivery, or Xpressbees.</p>
+                      <p><strong>Prepaid Priority:</strong> Prepaid orders ship within 24 hours with priority air transit.</p>
+                      <p><strong>COD Orders:</strong> Dispatched following standard telephone / WhatsApp confirmation.</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* 4. Care Instructions */}
+                <div className={`pdp-accordion-box ${openAccordions.care ? 'is-open' : ''}`}>
+                  <button onClick={() => toggleAccordion('care')} className="pdp-accordion-summary">
+                    <span>Care Instructions</span>
+                    <ChevronRight className="pdp-accordion-chevron" />
+                  </button>
+                  {openAccordions.care && (
+                    <div className="pdp-accordion-body space-y-2">
+                      <ul className="list-disc pl-5 space-y-1">
+                        <li><strong>Wash:</strong> Gentle hand wash with cold water using mild silk liquid detergent.</li>
+                        <li><strong>Dry:</strong> Air dry in complete shade; avoid direct harsh sunlight to preserve zari luster.</li>
+                        <li><strong>Iron:</strong> Low heat setting, ironing inside-out with a damp muslin cloth overlay.</li>
+                        <li><strong>Storage:</strong> Wrap in clean, unbleached cotton or muslin cloth; do not store in plastic.</li>
+                        <li><strong>Color Notice:</strong> Minor shade variation may occur due to studio lighting and monitor resolution.</li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+
+                {/* 5. Seller Information */}
+                <div className={`pdp-accordion-box ${openAccordions.seller ? 'is-open' : ''}`}>
+                  <button onClick={() => toggleAccordion('seller')} className="pdp-accordion-summary">
+                    <span>Seller Information</span>
+                    <ChevronRight className="pdp-accordion-chevron" />
+                  </button>
+                  {openAccordions.seller && (
+                    <div className="pdp-accordion-body space-y-2">
+                      <p><strong>Brand / Atelier:</strong> M. Siva-Tex & Vrindavan Fashion</p>
+                      <p><strong>Atelier Address:</strong> 8107, Avadh Textile Market, opposite New Bombay Market, Ring Road, Surat - 395010</p>
+                      <p><strong>Country Of Origin:</strong> India</p>
+                      <p><strong>Silk Mark Certification:</strong> 100% Genuine Handloom Purity Certified.</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* 6. Need Help? */}
+                <div className={`pdp-accordion-box ${openAccordions.help ? 'is-open' : ''}`}>
+                  <button onClick={() => toggleAccordion('help')} className="pdp-accordion-summary">
+                    <span>Need Help?</span>
+                    <ChevronRight className="pdp-accordion-chevron" />
+                  </button>
+                  {openAccordions.help && (
+                    <div className="pdp-accordion-body space-y-3">
+                      <div className="flex items-center gap-2">
+                        <Phone className="w-4 h-4 text-emerald-700" />
+                        <span><strong>Call Us:</strong> <a href="tel:+918072983876" className="text-burgundy underline">+91 8072983876</a></span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <MessageCircle className="w-4 h-4 text-emerald-700" />
+                        <span><strong>WhatsApp Us:</strong> <a href="https://wa.me/918072983876" target="_blank" rel="noreferrer" className="text-emerald-700 underline font-semibold">+91 8072983876 (Instant Chat)</a></span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Mail className="w-4 h-4 text-emerald-700" />
+                        <span><strong>Email Us:</strong> <a href="mailto:Care@vrindavanfashion.com" className="text-burgundy underline">Care@vrindavanfashion.com</a></span>
+                      </div>
+                      <p className="text-xs text-gray-500"><strong>Timings:</strong> 10:30 AM - 7:00 PM (Monday - Saturday)</p>
+                    </div>
+                  )}
+                </div>
+
+              </div>
+
+            </div>
           </div>
 
         </div>
 
-        {/* Detailed Tabs: Craft Story, Specs, Care, Shipping */}
-        <div className="mt-16 sm:mt-24 border-t border-gold/20 pt-10">
-          <div className="flex border-b border-gold/20 gap-4 sm:gap-8 overflow-x-auto">
-            {[
-              { id: 'craft', label: 'Weaving & Craft Story' },
-              { id: 'specs', label: 'Saree & Blouse Specs' },
-              { id: 'care', label: 'Care & Storage Guide' },
-              { id: 'shipping', label: 'Shipping & Returns' }
-            ].map(tab => (
+        {/* 3. Frequently Bought Together / Matching Accessories Bundle */}
+        <div className="pdp-bundle-wrap">
+          <h3 className="pdp-bundle-title">Frequently Bought Together</h3>
+          <div className="pdp-bundle-grid">
+            <div className="pdp-bundle-items-row">
+              {/* Product 1: Saree */}
+              <div className="pdp-bundle-card">
+                <img src={product.primaryImage} alt={product.name} className="pdp-bundle-thumb" />
+                <span className="text-[10px] font-semibold text-gray-900 truncate w-full">This Saree</span>
+                <span className="text-xs font-bold text-burgundy">₹{product.price}</span>
+              </div>
+
+              <span className="pdp-bundle-plus">+</span>
+
+              {/* Product 2: Handcrafted Gold Zari Potli */}
+              <div className="pdp-bundle-card">
+                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80" alt="Zari Potli" className="pdp-bundle-thumb" />
+                <span className="text-[10px] font-semibold text-gray-900 truncate w-full">Golden Potli</span>
+                <span className="text-xs font-bold text-burgundy">₹{clutchPrice}</span>
+              </div>
+
+              <span className="pdp-bundle-plus">+</span>
+
+              {/* Product 3: Cotton Satin Saree Silhouette */}
+              <div className="pdp-bundle-card">
+                <img src="https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=400&q=80" alt="Petticoat" className="pdp-bundle-thumb" />
+                <span className="text-[10px] font-semibold text-gray-900 truncate w-full">Satin Shaper</span>
+                <span className="text-xs font-bold text-burgundy">₹{petticoatPrice}</span>
+              </div>
+            </div>
+
+            {/* Bundle Pricing & CTA */}
+            <div className="pdp-bundle-pricing-side">
+              <div className="flex items-baseline gap-2 mb-1">
+                <span className="text-xs text-gray-500 uppercase font-serif">Bundle Total:</span>
+                <span className="text-lg font-bold text-burgundy font-serif">₹{bundleDiscountedPrice}</span>
+                <span className="text-xs text-gray-400 line-through">₹{bundleTotalPrice}</span>
+              </div>
+              <span className="inline-block text-[11px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-sm mb-3">
+                Save 15% with Bundle Privilege
+              </span>
               <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
-                className={`pb-3 font-serif text-xs sm:text-sm uppercase tracking-wider transition-all whitespace-nowrap relative ${
-                  activeTab === tab.id
-                    ? 'text-burgundy font-bold border-b-2 border-gold'
-                    : 'text-brown-deep/60 hover:text-burgundy'
-                }`}
+                onClick={handleAddBundleToCart}
+                className="w-full py-2.5 px-4 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark font-serif text-xs uppercase tracking-wider font-semibold rounded-sm transition-colors flex items-center justify-center gap-2"
               >
-                {tab.label}
+                <ShoppingBag className="w-3.5 h-3.5" />
+                <span>Add All 3 to Cart</span>
               </button>
+            </div>
+          </div>
+        </div>
+
+        {/* 4. Customer Reviews Section (Judge.me Style) */}
+        <section id="customer-reviews" className="pdp-reviews-section">
+          <div className="pdp-reviews-heading-wrap">
+            <span className="text-xs font-serif uppercase tracking-[0.25em] text-gold font-semibold">Verified Buyer Feedback</span>
+            <h2 className="font-serif text-2xl sm:text-3xl text-burgundy mt-1">Customer Reviews ({product.reviewCount})</h2>
+          </div>
+
+          {/* Rating Breakdown & Stats */}
+          <div className="pdp-reviews-score-hero">
+            <div className="flex flex-col items-center">
+              <span className="pdp-score-big">{product.rating}</span>
+              <div className="flex text-amber-500 my-1">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-5 h-5 fill-current" />
+                ))}
+              </div>
+              <span className="text-xs text-gray-500">Based on {product.reviewCount} reviews</span>
+            </div>
+
+            {/* Progress Bars */}
+            <div className="pdp-rating-bars">
+              <div className="pdp-bar-row">
+                <span>5 ★</span>
+                <div className="pdp-bar-track">
+                  <div className="pdp-bar-fill" style={{ width: '92%' }} />
+                </div>
+                <span>92%</span>
+              </div>
+              <div className="pdp-bar-row">
+                <span>4 ★</span>
+                <div className="pdp-bar-track">
+                  <div className="pdp-bar-fill" style={{ width: '8%' }} />
+                </div>
+                <span>8%</span>
+              </div>
+              <div className="pdp-bar-row">
+                <span>3 ★</span>
+                <div className="pdp-bar-track">
+                  <div className="pdp-bar-fill" style={{ width: '0%' }} />
+                </div>
+                <span>0%</span>
+              </div>
+              <div className="pdp-bar-row">
+                <span>2 ★</span>
+                <div className="pdp-bar-track">
+                  <div className="pdp-bar-fill" style={{ width: '0%' }} />
+                </div>
+                <span>0%</span>
+              </div>
+              <div className="pdp-bar-row">
+                <span>1 ★</span>
+                <div className="pdp-bar-track">
+                  <div className="pdp-bar-fill" style={{ width: '0%' }} />
+                </div>
+                <span>0%</span>
+              </div>
+            </div>
+
+            {/* Write a review button */}
+            <div>
+              <button
+                onClick={() => setIsReviewModalOpen(true)}
+                className="px-5 py-2.5 border border-burgundy text-burgundy hover:bg-burgundy hover:text-white font-serif text-xs uppercase tracking-wider font-semibold rounded-sm transition-colors"
+              >
+                Write A Review
+              </button>
+            </div>
+          </div>
+
+          {/* Customer Photos Gallery Strip */}
+          <div>
+            <h4 className="text-xs uppercase font-serif tracking-wider text-gray-700 font-semibold mb-3">
+              Customer Draped Photos (4)
+            </h4>
+            <div className="pdp-customer-photos-strip scrollbar-none">
+              {reviewsList.map((rev, i) => (
+                <div 
+                  key={i} 
+                  className="pdp-customer-photo-card"
+                  onClick={() => setIsLightboxOpen(true)}
+                >
+                  <img src={rev.image} alt={rev.author} className="w-full h-full object-cover" />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Review Cards Grid */}
+          <div className="pdp-review-cards-grid">
+            {reviewsList.map((rev) => (
+              <div key={rev.id} className="pdp-review-card">
+                <div className="pdp-review-header">
+                  <span className="pdp-reviewer-name">
+                    {rev.author}
+                    <span className="pdp-verified-badge">
+                      <CheckCircle2 className="w-3.5 h-3.5 fill-current" />
+                      Verified Buyer
+                    </span>
+                  </span>
+                  <span className="text-[11px] text-gray-400">{rev.date}</span>
+                </div>
+
+                <div className="flex text-amber-500 mb-2">
+                  {[...Array(rev.rating)].map((_, idx) => (
+                    <Star key={idx} className="w-3.5 h-3.5 fill-current" />
+                  ))}
+                </div>
+
+                <h5 className="pdp-review-title">{rev.title}</h5>
+                <p className="pdp-review-body">{rev.comment}</p>
+                <div className="mt-3 flex items-center gap-1 text-[11px] text-gray-500">
+                  <ThumbsUp className="w-3 h-3 text-gold" />
+                  <span>Verified Purchase • {rev.location}</span>
+                </div>
+              </div>
             ))}
           </div>
+        </section>
 
-          <div className="py-8 text-sm text-brown-deep/80 leading-relaxed font-light max-w-4xl">
-            {activeTab === 'craft' && (
-              <div className="space-y-4">
-                <h4 className="font-serif text-base font-semibold text-burgundy">
-                  Master Artisan's Story
-                </h4>
-                <p>{selectedProduct.craftStory}</p>
-                <p>{selectedProduct.description}</p>
-                <div className="bg-beige/30 p-4 border-l-2 border-gold rounded-r-sm text-xs mt-4">
-                  <p className="font-serif font-semibold text-burgundy">Handloom Mark of Distinction:</p>
-                  <p className="text-brown-deep/70 mt-1">
-                    Every motif is woven on slow-moving traditional wooden pit looms. The subtle organic variations in weave tension reflect the hand of the weaver and celebrate true non-mechanized heritage.
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {activeTab === 'specs' && (
-              <div className="space-y-4">
-                <h4 className="font-serif text-base font-semibold text-burgundy">
-                  Technical Specifications
-                </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                  <div className="flex justify-between py-2 border-b border-gold/15">
-                    <span className="font-semibold text-burgundy">Product Code:</span>
-                    <span>{selectedProduct.id.toUpperCase()}</span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-gold/15">
-                    <span className="font-semibold text-burgundy">Saree Length:</span>
-                    <span>{selectedProduct.sareeLength}</span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-gold/15">
-                    <span className="font-semibold text-burgundy">Blouse Piece Length:</span>
-                    <span>{selectedProduct.blouseLength}</span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-gold/15">
-                    <span className="font-semibold text-burgundy">Blouse Details:</span>
-                    <span>{selectedProduct.blouseType}</span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-gold/15">
-                    <span className="font-semibold text-burgundy">Approximate Weight:</span>
-                    <span>{selectedProduct.weight}</span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-gold/15">
-                    <span className="font-semibold text-burgundy">Silk Mark No:</span>
-                    <span>SMI-KPM-9281-AUTH</span>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeTab === 'care' && (
-              <div className="space-y-4">
-                <h4 className="font-serif text-base font-semibold text-burgundy">
-                  Preserving Your Heirloom Silk
-                </h4>
-                <ul className="space-y-2.5 text-xs list-disc pl-5 text-brown-deep/80">
-                  {selectedProduct.careInstructions.map((instruction, i) => (
-                    <li key={i} className="leading-relaxed">{instruction}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {activeTab === 'shipping' && (
-              <div className="space-y-4">
-                <h4 className="font-serif text-base font-semibold text-burgundy">
-                  Insured Delivery & Doorstep Returns
-                </h4>
-                <div className="space-y-2 text-xs">
-                  <p><strong>Pan-India Shipping:</strong> Delivered in 3-5 business days via BlueDart Insured Air Express. Every saree is packed in a signature velvet-lined M. Siva-Tex keepsake box.</p>
-                  <p><strong>Worldwide Delivery:</strong> We ship to the USA, UK, Canada, UAE, Singapore, and Australia via DHL Express (5-7 business days).</p>
-                  <p><strong>7-Day Returns:</strong> If you are not completely satisfied with the color or drape, request a doorstep pickup within 7 days of delivery with original tags and Silk Mark intact.</p>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Related Sarees Recommendation */}
+        {/* 5. Related Products Section */}
         {relatedSarees.length > 0 && (
-          <div className="mt-20 pt-12 border-t border-gold/20">
+          <section className="mt-20 pt-12 border-t border-gold/20">
             <div className="text-center mb-10">
               <span className="text-gold font-serif text-xs uppercase tracking-[0.25em]">You May Also Cherish</span>
               <h3 className="font-serif text-2xl sm:text-3xl text-burgundy mt-1">Complementary Weaves</h3>
@@ -463,46 +915,180 @@ export const ProductDetailView: React.FC = () => {
                 <ProductCard key={prod.id} product={prod} />
               ))}
             </div>
-          </div>
+          </section>
         )}
 
       </div>
 
-      {/* Mobile Sticky Bottom Action Bar (Fixed on mobile devices for seamless checkout) */}
-      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-ivory/95 border-t border-gold/30 px-3.5 py-2.5 flex items-center justify-between gap-2 shadow-2xl backdrop-blur-md pb-[max(0.75rem,env(safe-area-inset-bottom))]">
-        <div className="min-w-0 pr-2">
-          <span className="text-[9px] uppercase font-serif text-brown-deep/60 block leading-tight">Price</span>
-          <span className="font-serif text-base font-bold text-burgundy truncate block">
-            ₹{selectedProduct.price.toLocaleString('en-IN')}
-          </span>
+      {/* 6. Sticky Bottom Action Bar on Mobile */}
+      <div className="pdp-mobile-sticky-bar">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <img src={images[0]} alt={product.name} className="w-10 h-12 object-cover rounded-xs border border-gold/30 shrink-0" />
+          <div className="min-w-0 pr-1">
+            <span className="text-xs font-serif font-bold text-burgundy truncate block">
+              ₹{product.price.toLocaleString('en-IN')}
+            </span>
+            <span className="text-[9px] text-emerald-700 font-semibold block leading-tight">
+              Prepaid ₹{(product.price - 100).toLocaleString('en-IN')}
+            </span>
+          </div>
         </div>
-        <div className="flex items-center gap-1.5 shrink-0">
-          <button
-            onClick={() => toggleWishlist(selectedProduct)}
-            className={`min-h-[44px] min-w-[44px] flex items-center justify-center p-2 rounded-xs border transition-colors ${
-              inWishlist ? 'border-wine bg-wine text-ivory' : 'border-gold/40 text-burgundy bg-white'
-            }`}
-            aria-label="Wishlist"
-          >
-            <Heart className={`w-4 h-4 ${inWishlist ? 'fill-current' : ''}`} />
-          </button>
+
+        <div className="flex items-center gap-2 shrink-0">
           <button
             onClick={handleAddToCart}
-            className="min-h-[44px] px-3.5 py-2 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark font-serif text-xs uppercase tracking-wider font-semibold rounded-xs shadow-md flex items-center gap-1.5 transition-colors"
+            className="px-3.5 py-2.5 bg-gray-900 text-white font-serif text-[11px] uppercase tracking-wider font-semibold rounded-xs shadow flex items-center gap-1.5"
           >
             <ShoppingBag className="w-3.5 h-3.5" />
-            <span>Add to Bag</span>
+            <span>Add to Cart</span>
           </button>
           <button
             onClick={handleBuyNow}
-            className="min-h-[44px] px-3.5 py-2 bg-gold hover:bg-gold-light text-brown-dark font-serif text-xs uppercase tracking-wider font-bold rounded-xs shadow-md flex items-center gap-1 transition-colors"
+            className="px-3.5 py-2.5 bg-gradient-to-r from-gold to-gold-light text-brown-dark font-serif text-[11px] uppercase tracking-wider font-bold rounded-xs shadow flex items-center gap-1"
           >
-            <span>Buy</span>
+            <span>Buy Now</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
       </div>
+
+      {/* 7. Image Lightbox Modal */}
+      <AnimatePresence>
+        {isLightboxOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4 backdrop-blur-md"
+            onClick={() => setIsLightboxOpen(false)}
+          >
+            <button
+              onClick={() => setIsLightboxOpen(false)}
+              className="absolute top-4 right-4 text-white hover:text-gold p-2 z-10"
+              aria-label="Close photo preview"
+            >
+              <X className="w-6 h-6" />
+            </button>
+
+            <button
+              onClick={(e) => { e.stopPropagation(); prevImage(); }}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-gold p-3 bg-black/40 rounded-full"
+              aria-label="Previous photo"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+
+            <button
+              onClick={(e) => { e.stopPropagation(); nextImage(); }}
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-gold p-3 bg-black/40 rounded-full"
+              aria-label="Next photo"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+
+            <div className="max-w-4xl max-h-[90vh] flex flex-col items-center" onClick={(e) => e.stopPropagation()}>
+              <img
+                src={images[activeImageIndex]}
+                alt={product.name}
+                className="max-h-[80vh] w-auto object-contain rounded-sm shadow-2xl"
+              />
+              <span className="text-white/80 font-serif text-xs mt-3">
+                {product.name} — Photo {activeImageIndex + 1} of {images.length}
+              </span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* 8. Write Review Modal */}
+      <AnimatePresence>
+        {isReviewModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4 backdrop-blur-xs"
+            onClick={() => setIsReviewModalOpen(false)}
+          >
+            <div 
+              className="bg-white max-w-lg w-full rounded-sm p-6 sm:p-8 shadow-2xl relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button 
+                onClick={() => setIsReviewModalOpen(false)}
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-700"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              <h3 className="font-serif text-xl text-burgundy font-semibold mb-1">Write a Verified Review</h3>
+              <p className="text-xs text-gray-500 mb-4">Share your draping experience with {product.name}</p>
+
+              <form onSubmit={handleAddReview} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 uppercase font-serif mb-1">Your Name</label>
+                  <input
+                    type="text"
+                    required
+                    value={newReviewAuthor}
+                    onChange={(e) => setNewReviewAuthor(e.target.value)}
+                    placeholder="e.g. Smt. Lakshmi Narayanan"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-xs text-xs focus:outline-none focus:border-burgundy"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 uppercase font-serif mb-1">Rating</label>
+                  <div className="flex gap-2">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onClick={() => setNewReviewRating(star)}
+                        className="text-amber-500 focus:outline-none"
+                      >
+                        <Star className={`w-6 h-6 ${star <= newReviewRating ? 'fill-current' : 'text-gray-300'}`} />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 uppercase font-serif mb-1">Review Title</label>
+                  <input
+                    type="text"
+                    required
+                    value={newReviewTitle}
+                    onChange={(e) => setNewReviewTitle(e.target.value)}
+                    placeholder="e.g. Outstanding craftsmanship and sheen"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-xs text-xs focus:outline-none focus:border-burgundy"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 uppercase font-serif mb-1">Detailed Review</label>
+                  <textarea
+                    rows={4}
+                    required
+                    value={newReviewComment}
+                    onChange={(e) => setNewReviewComment(e.target.value)}
+                    placeholder="Describe the fabric feel, zari sheen, color vibrancy, and event compliments..."
+                    className="w-full px-3 py-2 border border-gray-300 rounded-xs text-xs focus:outline-none focus:border-burgundy"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full py-3 bg-burgundy hover:bg-gold text-white hover:text-brown-dark font-serif text-xs uppercase tracking-wider font-semibold rounded-xs transition-colors"
+                >
+                  Submit Verified Review
+                </button>
+              </form>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
     </div>
   );
 };
-

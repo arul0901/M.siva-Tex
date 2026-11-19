@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { HERO_SLIDES, TransitionDirection } from './hero/HeroTypes';
 import { HeroBackground } from './hero/HeroBackground';
 import { HeroImageLayer } from './hero/HeroImageLayer';
+import { HeroVideoLayer } from './hero/HeroVideoLayer';
 import { FabricAnimation } from './hero/FabricAnimation';
 import { HeroContent } from './hero/HeroContent';
 import { HeroProgressIndicator } from './hero/HeroProgressIndicator';
@@ -24,6 +25,7 @@ export const CinematicHeroBanner: React.FC = () => {
   const { setCurrentView, setSelectedCategoryFilter, setIsConciergeOpen } = useShop();
 
   const audioRef = useRef<HTMLAudioElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const bannerRef = useRef<HTMLElement>(null);
   const touchStartXRef = useRef<number | null>(null);
   const transitionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -43,7 +45,7 @@ export const CinematicHeroBanner: React.FC = () => {
     }
   }, [isMuted, isPlaying]);
 
-  // 2. GSAP ScrollTrigger Cinematic Parallax & Fade Animation
+  // 2. GSAP ScrollTrigger Cinematic Parallax & Fade Animation on banner.mp4 & Elements
   useEffect(() => {
     const banner = bannerRef.current;
     if (!banner) return;
@@ -54,35 +56,67 @@ export const CinematicHeroBanner: React.FC = () => {
           trigger: banner,
           start: 'top top',
           end: 'bottom top',
-          scrub: 0.8,
+          scrub: 0.9,
           invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            const video = videoRef.current;
+            if (!video) return;
+            const velocity = Math.abs(self.getVelocity());
+            if (velocity > 250) {
+              video.playbackRate = Math.min(1.0 + velocity / 3200, 1.35);
+            } else {
+              video.playbackRate = 1.0;
+            }
+          }
         }
       });
 
-      // Parallax Model Shift (creates 3D layered depth)
-      tl.to('.cinematic-hero-model-container', {
-        yPercent: 18,
-        scale: 1.03,
+      // Cinematic Parallax Video Zoom & Translation on banner.mp4
+      tl.to('.cinematic-hero-video-container', {
+        scale: 1.15,
+        yPercent: 20,
         ease: 'none',
       }, 0);
 
-      // Upward drift and soft fade for narrative text
+      // Video element subtle contrast & lighting depth
+      tl.to('.cinematic-hero-video-element', {
+        filter: 'brightness(0.85) contrast(1.08)',
+        ease: 'none',
+      }, 0);
+
+      // Model fallback layer shift (matching depth)
+      tl.to('.cinematic-hero-model-container', {
+        yPercent: 18,
+        scale: 1.05,
+        ease: 'none',
+      }, 0);
+
+      // Upward drift, soft blur, and fade for narrative text
       tl.to('.cinematic-hero-text-block', {
-        y: -85,
-        opacity: 0.12,
+        y: -110,
+        opacity: 0,
+        filter: 'blur(3px)',
+        ease: 'power1.out',
+      }, 0);
+
+      // Scroll to explore indicator prompt fades out quickly
+      tl.to('.cinematic-hero-scroll-prompt', {
+        y: 25,
+        opacity: 0,
+        duration: 0.25,
         ease: 'power1.out',
       }, 0);
 
       // Controls and indicators glide away gently
       tl.to('.cinematic-hero-bottom-bar', {
-        y: 35,
+        y: 45,
         opacity: 0,
         ease: 'power1.out',
         duration: 0.45,
       }, 0);
 
       tl.to('.cinematic-hero-vertical-indicators', {
-        x: 25,
+        x: 35,
         opacity: 0,
         ease: 'power1.out',
         duration: 0.45,
@@ -91,14 +125,20 @@ export const CinematicHeroBanner: React.FC = () => {
       // Ambient background deepening toward imperial maroon of the next section
       tl.to('.cinematic-hero-bg-ambience', {
         backgroundColor: '#4D0007',
-        opacity: 0.92,
+        opacity: 0.95,
+        ease: 'none',
+      }, 0);
+
+      tl.to('.cinematic-hero-video-vignette-bottom', {
+        opacity: 0.95,
+        height: '240px',
         ease: 'none',
       }, 0);
 
       // Floating canvas petals accelerate smoothly upwards
       tl.to('.cinematic-hero-canvas-petals', {
-        y: -120,
-        opacity: 0.25,
+        y: -150,
+        opacity: 0.2,
         ease: 'none',
       }, 0);
     }, banner);
@@ -108,7 +148,7 @@ export const CinematicHeroBanner: React.FC = () => {
     };
   }, []);
 
-  // 3. Slide Transition Handlers with Saree Blending Physics
+  // 3. Slide Transition Handlers
   const goToSlide = useCallback((index: number, direction?: TransitionDirection) => {
     if (index === currentSlide) return;
     if (transitionTimeoutRef.current) {
@@ -123,7 +163,7 @@ export const CinematicHeroBanner: React.FC = () => {
     transitionTimeoutRef.current = setTimeout(() => {
       setPrevSlide(null);
       setIsTransitioning(false);
-    }, 1350);
+    }, 1250);
   }, [currentSlide]);
 
   const nextSlide = useCallback(() => {
@@ -134,6 +174,23 @@ export const CinematicHeroBanner: React.FC = () => {
     goToSlide((currentSlide - 1 + HERO_SLIDES.length) % HERO_SLIDES.length, 'prev');
   }, [currentSlide, goToSlide]);
 
+  // Handle continuous video scene updates
+  const handleVideoSceneSync = useCallback((sceneIndex: number) => {
+    if (sceneIndex === currentSlide) return;
+    setPrevSlide(currentSlide);
+    setCurrentSlide(sceneIndex);
+    setTransitionDirection('next');
+    setIsTransitioning(true);
+
+    if (transitionTimeoutRef.current) {
+      clearTimeout(transitionTimeoutRef.current);
+    }
+    transitionTimeoutRef.current = setTimeout(() => {
+      setPrevSlide(null);
+      setIsTransitioning(false);
+    }, 1250);
+  }, [currentSlide]);
+
   // Clean up transition timer on unmount
   useEffect(() => {
     return () => {
@@ -143,16 +200,7 @@ export const CinematicHeroBanner: React.FC = () => {
     };
   }, []);
 
-  // 4. Automatic Progression (6.8s interval)
-  useEffect(() => {
-    if (!isPlaying) return;
-    const interval = setInterval(() => {
-      nextSlide();
-    }, 6800);
-    return () => clearInterval(interval);
-  }, [isPlaying, nextSlide]);
-
-  // 5. Keyboard Navigation
+  // 4. Keyboard Navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight') nextSlide();
@@ -162,7 +210,7 @@ export const CinematicHeroBanner: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [nextSlide, prevSlideFn]);
 
-  // 6. Touch Swipe Support
+  // 5. Touch Swipe Support
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartXRef.current = e.touches[0].clientX;
   };
@@ -182,7 +230,7 @@ export const CinematicHeroBanner: React.FC = () => {
     touchStartXRef.current = null;
   };
 
-  // 7. CTA Action Handlers
+  // 6. CTA Action Handlers
   const handlePrimaryCta = () => {
     setSelectedCategoryFilter(activeSlide.categoryTarget);
     setCurrentView('shop');
@@ -198,6 +246,15 @@ export const CinematicHeroBanner: React.FC = () => {
     }
   };
 
+  const handleScrollDown = () => {
+    const nextSection = document.getElementById('shop-by-occasion');
+    if (nextSection) {
+      nextSection.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+    }
+  };
+
   return (
     <section
       ref={bannerRef}
@@ -209,7 +266,7 @@ export const CinematicHeroBanner: React.FC = () => {
       {/* 1. Ambient Background Layer, Lighting Overlays & Floating Petals */}
       <HeroBackground />
 
-      {/* 2. Crystal-Clear High-Resolution Model Layer with Saree Fabric Transition Blending */}
+      {/* 2. Crystal-Clear High-Resolution Model Layer (Instant Fallback / Low-Bandwidth Layer) */}
       <HeroImageLayer
         slides={HERO_SLIDES}
         currentSlide={currentSlide}
@@ -218,7 +275,18 @@ export const CinematicHeroBanner: React.FC = () => {
         isTransitioning={isTransitioning}
       />
 
-      {/* 3. Flowing Silk Fabric Transition Wave (Triggered on slide change) */}
+      {/* 3. Master Cinematic Video Banner (banner.mp4 with 60fps luxury playback & scroll animation) */}
+      <HeroVideoLayer
+        videoRef={videoRef}
+        currentSlide={currentSlide}
+        isPlaying={isPlaying}
+        isMuted={isMuted}
+        isTransitioning={isTransitioning}
+        transitionDirection={transitionDirection}
+        onSlideChange={handleVideoSceneSync}
+      />
+
+      {/* 4. Flowing Silk Fabric Transition Wave (Triggered on slide change) */}
       <FabricAnimation
         isTransitioning={isTransitioning}
         transitionDirection={transitionDirection}
@@ -226,21 +294,33 @@ export const CinematicHeroBanner: React.FC = () => {
         prevSlide={prevSlide}
       />
 
-      {/* 4. Editorial Narrative Content & CTAs */}
+      {/* 5. Editorial Narrative Content & CTAs */}
       <HeroContent
         slide={activeSlide}
         onPrimaryCta={handlePrimaryCta}
         onSecondaryCta={handleSecondaryCta}
       />
 
-      {/* 5. Vertical Slide Indicators (Right Edge, exactly as reference video) */}
+      {/* 6. Vertical Slide Indicators (Right Edge, exactly as reference video) */}
       <HeroProgressIndicator
         slides={HERO_SLIDES}
         currentSlide={currentSlide}
         onSelectSlide={goToSlide}
       />
 
-      {/* 6. Bottom Navigation Controls & Audio Sync */}
+      {/* 7. Luxury Scroll to Explore Indicator */}
+      <button
+        onClick={handleScrollDown}
+        className="cinematic-hero-scroll-prompt"
+        aria-label="Scroll down to explore M. Siva-Tex collections"
+      >
+        <span className="cinematic-hero-scroll-text">Scroll to Explore</span>
+        <div className="cinematic-hero-scroll-line-wrap">
+          <div className="cinematic-hero-scroll-line" />
+        </div>
+      </button>
+
+      {/* 8. Bottom Navigation Controls & Audio Sync */}
       <HeroNavigation
         onPrevSlide={prevSlideFn}
         onNextSlide={nextSlide}

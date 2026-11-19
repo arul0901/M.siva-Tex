@@ -77,6 +77,48 @@ export const CATEGORIES_DATA = [
 
 export const SAREE_PRODUCTS: SareeProduct[] = [
   {
+    id: 'mst-swarna-kumkum',
+    name: 'Swarna Kumkum Pattu Saree',
+    slug: 'swarna-kumkum-pattu-saree',
+    category: 'Kanchipuram Silk',
+    price: 1699,
+    originalPrice: 4499,
+    discountPercent: 62,
+    rating: 4.9,
+    reviewCount: 18,
+    primaryImage: 'https://cdn.shopify.com/s/files/1/0734/1988/2750/files/Swarna_Kumkum_Pattu_Saree.jpg?v=1781511663',
+    secondaryImage: 'https://cdn.shopify.com/s/files/1/0734/1988/2750/files/IMG_0317.jpg?v=1766815298',
+    galleryImages: [
+      'https://cdn.shopify.com/s/files/1/0734/1988/2750/files/aiease_1766814843468.jpg?v=1766815221',
+      'https://cdn.shopify.com/s/files/1/0734/1988/2750/files/aiease_1766814888942.jpg?v=1766815221',
+      'https://cdn.shopify.com/s/files/1/0734/1988/2750/files/aiease_1766814937482.jpg?v=1766815221',
+      'https://cdn.shopify.com/s/files/1/0734/1988/2750/files/IMG_0316.jpg?v=1766815221',
+      'https://cdn.shopify.com/s/files/1/0734/1988/2750/files/IMG_0321.jpg?v=1766815221'
+    ],
+    color: 'Light Gold and Kumkum Pink',
+    colorHex: '#E5C158',
+    fabric: 'Silk (Traditional Pattu)',
+    weave: 'Rich Zari Woven Border and Pallu',
+    zari: 'Pure Gold Zari',
+    occasion: ['Bridal Muhurtham', 'Festive Puja', 'Reception'],
+    sareeLength: '5.50 Mtr',
+    blouseLength: '0.80 Mtr',
+    blouseType: 'Kumkum Pink Silk with Zari Woven Border',
+    weight: '0.447 Kg',
+    origin: 'Handcrafted in Surat / Kanchipuram Weaving Hub',
+    isBestSeller: true,
+    isTrending: true,
+    isNewArrival: true,
+    description: 'An auspicious heirloom traditional Pattu saree bathed in radiant light gold and sacred kumkum pink. Crafted with rich gold zari woven borders and an opulent intricate pallu, accompanied by a matching unstitched blouse piece in contrast kumkum pink.',
+    craftStory: 'Woven with high-twist pure silk yarns and dense golden zari thread work on the border and pallu. Certified authentic silk handloom quality.',
+    careInstructions: [
+      'Hand wash only with cold water.',
+      'Air dry, avoid direct sunlight.',
+      'Iron low heat, inside out.',
+      'Store wrapped in clean muslin cloth in a cool, dry place.'
+    ]
+  },
+  {
     id: 'mst-001',
     name: 'Royal Purple Kanchipuram Silk Saree',
     slug: 'royal-purple-kanchipuram-silk-saree',

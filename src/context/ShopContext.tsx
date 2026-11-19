@@ -96,6 +96,26 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
 
+  // Support direct URL query navigation (?view=product-detail&product=mst-swarna-kumkum)
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const viewParam = params.get('view');
+      const prodSlug = params.get('product');
+
+      if (prodSlug) {
+        const found = SAREE_PRODUCTS.find(p => p.id === prodSlug || p.slug === prodSlug);
+        if (found) setSelectedProduct(found);
+      }
+
+      if (viewParam && ['home', 'shop', 'product-detail', 'heritage', 'contact', 'checkout', 'account', 'wishlist', 'cart'].includes(viewParam)) {
+        setCurrentViewState(viewParam as any);
+      }
+    } catch {
+      // ignore in non-browser env
+    }
+  }, []);
+
   const [cart, setCart] = useState<CartItem[]>(() => {
     try {
       const saved = localStorage.getItem('mst_cart');

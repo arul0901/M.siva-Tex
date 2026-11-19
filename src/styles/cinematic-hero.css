@@ -880,3 +880,210 @@
     min-height: 44px;
   }
 }
+
+/* ========================================================
+   Cinematic Video Banner Stage (banner.mp4)
+   ======================================================== */
+.cinematic-hero-video-stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 4;
+  opacity: 0;
+  transition: opacity 1.0s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+
+.cinematic-hero-video-stage.is-ready {
+  opacity: 1;
+}
+
+.cinematic-hero-video-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+  transform-origin: center center;
+}
+
+.cinematic-hero-video-element {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+  will-change: transform, filter;
+}
+
+@media (max-width: 767px) {
+  .cinematic-hero-video-element {
+    object-position: 72% center;
+  }
+}
+
+/* Left Scrim: Soft warm ivory fade to ensure 100% typography contrast */
+.cinematic-hero-video-scrim-left {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(250, 247, 242, 0.95) 0%,
+    rgba(250, 247, 242, 0.88) 32%,
+    rgba(250, 247, 242, 0.45) 55%,
+    rgba(250, 247, 242, 0.1) 75%,
+    transparent 100%
+  );
+}
+
+@media (max-width: 767px) {
+  .cinematic-hero-video-scrim-left {
+    background: linear-gradient(
+      180deg,
+      rgba(250, 247, 242, 0.75) 0%,
+      rgba(250, 247, 242, 0.35) 40%,
+      rgba(250, 247, 242, 0.92) 80%,
+      #FAF7F2 100%
+    );
+  }
+}
+
+/* Subtle Vignettes for High Fashion Lighting */
+.cinematic-hero-video-vignette-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(180deg, rgba(77, 0, 7, 0.16) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.cinematic-hero-video-vignette-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 160px;
+  background: linear-gradient(0deg, rgba(77, 0, 7, 0.22) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+  transition: opacity 0.5s ease;
+}
+
+/* Transition Golden Sheen on Chapter Change */
+.cinematic-hero-video-sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  background: linear-gradient(
+    108deg,
+    transparent 15%,
+    rgba(212, 175, 55, 0.25) 38%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(212, 175, 55, 0.3) 62%,
+    transparent 85%
+  );
+  mix-blend-mode: overlay;
+}
+
+.cinematic-hero-video-sheen.is-next {
+  animation: videoSheenNext 1.25s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+}
+
+.cinematic-hero-video-sheen.is-prev {
+  animation: videoSheenPrev 1.25s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+}
+
+@keyframes videoSheenNext {
+  0% { transform: translateX(-120%) skewX(-8deg); opacity: 0; }
+  30% { opacity: 0.9; }
+  70% { opacity: 0.6; }
+  100% { transform: translateX(120%) skewX(-8deg); opacity: 0; }
+}
+
+@keyframes videoSheenPrev {
+  0% { transform: translateX(120%) skewX(8deg); opacity: 0; }
+  30% { opacity: 0.9; }
+  70% { opacity: 0.6; }
+  100% { transform: translateX(-120%) skewX(8deg); opacity: 0; }
+}
+
+/* ========================================================
+   Luxury Scroll to Explore Indicator
+   ======================================================== */
+.cinematic-hero-scroll-prompt {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 24;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  outline: none;
+  color: var(--color-primary-maroon, #4D0007);
+  transition: all 0.3s ease;
+  pointer-events: auto;
+}
+
+.cinematic-hero-scroll-prompt:hover {
+  transform: translateX(-50%) translateY(3px);
+  color: var(--color-rich-gold, #D4AF37);
+}
+
+.cinematic-hero-scroll-text {
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0.85;
+}
+
+.cinematic-hero-scroll-line-wrap {
+  width: 1.5px;
+  height: 28px;
+  background-color: rgba(77, 0, 7, 0.15);
+  border-radius: 9999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.cinematic-hero-scroll-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(180deg, #D4AF37 0%, rgba(212, 175, 55, 0.2) 100%);
+  border-radius: 9999px;
+  animation: scrollLineDrop 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes scrollLineDrop {
+  0% { transform: translateY(-100%); opacity: 0; }
+  30% { opacity: 1; }
+  80% { opacity: 0.8; }
+  100% { transform: translateY(220%); opacity: 0; }
+}
+
+@media (max-width: 767px) {
+  .cinematic-hero-scroll-prompt {
+    display: none;
+  }
+}
+

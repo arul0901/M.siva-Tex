@@ -139,7 +139,7 @@ export const QuickViewModal: React.FC = () => {
               </div>
 
               {/* Key Specs */}
-              <div className="grid grid-cols-2 gap-2 text-xs mb-4 p-3 bg-beige/40 rounded-sm">
+              <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs mb-4 py-2.5 border-t border-b border-gold/20">
                 <div>
                   <span className="text-brown-deep/60 block text-[10px] uppercase font-serif">Fabric</span>
                   <span className="font-medium text-burgundy">{quickViewProduct.fabric}</span>
