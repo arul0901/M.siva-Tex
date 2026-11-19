@@ -20,64 +20,14 @@ export const ShopView: React.FC = () => {
   } = useShop();
 
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
-  const [selectedZari, setSelectedZari] = useState<string | null>(null);
-  const [selectedOccasion, setSelectedOccasion] = useState<string | null>(null);
-  const [selectedColor, setSelectedColor] = useState<string | null>(null);
-  const [maxPrice, setMaxPrice] = useState<number>(65000);
   const [sortBy, setSortBy] = useState<string>('featured');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
-  // Available unique colors
-  const colorOptions = [
-    { name: 'Royal Purple', hex: '#481A36' },
-    { name: 'Crimson Red', hex: '#8B1E3F' },
-    { name: 'Emerald Green', hex: '#1B4D3E' },
-    { name: 'Mustard Gold', hex: '#B18A52' },
-    { name: 'Blush Pink', hex: '#D9B7B1' },
-    { name: 'Peacock Blue', hex: '#0E4D64' },
-    { name: 'Midnight Black', hex: '#30221F' },
-    { name: 'Pista Green', hex: '#A3B18A' }
-  ];
-
-  // Available Zari Types
-  const zariOptions = [
-    'Pure Gold Zari',
-    'Tested Gold Zari',
-    'Antique Silver Zari',
-    'Copper Zari',
-    'Resham Thread'
-  ];
-
-  // Available Occasions
-  const occasionOptions = [
-    'Bridal Muhurtham',
-    'Reception',
-    'Festive Puja',
-    'Evening Party',
-    'Office & Casual'
-  ];
-
-  // Filter & Sort Logic
+  // Filter & Sort Logic (Category and Search)
   const filteredProducts = useMemo(() => {
     return SAREE_PRODUCTS.filter(product => {
       // Category filter
       if (selectedCategoryFilter && product.category !== selectedCategoryFilter) {
-        return false;
-      }
-      // Zari filter
-      if (selectedZari && product.zari !== selectedZari) {
-        return false;
-      }
-      // Occasion filter
-      if (selectedOccasion && !product.occasion.includes(selectedOccasion as any)) {
-        return false;
-      }
-      // Color filter
-      if (selectedColor && !product.color.toLowerCase().includes(selectedColor.toLowerCase())) {
-        return false;
-      }
-      // Price filter
-      if (product.price > maxPrice) {
         return false;
       }
       // Search query
@@ -98,23 +48,15 @@ export const ShopView: React.FC = () => {
       if (sortBy === 'newest') return (b.isNewArrival ? 1 : 0) - (a.isNewArrival ? 1 : 0);
       return (b.isBestSeller ? 1 : 0) - (a.isBestSeller ? 1 : 0); // 'featured'
     });
-  }, [selectedCategoryFilter, selectedZari, selectedOccasion, selectedColor, maxPrice, sortBy, searchQuery]);
+  }, [selectedCategoryFilter, sortBy, searchQuery]);
 
   const clearAllFilters = () => {
     setSelectedCategoryFilter(null);
-    setSelectedZari(null);
-    setSelectedOccasion(null);
-    setSelectedColor(null);
-    setMaxPrice(65000);
     setSearchQuery('');
   };
 
   const activeFilterCount =
     (selectedCategoryFilter ? 1 : 0) +
-    (selectedZari ? 1 : 0) +
-    (selectedOccasion ? 1 : 0) +
-    (selectedColor ? 1 : 0) +
-    (maxPrice < 65000 ? 1 : 0) +
     (searchQuery ? 1 : 0);
 
   return (
@@ -204,28 +146,10 @@ export const ShopView: React.FC = () => {
                   <button onClick={() => setSelectedCategoryFilter(null)}><X className="w-3 h-3" /></button>
                 </span>
               )}
-              {selectedZari && (
+              {searchQuery && (
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-beige border border-gold/40 text-burgundy rounded-xs font-serif text-[11px]">
-                  <span>{selectedZari}</span>
-                  <button onClick={() => setSelectedZari(null)}><X className="w-3 h-3" /></button>
-                </span>
-              )}
-              {selectedOccasion && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-beige border border-gold/40 text-burgundy rounded-xs font-serif text-[11px]">
-                  <span>{selectedOccasion}</span>
-                  <button onClick={() => setSelectedOccasion(null)}><X className="w-3 h-3" /></button>
-                </span>
-              )}
-              {selectedColor && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-beige border border-gold/40 text-burgundy rounded-xs font-serif text-[11px]">
-                  <span>Color: {selectedColor}</span>
-                  <button onClick={() => setSelectedColor(null)}><X className="w-3 h-3" /></button>
-                </span>
-              )}
-              {maxPrice < 65000 && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-beige border border-gold/40 text-burgundy rounded-xs font-serif text-[11px]">
-                  <span>Under ₹{maxPrice.toLocaleString('en-IN')}</span>
-                  <button onClick={() => setMaxPrice(65000)}><X className="w-3 h-3" /></button>
+                  <span>Search: "{searchQuery}"</span>
+                  <button onClick={() => setSearchQuery('')}><X className="w-3 h-3" /></button>
                 </span>
               )}
               <button
@@ -241,7 +165,7 @@ export const ShopView: React.FC = () => {
         {/* Main Grid with Filter Sidebar */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
-          {/* Desktop Filter Sidebar (Col 1-3) */}
+          {/* Desktop Filter Sidebar (Col 1-3) - Saree Weave / Category Only */}
           <div className="hidden lg:block lg:col-span-3 bg-white/70 p-6 rounded-sm border border-gold/25 sticky top-28 space-y-6">
             
             <div className="flex items-center justify-between border-b border-gold/20 pb-3">
@@ -249,9 +173,9 @@ export const ShopView: React.FC = () => {
                 <Filter className="w-4 h-4 text-gold" />
                 <span>Refine Collection</span>
               </h3>
-              {activeFilterCount > 0 && (
+              {selectedCategoryFilter && (
                 <button
-                  onClick={clearAllFilters}
+                  onClick={() => setSelectedCategoryFilter(null)}
                   className="text-[11px] text-wine hover:underline font-serif"
                 >
                   Reset
@@ -267,7 +191,7 @@ export const ShopView: React.FC = () => {
               <div className="space-y-1.5 text-xs">
                 <button
                   onClick={() => setSelectedCategoryFilter(null)}
-                  className={`w-full text-left py-1 px-2 rounded-xs flex items-center justify-between transition-colors ${
+                  className={`w-full text-left py-1.5 px-2.5 rounded-xs flex items-center justify-between transition-colors ${
                     selectedCategoryFilter === null ? 'bg-burgundy text-gold-pale font-medium' : 'text-brown-deep/80 hover:bg-beige'
                   }`}
                 >
@@ -278,7 +202,7 @@ export const ShopView: React.FC = () => {
                   <button
                     key={cat.id}
                     onClick={() => setSelectedCategoryFilter(cat.categoryKey)}
-                    className={`w-full text-left py-1 px-2 rounded-xs flex items-center justify-between transition-colors ${
+                    className={`w-full text-left py-1.5 px-2.5 rounded-xs flex items-center justify-between transition-colors ${
                       selectedCategoryFilter === cat.categoryKey
                         ? 'bg-burgundy text-gold-pale font-medium'
                         : 'text-brown-deep/80 hover:bg-beige'
@@ -287,105 +211,6 @@ export const ShopView: React.FC = () => {
                     <span>{cat.name}</span>
                     <span className="text-[10px] opacity-75">{cat.count}</span>
                   </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Price Range Slider */}
-            <div className="border-t border-gold/15 pt-5">
-              <div className="flex items-center justify-between text-xs mb-2">
-                <span className="font-serif font-bold uppercase tracking-wider text-burgundy">
-                  Max Price
-                </span>
-                <span className="font-serif font-bold text-gold-dark">
-                  ₹{maxPrice.toLocaleString('en-IN')}
-                </span>
-              </div>
-              <input
-                type="range"
-                min="8000"
-                max="65000"
-                step="1000"
-                value={maxPrice}
-                onChange={(e) => setMaxPrice(Number(e.target.value))}
-                className="w-full accent-gold cursor-pointer"
-              />
-              <div className="flex justify-between text-[10px] text-brown-deep/60 mt-1 font-serif">
-                <span>₹8,000</span>
-                <span>₹65,000+</span>
-              </div>
-            </div>
-
-            {/* Color Filter Swatches */}
-            <div className="border-t border-gold/15 pt-5">
-              <h4 className="font-serif text-xs font-bold uppercase tracking-wider text-burgundy mb-3">
-                Curated Color Palette
-              </h4>
-              <div className="grid grid-cols-4 gap-2">
-                {colorOptions.map(color => (
-                  <button
-                    key={color.name}
-                    onClick={() => setSelectedColor(selectedColor === color.name ? null : color.name)}
-                    className={`flex flex-col items-center p-1.5 rounded-sm border transition-all ${
-                      selectedColor === color.name
-                        ? 'border-gold shadow-sm bg-beige/40'
-                        : 'border-transparent hover:border-gold/30'
-                    }`}
-                    title={color.name}
-                  >
-                    <span
-                      className={`w-6 h-6 rounded-full border border-gold/40 shadow-xs mb-1 color-swatch-${color.name.toLowerCase().replace(/\s+/g, '-')}`}
-                    />
-                    <span className="text-[9px] text-center font-serif text-brown-deep leading-tight truncate w-full">
-                      {color.name.split(' ')[0]}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Zari Type */}
-            <div className="border-t border-gold/15 pt-5">
-              <h4 className="font-serif text-xs font-bold uppercase tracking-wider text-burgundy mb-2.5">
-                Zari Craftsmanship
-              </h4>
-              <div className="space-y-1.5 text-xs">
-                {zariOptions.map(zari => (
-                  <label
-                    key={zari}
-                    className="flex items-center gap-2 text-brown-deep/80 cursor-pointer hover:text-burgundy"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selectedZari === zari}
-                      onChange={() => setSelectedZari(selectedZari === zari ? null : zari)}
-                      className="accent-gold rounded-xs"
-                    />
-                    <span>{zari}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            {/* Auspicious Occasion */}
-            <div className="border-t border-gold/15 pt-5">
-              <h4 className="font-serif text-xs font-bold uppercase tracking-wider text-burgundy mb-2.5">
-                Auspicious Occasion
-              </h4>
-              <div className="space-y-1.5 text-xs">
-                {occasionOptions.map(occ => (
-                  <label
-                    key={occ}
-                    className="flex items-center gap-2 text-brown-deep/80 cursor-pointer hover:text-burgundy"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selectedOccasion === occ}
-                      onChange={() => setSelectedOccasion(selectedOccasion === occ ? null : occ)}
-                      className="accent-gold rounded-xs"
-                    />
-                    <span>{occ}</span>
-                  </label>
                 ))}
               </div>
             </div>
@@ -546,7 +371,7 @@ export const ShopView: React.FC = () => {
                 </button>
               </div>
 
-              {/* Scrollable Filters Body */}
+              {/* Scrollable Filters Body - Saree Weave / Category Only */}
               <div className="flex-1 overflow-y-auto p-5 space-y-6">
                 {/* Categories */}
                 <div>
@@ -555,7 +380,10 @@ export const ShopView: React.FC = () => {
                   </h4>
                   <div className="space-y-1.5 text-xs">
                     <button
-                      onClick={() => setSelectedCategoryFilter(null)}
+                      onClick={() => {
+                        setSelectedCategoryFilter(null);
+                        setMobileFilterOpen(false);
+                      }}
                       className={`min-h-[44px] w-full text-left py-2 px-3 rounded-xs flex items-center justify-between transition-colors ${
                         selectedCategoryFilter === null ? 'bg-burgundy text-gold-pale font-medium' : 'text-brown-deep/80 hover:bg-beige bg-white/70 border border-gold/20'
                       }`}
@@ -566,7 +394,10 @@ export const ShopView: React.FC = () => {
                     {CATEGORIES_DATA.map(cat => (
                       <button
                         key={cat.id}
-                        onClick={() => setSelectedCategoryFilter(cat.categoryKey)}
+                        onClick={() => {
+                          setSelectedCategoryFilter(cat.categoryKey);
+                          setMobileFilterOpen(false);
+                        }}
                         className={`min-h-[44px] w-full text-left py-2 px-3 rounded-xs flex items-center justify-between transition-colors ${
                           selectedCategoryFilter === cat.categoryKey
                             ? 'bg-burgundy text-gold-pale font-medium'
@@ -576,105 +407,6 @@ export const ShopView: React.FC = () => {
                         <span>{cat.name}</span>
                         <span className="text-[10px] opacity-75">{cat.count}</span>
                       </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Price Range Slider */}
-                <div className="border-t border-gold/20 pt-4">
-                  <div className="flex items-center justify-between text-xs mb-2">
-                    <span className="font-serif font-bold uppercase tracking-wider text-burgundy">
-                      Max Price
-                    </span>
-                    <span className="font-serif font-bold text-gold-dark text-sm">
-                      ₹{maxPrice.toLocaleString('en-IN')}
-                    </span>
-                  </div>
-                  <input
-                    type="range"
-                    min="8000"
-                    max="65000"
-                    step="1000"
-                    value={maxPrice}
-                    onChange={(e) => setMaxPrice(Number(e.target.value))}
-                    className="w-full accent-gold cursor-pointer"
-                  />
-                  <div className="flex justify-between text-[10px] text-brown-deep/60 mt-1 font-serif">
-                    <span>₹8,000</span>
-                    <span>₹65,000+</span>
-                  </div>
-                </div>
-
-                {/* Color Palette */}
-                <div className="border-t border-gold/20 pt-4">
-                  <h4 className="font-serif text-xs font-bold uppercase tracking-wider text-burgundy mb-2.5">
-                    Color Palette
-                  </h4>
-                  <div className="grid grid-cols-4 gap-2">
-                    {colorOptions.map(color => (
-                      <button
-                        key={color.name}
-                        onClick={() => setSelectedColor(selectedColor === color.name ? null : color.name)}
-                        className={`min-h-[50px] flex flex-col items-center justify-center p-1.5 rounded-sm border transition-all ${
-                          selectedColor === color.name
-                            ? 'border-gold shadow-sm bg-beige/60'
-                            : 'border-gold/20 bg-white/60 hover:border-gold/40'
-                        }`}
-                        title={color.name}
-                      >
-                        <span
-                          className={`w-6 h-6 rounded-full border border-gold/40 shadow-xs mb-1 color-swatch-${color.name.toLowerCase().replace(/\s+/g, '-')}`}
-                        />
-                        <span className="text-[9px] text-center font-serif text-brown-deep leading-tight truncate w-full">
-                          {color.name.split(' ')[0]}
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Zari Craftsmanship */}
-                <div className="border-t border-gold/20 pt-4">
-                  <h4 className="font-serif text-xs font-bold uppercase tracking-wider text-burgundy mb-2.5">
-                    Zari Craftsmanship
-                  </h4>
-                  <div className="space-y-2 text-xs">
-                    {zariOptions.map(zari => (
-                      <label
-                        key={zari}
-                        className="min-h-[44px] flex items-center gap-2.5 px-3 py-2 bg-white/70 border border-gold/20 rounded-xs text-brown-deep/80 cursor-pointer active:bg-beige"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={selectedZari === zari}
-                          onChange={() => setSelectedZari(selectedZari === zari ? null : zari)}
-                          className="accent-gold w-4 h-4 rounded-xs"
-                        />
-                        <span>{zari}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Auspicious Occasion */}
-                <div className="border-t border-gold/20 pt-4">
-                  <h4 className="font-serif text-xs font-bold uppercase tracking-wider text-burgundy mb-2.5">
-                    Auspicious Occasion
-                  </h4>
-                  <div className="space-y-2 text-xs">
-                    {occasionOptions.map(occ => (
-                      <label
-                        key={occ}
-                        className="min-h-[44px] flex items-center gap-2.5 px-3 py-2 bg-white/70 border border-gold/20 rounded-xs text-brown-deep/80 cursor-pointer active:bg-beige"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={selectedOccasion === occ}
-                          onChange={() => setSelectedOccasion(selectedOccasion === occ ? null : occ)}
-                          className="accent-gold w-4 h-4 rounded-xs"
-                        />
-                        <span>{occ}</span>
-                      </label>
                     ))}
                   </div>
                 </div>
