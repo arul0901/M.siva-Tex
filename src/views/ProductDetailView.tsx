@@ -797,46 +797,69 @@ export const ProductDetailView: React.FC = () => {
             <div className="pdp-bundle-items-row">
               {/* Product 1: Saree */}
               <div className="pdp-bundle-card">
-                <img src={product.primaryImage} alt={product.name} className="pdp-bundle-thumb" />
-                <span className="text-[10px] font-semibold text-gray-900 truncate w-full">This Saree</span>
-                <span className="text-xs font-bold text-burgundy">₹{product.price}</span>
+                <div className="relative">
+                  <img src={product.primaryImage} alt={product.name} className="pdp-bundle-thumb" />
+                  <span className="absolute top-1 right-1 w-4 h-4 bg-emerald-600 text-white rounded-full flex items-center justify-center text-[9px] shadow select-none">
+                    ✓
+                  </span>
+                </div>
+                <span className="text-[10px] sm:text-[11px] font-semibold text-gray-900 truncate w-full mt-1">This Saree</span>
+                <span className="text-xs sm:text-sm font-bold text-burgundy">₹{product.price.toLocaleString('en-IN')}</span>
               </div>
 
               <span className="pdp-bundle-plus">+</span>
 
               {/* Product 2: Handcrafted Gold Zari Potli */}
-              <div className="pdp-bundle-card">
-                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80" alt="Zari Potli" className="pdp-bundle-thumb" />
-                <span className="text-[10px] font-semibold text-gray-900 truncate w-full">Golden Potli</span>
-                <span className="text-xs font-bold text-burgundy">₹{clutchPrice}</span>
+              <div 
+                className={`pdp-bundle-card ${!bundleIncludeClutch ? 'opacity-50' : ''}`}
+                onClick={() => setBundleIncludeClutch(!bundleIncludeClutch)}
+                title="Toggle Golden Potli in bundle"
+              >
+                <div className="relative">
+                  <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80" alt="Zari Potli" className="pdp-bundle-thumb" />
+                  <span className={`absolute top-1 right-1 w-4 h-4 rounded-full flex items-center justify-center text-[9px] shadow transition-colors select-none ${bundleIncludeClutch ? 'bg-emerald-600 text-white' : 'bg-gray-300 text-gray-600'}`}>
+                    {bundleIncludeClutch ? '✓' : ''}
+                  </span>
+                </div>
+                <span className="text-[10px] sm:text-[11px] font-semibold text-gray-900 truncate w-full mt-1">Golden Potli</span>
+                <span className="text-xs sm:text-sm font-bold text-burgundy">₹{clutchPrice.toLocaleString('en-IN')}</span>
               </div>
 
               <span className="pdp-bundle-plus">+</span>
 
               {/* Product 3: Cotton Satin Saree Silhouette */}
-              <div className="pdp-bundle-card">
-                <img src="https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=400&q=80" alt="Petticoat" className="pdp-bundle-thumb" />
-                <span className="text-[10px] font-semibold text-gray-900 truncate w-full">Satin Shaper</span>
-                <span className="text-xs font-bold text-burgundy">₹{petticoatPrice}</span>
+              <div 
+                className={`pdp-bundle-card ${!bundleIncludePetticoat ? 'opacity-50' : ''}`}
+                onClick={() => setBundleIncludePetticoat(!bundleIncludePetticoat)}
+                title="Toggle Satin Shaper in bundle"
+              >
+                <div className="relative">
+                  <img src="https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=400&q=80" alt="Petticoat" className="pdp-bundle-thumb" />
+                  <span className={`absolute top-1 right-1 w-4 h-4 rounded-full flex items-center justify-center text-[9px] shadow transition-colors select-none ${bundleIncludePetticoat ? 'bg-emerald-600 text-white' : 'bg-gray-300 text-gray-600'}`}>
+                    {bundleIncludePetticoat ? '✓' : ''}
+                  </span>
+                </div>
+                <span className="text-[10px] sm:text-[11px] font-semibold text-gray-900 truncate w-full mt-1">Satin Shaper</span>
+                <span className="text-xs sm:text-sm font-bold text-burgundy">₹{petticoatPrice.toLocaleString('en-IN')}</span>
               </div>
             </div>
 
             {/* Bundle Pricing & CTA */}
             <div className="pdp-bundle-pricing-side">
-              <div className="flex items-baseline gap-2 mb-1">
+              <div className="flex items-baseline gap-2 mb-1 justify-center sm:justify-start">
                 <span className="text-xs text-gray-500 uppercase font-secondary">Bundle Total:</span>
-                <span className="text-lg font-bold text-burgundy font-secondary">₹{bundleDiscountedPrice}</span>
-                <span className="text-xs text-gray-400 line-through font-secondary">₹{bundleTotalPrice}</span>
+                <span className="text-xl font-bold text-burgundy font-secondary">₹{bundleDiscountedPrice.toLocaleString('en-IN')}</span>
+                <span className="text-xs text-gray-400 line-through font-secondary">₹{bundleTotalPrice.toLocaleString('en-IN')}</span>
               </div>
-              <span className="inline-block text-[11px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-sm mb-3 font-secondary">
+              <span className="inline-block text-[11px] font-bold text-emerald-800 bg-emerald-100/90 px-2.5 py-0.5 rounded-sm mb-3 font-secondary text-center">
                 Save 15% with Bundle Privilege
               </span>
               <button
                 onClick={handleAddBundleToCart}
-                className="w-full py-2.5 px-4 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark font-secondary text-xs uppercase tracking-wider font-semibold rounded-sm transition-colors flex items-center justify-center gap-2"
+                className="w-full py-2.5 px-4 bg-burgundy hover:bg-[#360005] text-[#FDFBF7] font-secondary text-xs sm:text-[13px] uppercase tracking-wider font-bold rounded-xs shadow transition-colors flex items-center justify-center gap-2 cursor-pointer select-none"
               >
                 <ShoppingBag className="w-3.5 h-3.5" />
-                <span>Add All 3 to Cart</span>
+                <span>Add {1 + (bundleIncludeClutch ? 1 : 0) + (bundleIncludePetticoat ? 1 : 0)} Items To Cart</span>
               </button>
             </div>
           </div>
