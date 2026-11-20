@@ -296,8 +296,8 @@ export const ProductDetailView: React.FC = () => {
 
           </div>
 
-          {/* Right Column: Product Info & Purchase Engine (60% width) */}
-          <div className="lg:col-span-6 flex flex-col">
+          {/* Right Column: Product Info & Purchase Engine (60% width, compact boutique column) */}
+          <div className="lg:col-span-6 flex flex-col max-w-[480px]">
             <div>
               {/* Origin & In-Stock Line */}
               <div className="flex items-center justify-between text-[11px] font-secondary uppercase tracking-[0.12em] text-[#8C6D62] pb-1 border-b border-[#D4AF37]/15 mb-2">
@@ -314,12 +314,12 @@ export const ProductDetailView: React.FC = () => {
               </span>
 
               {/* Product Title */}
-              <h1 className="pdp-product-title text-2xl sm:text-3xl font-semibold mb-2">
+              <h1 className="pdp-product-title text-xl sm:text-2xl font-semibold mb-1.5">
                 {product.name}
               </h1>
 
               {/* Rating & Review Link + Share */}
-              <div className="flex items-center justify-between gap-4 mb-2.5">
+              <div className="flex items-center justify-between gap-4 mb-2">
                 <div className="flex items-center gap-2">
                   <div className="pdp-stars-group">
                     {[...Array(5)].map((_, i) => (
@@ -351,11 +351,11 @@ export const ProductDetailView: React.FC = () => {
               {/* Price Row */}
               <div className="pdp-price-row mb-0.5">
                 <span className="text-xs text-brown-deep/60 uppercase font-secondary mr-1">Sale price</span>
-                <span className="pdp-price-sale text-2xl font-bold">
+                <span className="pdp-price-sale text-xl font-bold">
                   ₹ {product.price.toLocaleString('en-IN')}
                 </span>
                 {product.originalPrice > product.price && (
-                  <span className="pdp-price-regular">
+                  <span className="pdp-price-regular text-sm">
                     ₹ {product.originalPrice.toLocaleString('en-IN')}
                   </span>
                 )}
@@ -365,18 +365,18 @@ export const ProductDetailView: React.FC = () => {
                   </span>
                 )}
               </div>
-              <p className="pdp-tax-notice text-xs mb-2">Inclusive of all taxes.</p>
+              <p className="pdp-tax-notice text-xs mb-1.5">Inclusive of all taxes.</p>
 
               {/* Live Viewers Indicator */}
-              <div className="pdp-live-visitors mb-3">
+              <div className="pdp-live-visitors mb-2.5">
                 <div className="pdp-live-dot" />
-                <Eye className="w-3.5 h-3.5 text-emerald-800" />
+                <Eye className="w-3 h-3 text-emerald-800" />
                 <span><strong>{liveViewers} People</strong> Are Watching Right Now.</span>
               </div>
 
               {/* Actions: Quantity Stepper, Add to Cart, Wishlist, Share, and Buy It Now
-                  Positioned immediately above-the-fold so they are 100% visible without scrolling! */}
-              <div className="pdp-actions-row mb-4">
+                  Positioned compactly above-the-fold */}
+              <div className="pdp-actions-row mb-3">
                 <div className="pdp-qty-add-group">
                   {/* Quantity Stepper */}
                   <div className="pdp-qty-stepper">
@@ -402,30 +402,30 @@ export const ProductDetailView: React.FC = () => {
                     onClick={handleAddToCart}
                     className="pdp-btn-add-cart"
                   >
-                    <ShoppingBag className="w-4 h-4" />
+                    <ShoppingBag className="w-3.5 h-3.5" />
                     <span>Add to cart</span>
                   </button>
 
                   {/* Wishlist Button */}
                   <button
                     onClick={() => toggleWishlist(product)}
-                    className={`w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center rounded-sm border transition-colors shrink-0 ${
+                    className={`w-10 h-10 flex items-center justify-center rounded-sm border transition-colors shrink-0 ${
                       inWishlist ? 'border-wine bg-wine text-white' : 'border-gray-300 bg-white text-gray-700 hover:border-burgundy'
                     }`}
                     aria-label="Save to Wishlist"
                     title={inWishlist ? 'Saved in Wishlist' : 'Add to Wishlist'}
                   >
-                    <Heart className={`w-4 h-4 sm:w-5 sm:h-5 ${inWishlist ? 'fill-current' : ''}`} />
+                    <Heart className={`w-4 h-4 ${inWishlist ? 'fill-current' : ''}`} />
                   </button>
 
                   {/* Share Button */}
                   <button
                     onClick={handleShare}
-                    className="w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center rounded-sm border border-gray-300 bg-white text-gray-700 hover:border-burgundy transition-colors shrink-0"
+                    className="w-10 h-10 flex items-center justify-center rounded-sm border border-gray-300 bg-white text-gray-700 hover:border-burgundy transition-colors shrink-0"
                     aria-label="Share product"
                     title="Share product link"
                   >
-                    <Share2 className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <Share2 className="w-4 h-4" />
                   </button>
                 </div>
 
@@ -440,9 +440,9 @@ export const ProductDetailView: React.FC = () => {
               </div>
 
               {/* Delivery Timeline (Custom Delivery Timeline) */}
-              <div className="cdt-container my-3">
+              <div className="cdt-container my-2">
                 <div className="cdt-headline">
-                  <Zap className="w-3.5 h-3.5 text-amber-500 fill-current" />
+                  <Zap className="w-3 h-3 text-amber-500 fill-current" />
                   <span>Prepaid orders are delivered faster than COD.</span>
                 </div>
                 <div className="cdt-track">
@@ -452,7 +452,7 @@ export const ProductDetailView: React.FC = () => {
                   {/* Step 1: Purchased */}
                   <div className="cdt-step">
                     <div className="cdt-icon-box">
-                      <ShoppingBag className="w-4 h-4" />
+                      <ShoppingBag className="w-3.5 h-3.5" />
                     </div>
                     <span className="cdt-date">{datePurchased}</span>
                     <span className="cdt-label">Purchased</span>
@@ -461,7 +461,7 @@ export const ProductDetailView: React.FC = () => {
                   {/* Step 2: Processing */}
                   <div className="cdt-step">
                     <div className="cdt-icon-box">
-                      <Package className="w-4 h-4" />
+                      <Package className="w-3.5 h-3.5" />
                     </div>
                     <span className="cdt-date">{dateProcessing1} - {dateProcessing2}</span>
                     <span className="cdt-label">Processing</span>
@@ -470,7 +470,7 @@ export const ProductDetailView: React.FC = () => {
                   {/* Step 3: Delivered */}
                   <div className="cdt-step">
                     <div className="cdt-icon-box">
-                      <Truck className="w-4 h-4" />
+                      <Truck className="w-3.5 h-3.5" />
                     </div>
                     <span className="cdt-date">{dateDelivery1} - {dateDelivery2}</span>
                     <span className="cdt-label">Delivered</span>
@@ -479,9 +479,9 @@ export const ProductDetailView: React.FC = () => {
               </div>
 
               {/* Delivery Details Pincode Checker */}
-              <div className="pdp-pincode-box my-3">
+              <div className="pdp-pincode-box my-2.5">
                 <div className="pdp-pincode-header">
-                  <MapPin className="w-3.5 h-3.5 text-gold" />
+                  <MapPin className="w-3 h-3 text-gold" />
                   <span>Check Delivery Details</span>
                 </div>
                 <form onSubmit={handleCheckPincode} className="pdp-pincode-form">
@@ -505,7 +505,7 @@ export const ProductDetailView: React.FC = () => {
               </div>
 
               {/* Trust Icons Strip (4 Badges) */}
-              <div className="pdp-trust-strip my-3">
+              <div className="pdp-trust-strip my-2.5">
                 <div className="pdp-trust-item">
                   <Truck className="pdp-trust-icon" />
                   <span className="pdp-trust-label">Cash on Delivery</span>
