@@ -198,8 +198,10 @@ export const ProductDetailView: React.FC = () => {
     }
   }, [product.id]);
 
-  // Related Products: 8 items for 2-row mobile scroll & 4-card desktop grid
-  const relatedSarees = SAREE_PRODUCTS.filter(p => p.id !== product.id).slice(0, 8);
+  // Related Products: 10 items split into 2 independent rows for mobile scrolling and 4 for desktop
+  const relatedSarees = SAREE_PRODUCTS.filter(p => p.id !== product.id);
+  const row1Sarees = relatedSarees.slice(0, 5);
+  const row2Sarees = relatedSarees.slice(5, 10);
 
   // Reviews for this product
   const reviewsList = [
@@ -882,21 +884,32 @@ export const ProductDetailView: React.FC = () => {
               </div>
             </div>
 
-            {/* Mobile: 2 Rows with horizontal scrolling | Desktop: 4 Columns single row */}
-            <div className="
-              grid grid-rows-2 grid-flow-col auto-cols-[165px] sm:auto-cols-[190px]
-              gap-3 sm:gap-4 overflow-x-auto pb-4 pt-1 px-1
-              snap-x snap-mandatory scrollbar-none
-              lg:grid-rows-1 lg:grid-cols-4 lg:grid-flow-row lg:overflow-visible lg:px-0 lg:gap-6
-            ">
-              {relatedSarees.map((prod, idx) => (
-                <div
-                  key={prod.id}
-                  className={`snap-start h-full ${idx >= 4 ? 'block lg:hidden' : 'block'}`}
-                >
-                  <ProductCard product={prod} />
-                </div>
+            {/* Desktop View (lg+): Single Row of 4 Cards */}
+            <div className="hidden lg:grid lg:grid-cols-4 lg:gap-6">
+              {row1Sarees.slice(0, 4).map(prod => (
+                <ProductCard key={prod.id} product={prod} />
               ))}
+            </div>
+
+            {/* Mobile View (< lg): Two Independent Horizontally Scrollable Rows */}
+            <div className="lg:hidden flex flex-col gap-3.5">
+              {/* Row 1 - Individually Scrollable */}
+              <div className="pdp-related-row flex gap-3 sm:gap-4 overflow-x-auto pb-1.5 pt-1 px-1 snap-x snap-mandatory no-scrollbar touch-pan-x">
+                {row1Sarees.map(prod => (
+                  <div key={prod.id} className="w-[165px] sm:w-[190px] shrink-0 snap-start h-full">
+                    <ProductCard product={prod} />
+                  </div>
+                ))}
+              </div>
+
+              {/* Row 2 - Individually Scrollable */}
+              <div className="pdp-related-row flex gap-3 sm:gap-4 overflow-x-auto pb-2 pt-1 px-1 snap-x snap-mandatory no-scrollbar touch-pan-x">
+                {row2Sarees.map(prod => (
+                  <div key={prod.id} className="w-[165px] sm:w-[190px] shrink-0 snap-start h-full">
+                    <ProductCard product={prod} />
+                  </div>
+                ))}
+              </div>
             </div>
           </section>
         )}

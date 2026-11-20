@@ -1102,3 +1102,16 @@
     display: none;
   }
 }
+
+/* --------------------------------------------------------
+   Independently Scrollable Related Product Rows (Mobile)
+   -------------------------------------------------------- */
+.pdp-related-row {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.pdp-related-row::-webkit-scrollbar {
+  display: none;
+}
