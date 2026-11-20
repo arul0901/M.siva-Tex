@@ -149,11 +149,11 @@ export const ShopByOccasion: React.FC = () => {
 
                     <div className="occasion-card-overlay" />
 
-                    <div className="occasion-tag-wrap">
+                    {/* <div className="occasion-tag-wrap">
                       <span className="occasion-tag">
                         {occ.tag}
                       </span>
-                    </div>
+                    </div> */}
 
                     <div className="occasion-hover-btn-wrap">
                       <span className="occasion-hover-btn">

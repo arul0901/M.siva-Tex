@@ -47,7 +47,7 @@ export const App: React.FC = () => {
             <CinematicHeroBanner />
 
             {/* 2. Shop By Category (8 Saree Categories with Weave Details & Product Counts) */}
-            <ShopByCategory />
+            {/* <ShopByCategory /> */}
 
             {/* 3. Shop By Occasion (5 Arched Editorial Cards + Left Heading) */}
             <ShopByOccasion />

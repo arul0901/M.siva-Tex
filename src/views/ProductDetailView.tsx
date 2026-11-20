@@ -377,13 +377,13 @@ export const ProductDetailView: React.FC = () => {
 
               {/* PREPAID OFFER Card (Exact Gokwik / Vrindavan Fashion Layout) */}
               <div className="pdp-prepaid-card">
-                <div className="pdp-prepaid-top">
+                {/* <div className="pdp-prepaid-top">
                   <span className="pdp-prepaid-badge">
                     <Zap className="w-3 h-3 fill-current" />
                     PREPAID OFFER
                   </span>
                   <span className="pdp-prepaid-title">Extra ₹100 OFF + Surprise Gift 🎁</span>
-                </div>
+                </div> */}
 
                 <div className="pdp-prepaid-price-row">
                   <span className="pdp-prepaid-price-val">
