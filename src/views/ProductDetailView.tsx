@@ -386,69 +386,65 @@ export const ProductDetailView: React.FC = () => {
                 <span><strong>{liveViewers} People</strong> Are Watching Right Now.</span>
               </div>
 
-              {/* Actions: Quantity Stepper, Add to Cart, Wishlist, Share, and Buy It Now
-                  Positioned compactly above-the-fold */}
-              <div className="pdp-actions-row mb-3">
-                <div className="pdp-qty-add-group">
-                  {/* Quantity Stepper */}
-                  <div className="pdp-qty-stepper">
-                    <button
-                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="pdp-qty-btn"
-                      aria-label="Decrease quantity"
-                    >
-                      -
-                    </button>
-                    <span className="pdp-qty-val">{quantity}</span>
-                    <button
-                      onClick={() => setQuantity(quantity + 1)}
-                      className="pdp-qty-btn"
-                      aria-label="Increase quantity"
-                    >
-                      +
-                    </button>
-                  </div>
-
-                  {/* Add to Cart Button */}
-                  <button
-                    onClick={handleAddToCart}
-                    className="pdp-btn-add-cart"
-                  >
-                    <ShoppingBag className="w-3.5 h-3.5" />
-                    <span>Add to cart</span>
-                  </button>
-
-                  {/* Wishlist Button */}
+              {/* Actions: Minimalist High-Contrast Quantity Stepper & Unified CTA Row (Matches Reference Exactly) */}
+              <div className="pdp-purchase-actions my-3">
+                {/* Quantity Header Row with Wishlist */}
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="text-[13px] font-medium text-gray-700">
+                    Quantity
+                  </label>
                   <button
                     onClick={() => toggleWishlist(product)}
-                    className={`w-10 h-10 flex items-center justify-center rounded-sm border transition-colors shrink-0 ${
-                      inWishlist ? 'border-wine bg-wine text-white' : 'border-gray-300 bg-white text-gray-700 hover:border-burgundy'
-                    }`}
-                    aria-label="Save to Wishlist"
-                    title={inWishlist ? 'Saved in Wishlist' : 'Add to Wishlist'}
+                    className="flex items-center gap-1.5 text-xs text-[#7A6560] hover:text-[#4D0007] transition-colors cursor-pointer"
+                    title={inWishlist ? 'Saved in Wishlist' : 'Save to Wishlist'}
                   >
-                    <Heart className={`w-4 h-4 ${inWishlist ? 'fill-current' : ''}`} />
-                  </button>
-
-                  {/* Share Button */}
-                  <button
-                    onClick={handleShare}
-                    className="w-10 h-10 flex items-center justify-center rounded-sm border border-gray-300 bg-white text-gray-700 hover:border-burgundy transition-colors shrink-0"
-                    aria-label="Share product"
-                    title="Share product link"
-                  >
-                    <Share2 className="w-4 h-4" />
+                    <Heart className={`w-3.5 h-3.5 ${inWishlist ? 'fill-[#4D0007] text-[#4D0007]' : ''}`} />
+                    <span>{inWishlist ? 'Wishlisted' : 'Add to Wishlist'}</span>
                   </button>
                 </div>
 
-                {/* Instant Buy Now Button with Prepaid Subtext */}
-                <button
-                  onClick={handleBuyNow}
-                  className="pdp-btn-buy-now"
-                >
-                  <span>Buy It Now</span>
-                  <span className="pdp-buy-now-subtext">Free Gift + ₹100 Off on prepaid</span>
-                </button>
+                {/* Stepper Control */}
+                <div className="inline-flex items-center border border-gray-300 rounded-lg overflow-hidden bg-white shadow-xs mb-3">
+                  <button
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="w-10 h-9 flex items-center justify-center text-gray-700 hover:bg-gray-100 transition-colors text-base font-semibold border-r border-gray-200 select-none cursor-pointer"
+                    aria-label="Decrease quantity"
+                  >
+                    -
+                  </button>
+                  <span className="w-12 h-9 flex items-center justify-center font-bold text-gray-900 border-r border-gray-200 text-sm select-none">
+                    {quantity}
+                  </span>
+                  <button
+                    onClick={() => setQuantity(quantity + 1)}
+                    className="w-10 h-9 flex items-center justify-center text-gray-700 hover:bg-gray-100 transition-colors text-base font-semibold select-none cursor-pointer"
+                    aria-label="Increase quantity"
+                  >
+                    +
+                  </button>
+                </div>
+
+                {/* Thin Divider Line */}
+                <div className="border-b border-gray-200 mb-3" />
+
+                {/* Side-by-side Flush CTA Row: ADD TO CART (White/Black) + BUY IT NOW (Solid Black) */}
+                <div className="flex w-full mb-3 shadow-xs">
+                  {/* ADD TO CART */}
+                  <button
+                    onClick={handleAddToCart}
+                    className="flex-1 h-12 bg-white text-black border-2 border-black border-r-0 font-secondary font-bold text-xs sm:text-[13px] uppercase tracking-[0.16em] hover:bg-neutral-50 transition-colors flex items-center justify-center cursor-pointer select-none"
+                  >
+                    ADD TO CART
+                  </button>
+
+                  {/* BUY IT NOW */}
+                  <button
+                    onClick={handleBuyNow}
+                    className="flex-1 h-12 bg-black text-white border-2 border-black font-secondary font-bold text-xs sm:text-[13px] uppercase tracking-[0.16em] hover:bg-neutral-800 transition-colors flex items-center justify-center cursor-pointer select-none"
+                  >
+                    BUY IT NOW
+                  </button>
+                </div>
               </div>
 
               {/* Delivery Timeline (Custom Delivery Timeline) */}
@@ -900,20 +896,18 @@ export const ProductDetailView: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center flex-1 max-w-[240px] shadow-xs">
           <button
             onClick={handleAddToCart}
-            className="px-3.5 py-2.5 bg-gray-900 text-white font-serif text-[11px] uppercase tracking-wider font-semibold rounded-xs shadow flex items-center gap-1.5"
+            className="flex-1 py-2.5 bg-white text-black border border-black border-r-0 font-secondary text-[10px] uppercase tracking-[0.14em] font-bold text-center select-none cursor-pointer"
           >
-            <ShoppingBag className="w-3.5 h-3.5" />
-            <span>Add to Cart</span>
+            ADD TO CART
           </button>
           <button
             onClick={handleBuyNow}
-            className="px-3.5 py-2.5 bg-gradient-to-r from-gold to-gold-light text-brown-dark font-serif text-[11px] uppercase tracking-wider font-bold rounded-xs shadow flex items-center gap-1"
+            className="flex-1 py-2.5 bg-black text-white border border-black font-secondary text-[10px] uppercase tracking-[0.14em] font-bold text-center select-none cursor-pointer"
           >
-            <span>Buy Now</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            BUY IT NOW
           </button>
         </div>
       </div>
