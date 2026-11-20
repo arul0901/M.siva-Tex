@@ -173,17 +173,18 @@ export const ShopByOccasion: React.FC = () => {
             }
 
             // Scroll track smoothly so categories slide across and occupy the space
+            // Target scroll is bounded to the sidebar width so Card 1 ("Wedding Collection")
+            // always aligns cleanly at the start and is NEVER cut off on the left!
             if (!isDraggingRef.current) {
-              const maxScroll = track.scrollWidth - track.clientWidth;
-              track.scrollLeft = easeP2 * maxScroll;
+              const sidebarWidth = sidebar ? (sidebar.offsetWidth + 18) : 310;
+              const maxScroll = Math.max(track.scrollWidth - track.clientWidth, 0);
+              const targetScroll = Math.min(sidebarWidth, maxScroll);
+              track.scrollLeft = easeP2 * targetScroll;
             }
 
-            // Phase 3: Moves smoothly toward the next section
-            // When totalProgress approaches 1, stage naturally lifts slightly into Bestsellers
-            if (totalProgress > 0.70) {
-              const p3 = (totalProgress - 0.70) / 0.30;
-              const liftY = p3 * 60;
-              stage.style.transform = `translate(0px, -${liftY}px) scale(1) rotate(0deg)`;
+            // Phase 3: Moves smoothly toward the next section without lifting cards into the ceiling
+            if (totalProgress >= 0.70) {
+              stage.style.transform = 'translate(0px, 0px) scale(1) rotate(0deg)';
             }
           } else {
             // Above pinned point: reset sidebar and track for clean reverse scrolling

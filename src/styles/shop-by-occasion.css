@@ -163,7 +163,7 @@
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
   padding-bottom: 1.25rem;
-  padding-top: 0.5rem;
+  padding-top: 1.25rem;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -355,10 +355,10 @@
   margin-left: 0.35rem;
 }
 
-/* 2. Arched Occasion Cards (Increased by 20% for Richer Luxury Showcase) */
+/* 2. Arched Occasion Cards (Balanced 20% Increase with Zero Cropping) */
 .occasion-card {
   flex-shrink: 0;
-  width: 166px;
+  width: 156px;
   scroll-snap-align: start;
   cursor: pointer;
   display: flex;
@@ -368,19 +368,19 @@
 
 @media (min-width: 640px) {
   .occasion-card {
-    width: 178px;
+    width: 166px;
   }
 }
 
 @media (min-width: 1024px) {
   .occasion-card {
-    width: 188px;
+    width: 174px;
   }
 }
 
 @media (min-width: 1440px) {
   .occasion-card {
-    width: 196px;
+    width: 182px;
   }
 }
 
@@ -391,9 +391,9 @@
 .occasion-card-arch {
   position: relative;
   width: 100%;
-  aspect-ratio: 9 / 15;
-  border-top-left-radius: 64px;
-  border-top-right-radius: 64px;
+  aspect-ratio: 9 / 14.8;
+  border-top-left-radius: 58px;
+  border-top-right-radius: 58px;
   border-bottom-left-radius: 0.35rem;
   border-bottom-right-radius: 0.35rem;
   overflow: hidden;
@@ -405,8 +405,8 @@
 
 @media (min-width: 640px) {
   .occasion-card-arch {
-    border-top-left-radius: 70px;
-    border-top-right-radius: 70px;
+    border-top-left-radius: 64px;
+    border-top-right-radius: 64px;
   }
 }
 
