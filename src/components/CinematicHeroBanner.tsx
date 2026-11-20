@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useShop } from '../context/ShopContext';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { HERO_SLIDES, TransitionDirection } from './hero/HeroTypes';
 import { HeroBackground } from './hero/HeroBackground';
 import { HeroImageLayer } from './hero/HeroImageLayer';
@@ -11,8 +9,6 @@ import { HeroContent } from './hero/HeroContent';
 import { HeroProgressIndicator } from './hero/HeroProgressIndicator';
 import { HeroNavigation } from './hero/HeroNavigation';
 import '../styles/cinematic-hero.css';
-
-gsap.registerPlugin(ScrollTrigger);
 
 export const CinematicHeroBanner: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -45,110 +41,7 @@ export const CinematicHeroBanner: React.FC = () => {
     }
   }, [isMuted, isPlaying]);
 
-  // 2. GSAP ScrollTrigger Cinematic Parallax & Fade Animation on banner.mp4 & Elements
-  useEffect(() => {
-    const banner = bannerRef.current;
-    if (!banner) return;
-
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: banner,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 0.9,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            const video = videoRef.current;
-            if (!video) return;
-            const velocity = Math.abs(self.getVelocity());
-            if (velocity > 250) {
-              video.playbackRate = Math.min(1.0 + velocity / 3200, 1.35);
-            } else {
-              video.playbackRate = 1.0;
-            }
-          }
-        }
-      });
-
-      // Cinematic Parallax Video Zoom & Translation on banner.mp4
-      tl.to('.cinematic-hero-video-container', {
-        scale: 1.15,
-        yPercent: 20,
-        ease: 'none',
-      }, 0);
-
-      // Video element subtle contrast & lighting depth
-      tl.to('.cinematic-hero-video-element', {
-        filter: 'brightness(0.85) contrast(1.08)',
-        ease: 'none',
-      }, 0);
-
-      // Model fallback layer shift (matching depth)
-      tl.to('.cinematic-hero-model-container', {
-        yPercent: 18,
-        scale: 1.05,
-        ease: 'none',
-      }, 0);
-
-      // Upward drift, soft blur, and fade for narrative text
-      tl.to('.cinematic-hero-text-block', {
-        y: -110,
-        opacity: 0,
-        filter: 'blur(3px)',
-        ease: 'power1.out',
-      }, 0);
-
-      // Scroll to explore indicator prompt fades out quickly
-      tl.to('.cinematic-hero-scroll-prompt', {
-        y: 25,
-        opacity: 0,
-        duration: 0.25,
-        ease: 'power1.out',
-      }, 0);
-
-      // Controls and indicators glide away gently
-      tl.to('.cinematic-hero-bottom-bar', {
-        y: 45,
-        opacity: 0,
-        ease: 'power1.out',
-        duration: 0.45,
-      }, 0);
-
-      tl.to('.cinematic-hero-vertical-indicators', {
-        x: 35,
-        opacity: 0,
-        ease: 'power1.out',
-        duration: 0.45,
-      }, 0);
-
-      // Ambient background deepening toward imperial maroon of the next section
-      tl.to('.cinematic-hero-bg-ambience', {
-        backgroundColor: '#4D0007',
-        opacity: 0.95,
-        ease: 'none',
-      }, 0);
-
-      tl.to('.cinematic-hero-video-vignette-bottom', {
-        opacity: 0.95,
-        height: '240px',
-        ease: 'none',
-      }, 0);
-
-      // Floating canvas petals accelerate smoothly upwards
-      tl.to('.cinematic-hero-canvas-petals', {
-        y: -150,
-        opacity: 0.2,
-        ease: 'none',
-      }, 0);
-    }, banner);
-
-    return () => {
-      ctx.revert();
-    };
-  }, []);
-
-  // 3. Slide Transition Handlers
+  // 2. Slide Transition Handlers
   const goToSlide = useCallback((index: number, direction?: TransitionDirection) => {
     if (index === currentSlide) return;
     if (transitionTimeoutRef.current) {
