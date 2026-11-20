@@ -36,19 +36,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
 
-        {/* Badges */}
-        {/* <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10 pointer-events-none">
+        {/* Luxury Badges on Top Left */}
+        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none">
           {product.isBestSeller && (
-            <span className="bg-burgundy text-gold-pale text-[10px] font-serif uppercase tracking-widest px-2.5 py-0.5 rounded-sm shadow-sm">
-              Best Seller
+            <span className="bg-burgundy text-gold-pale text-[9px] font-secondary uppercase tracking-[0.2em] font-semibold px-2.5 py-0.5 rounded-xs backdrop-blur-md shadow-xs border border-gold/35">
+              Bestseller
             </span>
           )}
           {product.discountPercent > 0 && (
-            <span className="bg-wine/90 text-ivory text-[10px] font-sans font-medium px-2 py-0.5 rounded-sm backdrop-blur-sm">
+            <span className="bg-gold text-brown-dark text-[9px] font-secondary font-bold px-1.5 py-0.5 rounded-xs shadow-xs">
               {product.discountPercent}% Off
             </span>
           )}
-        </div> */}
+        </div>
 
         {/* Wishlist Button (Always Visible or Floating on Top Right) */}
         <button
