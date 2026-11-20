@@ -132,14 +132,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, compact = fal
         />
 
         {/* Luxury Badges on Top Left */}
-        <div className="absolute top-2.5 left-2.5 flex flex-col items-start gap-1 z-10 pointer-events-none">
+        <div className="absolute top-2 left-2 sm:top-2.5 sm:left-2.5 flex flex-col items-start gap-1 z-10 pointer-events-none">
           {product.isBestSeller && (
-            <span className="bg-burgundy text-gold-pale text-[9px] font-secondary uppercase tracking-[0.2em] font-semibold px-2.5 py-0.5 rounded-xs backdrop-blur-md shadow-xs border border-gold/35">
+            <span className="bg-burgundy text-gold-pale text-[8px] sm:text-[9px] font-secondary uppercase tracking-[0.16em] font-semibold px-2 sm:px-2.5 py-0.5 rounded-xs backdrop-blur-md shadow-xs border border-gold/35">
               Bestseller
             </span>
           )}
           {product.discountPercent > 0 && (
-            <span className="bg-gold text-brown-dark text-[9px] font-secondary font-bold px-1.5 py-0.5 rounded-xs shadow-xs">
+            <span className="bg-gold text-brown-dark text-[8px] sm:text-[9px] font-secondary font-bold px-1 sm:px-1.5 py-0.5 rounded-xs shadow-xs">
               {product.discountPercent}% Off
             </span>
           )}
@@ -149,36 +149,36 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, compact = fal
         <button
           onClick={handleWishlist}
           aria-label={inWishlist ? "Remove from Wishlist" : "Save to Wishlist"}
-          className={`absolute top-2.5 right-2.5 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 z-10 shadow-sm ${
+          className={`absolute top-2 right-2 sm:top-2.5 sm:right-2.5 w-7 h-7 sm:w-9 sm:h-9 rounded-full flex items-center justify-center transition-all duration-200 z-10 shadow-sm ${
             inWishlist
               ? 'bg-burgundy text-gold-pale'
               : 'bg-white/90 text-burgundy hover:bg-white hover:text-burgundy'
           }`}
         >
-          <Heart className={`w-4 h-4 ${inWishlist ? 'fill-current' : ''}`} strokeWidth={2} />
+          <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${inWishlist ? 'fill-current' : ''}`} strokeWidth={2} />
         </button>
       </div>
 
       {/* Product Details */}
-      <div className="p-3.5 sm:p-4 flex flex-col flex-1">
+      <div className="p-2.5 sm:p-4 flex flex-col flex-1">
         {/* Saree Type / Weave */}
-        <div className="flex items-center justify-between text-[11px] text-gold font-primary uppercase tracking-wider mb-1">
-          <span className="font-semibold">{product.category}</span>
-          <span className="text-brown-deep/60 font-special italic lowercase text-xs">{product.zari}</span>
+        <div className="flex items-center justify-between text-[10px] sm:text-[11px] text-gold font-primary uppercase tracking-wider mb-1">
+          <span className="font-semibold truncate pr-1">{product.category}</span>
+          <span className="text-brown-deep/60 font-special italic lowercase text-[10px] sm:text-xs shrink-0">{product.zari}</span>
         </div>
 
         {/* Product Name */}
-        <h4 className="font-secondary text-sm sm:text-base font-semibold text-burgundy group-hover:text-gold transition-colors line-clamp-1">
+        <h4 className="font-secondary text-xs sm:text-base font-semibold text-burgundy group-hover:text-gold transition-colors line-clamp-1">
           {product.name}
         </h4>
 
         {/* Star Rating */}
-        <div className="flex items-center gap-1.5 mt-1.5 mb-2">
+        <div className="flex items-center gap-1.5 mt-1 sm:mt-1.5 mb-1.5 sm:mb-2">
           <div className="flex items-center text-amber-600">
             {[...Array(5)].map((_, i) => (
               <Star
                 key={i}
-                className={`w-3 h-3 ${
+                className={`w-2.5 h-2.5 sm:w-3 sm:h-3 ${
                   i < Math.floor(product.rating)
                     ? 'fill-current text-amber-500'
                     : 'text-amber-200'
@@ -186,18 +186,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, compact = fal
               />
             ))}
           </div>
-          <span className="text-[11px] font-secondary text-brown-deep/60">
+          <span className="text-[10px] sm:text-[11px] font-secondary text-brown-deep/60">
             {product.rating} ({product.reviewCount})
           </span>
         </div>
 
         {/* Price Section */}
-        <div className="mt-auto flex items-baseline gap-2 pt-2 border-t border-gold/15 font-secondary">
-          <span className="text-base sm:text-lg font-bold text-burgundy">
+        <div className="mt-auto flex items-baseline gap-1.5 sm:gap-2 pt-1.5 sm:pt-2 border-t border-gold/15 font-secondary">
+          <span className="text-sm sm:text-lg font-bold text-burgundy">
             ₹{product.price.toLocaleString('en-IN')}
           </span>
           {product.originalPrice > product.price && (
-            <span className="text-xs text-brown-deep/50 line-through font-normal">
+            <span className="text-[10px] sm:text-xs text-brown-deep/50 line-through font-normal">
               ₹{product.originalPrice.toLocaleString('en-IN')}
             </span>
           )}

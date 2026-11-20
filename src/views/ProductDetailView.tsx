@@ -164,8 +164,8 @@ export const ProductDetailView: React.FC = () => {
     setActiveImageIndex(prev => (prev === images.length - 1 ? 0 : prev + 1));
   };
 
-  // Related Products
-  const relatedSarees = SAREE_PRODUCTS.filter(p => p.id !== product.id).slice(0, 4);
+  // Related Products: 8 items for 2-row mobile scroll & 4-card desktop grid
+  const relatedSarees = SAREE_PRODUCTS.filter(p => p.id !== product.id).slice(0, 8);
 
   // Reviews for this product
   const reviewsList = [
@@ -230,74 +230,86 @@ export const ProductDetailView: React.FC = () => {
           <span className="pdp-breadcrumb-active">{product.name}</span>
         </nav>
 
-        {/* 2. Main Product Grid: 40% Left Gallery, 60% Right Product Info */}
-        <div className="grid grid-cols-1 lg:grid-cols-10 gap-6 lg:gap-8 items-start">
+        {/* 2. Main Product Grid: 50-50 Layout (Left Gallery 50%, Right Product Info 50%) */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 xl:gap-14 items-start">
           
-          {/* Left Column: Media Gallery (40% width, sticky with zero below spacing) */}
-          <div className="lg:col-span-4 pdp-gallery-container lg:sticky lg:top-24 self-start">
-            
-            {/* Thumbnails Strip */}
-            <div className="pdp-thumbnails-strip scrollbar-none" aria-label="Product thumbnails">
-              {images.map((img, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setActiveImageIndex(idx)}
-                  className={`pdp-thumbnail-btn ${activeImageIndex === idx ? 'is-active' : ''}`}
-                  aria-label={`View photo ${idx + 1}`}
-                >
-                  <img src={img} alt={`Thumbnail ${idx + 1}`} className="pdp-thumbnail-img" />
-                </button>
-              ))}
+          {/* Left Column: Media Gallery (50% width, sticky with tall luxury viewer) */}
+          <div className="w-full flex flex-col lg:sticky lg:top-24 self-start">
+            <div className="pdp-gallery-container">
+              {/* Thumbnails Strip */}
+              <div className="pdp-thumbnails-strip scrollbar-none" aria-label="Product thumbnails">
+                {images.map((img, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveImageIndex(idx)}
+                    className={`pdp-thumbnail-btn ${activeImageIndex === idx ? 'is-active' : ''}`}
+                    aria-label={`View photo ${idx + 1}`}
+                  >
+                    <img src={img} alt={`Thumbnail ${idx + 1}`} className="pdp-thumbnail-img" />
+                  </button>
+                ))}
+              </div>
+
+              {/* Main Hero Viewer (Increased height to utilize vertical space) */}
+              <div className="pdp-main-viewer group">
+                <img
+                  src={images[activeImageIndex]}
+                  alt={product.name}
+                  className="pdp-main-img"
+                  onClick={() => setIsLightboxOpen(true)}
+                />
+
+                {/* Discount Badge */}
+                <div className="pdp-badge-discount">
+                  {product.discountPercent}% OFF
+                </div>
+
+                {/* Popular Badge */}
+                <div className="pdp-badge-popular">
+                  <Sparkles className="w-3 h-3 text-gold" />
+                  <span>Most Popular</span>
+                </div>
+
+                {/* Navigation Arrows */}
+                <div className="pdp-viewer-arrows">
+                  <button
+                    onClick={prevImage}
+                    className="pdp-nav-arrow"
+                    aria-label="Previous photo"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={nextImage}
+                    className="pdp-nav-arrow"
+                    aria-label="Next photo"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Counter Tag */}
+                <div className="pdp-photo-counter">
+                  {activeImageIndex + 1} / {images.length}
+                </div>
+              </div>
             </div>
 
-            {/* Main Hero Viewer */}
-            <div className="pdp-main-viewer group">
-              <img
-                src={images[activeImageIndex]}
-                alt={product.name}
-                className="pdp-main-img"
-                onClick={() => setIsLightboxOpen(true)}
-              />
-
-              {/* Discount Badge */}
-              <div className="pdp-badge-discount">
-                {product.discountPercent}% OFF
+            {/* Below Gallery Assurance Strip to utilize vertical space */}
+            <div className="pdp-gallery-footer mt-3.5 hidden sm:flex items-center justify-between py-2.5 px-3.5 bg-white/80 rounded-xs border border-gold/20 shadow-xs">
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0" />
+                <span className="text-xs font-secondary font-semibold text-burgundy">Silk Mark Certified Authenticity</span>
               </div>
-
-              {/* Popular Badge */}
-              <div className="pdp-badge-popular">
-                <Sparkles className="w-3 h-3 text-gold" />
-                <span>Most Popular</span>
-              </div>
-
-              {/* Navigation Arrows */}
-              <div className="pdp-viewer-arrows">
-                <button
-                  onClick={prevImage}
-                  className="pdp-nav-arrow"
-                  aria-label="Previous photo"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={nextImage}
-                  className="pdp-nav-arrow"
-                  aria-label="Next photo"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
-
-              {/* Counter Tag */}
-              <div className="pdp-photo-counter">
-                {activeImageIndex + 1} / {images.length}
+              <div className="flex items-center gap-2 text-xs font-secondary text-[#78635B]">
+                <Sparkles className="w-3.5 h-3.5 text-gold shrink-0" />
+                <span>Handloom Fall & Pico Finished</span>
               </div>
             </div>
-
           </div>
 
-          {/* Right Column: Product Info & Purchase Engine (60% width, compact boutique column) */}
-          <div className="lg:col-span-6 flex flex-col max-w-[480px]">
+          {/* Right Column: Product Info & Purchase Engine (50% width) */}
+          <div className="w-full flex flex-col max-w-[500px]">
             <div>
               {/* Origin & In-Stock Line */}
               <div className="flex items-center justify-between text-[11px] font-secondary uppercase tracking-[0.12em] text-[#8C6D62] pb-1 border-b border-[#D4AF37]/15 mb-2">
@@ -838,16 +850,35 @@ export const ProductDetailView: React.FC = () => {
           </div>
         </section>
 
-        {/* 5. Related Products Section */}
+        {/* 5. Related Products Section: Mobile 2-Row Horizontal Scroll & Desktop 4-Card Grid */}
         {relatedSarees.length > 0 && (
-          <section className="mt-20 pt-12 border-t border-gold/20">
-            <div className="text-center mb-10">
-              <span className="text-gold font-serif text-xs uppercase tracking-[0.25em]">You May Also Cherish</span>
-              <h3 className="font-serif text-2xl sm:text-3xl text-burgundy mt-1">Complementary Weaves</h3>
+          <section className="mt-16 sm:mt-20 pt-10 sm:pt-12 border-t border-gold/20">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 sm:mb-8 gap-2">
+              <div className="text-center sm:text-left">
+                <span className="text-gold font-serif text-xs uppercase tracking-[0.25em] block">You May Also Cherish</span>
+                <h3 className="font-serif text-2xl sm:text-3xl text-burgundy mt-1">Complementary Weaves</h3>
+              </div>
+              {/* Mobile horizontal scroll hint */}
+              <div className="flex items-center justify-center sm:justify-start gap-1.5 text-[11px] text-brown-deep/70 lg:hidden">
+                <span className="font-secondary">Swipe to explore</span>
+                <ArrowRight className="w-3.5 h-3.5 text-gold" />
+              </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {relatedSarees.map(prod => (
-                <ProductCard key={prod.id} product={prod} />
+
+            {/* Mobile: 2 Rows with horizontal scrolling | Desktop: 4 Columns single row */}
+            <div className="
+              grid grid-rows-2 grid-flow-col auto-cols-[165px] sm:auto-cols-[190px]
+              gap-3 sm:gap-4 overflow-x-auto pb-4 pt-1 px-1
+              snap-x snap-mandatory scrollbar-none
+              lg:grid-rows-1 lg:grid-cols-4 lg:grid-flow-row lg:overflow-visible lg:px-0 lg:gap-6
+            ">
+              {relatedSarees.map((prod, idx) => (
+                <div
+                  key={prod.id}
+                  className={`snap-start h-full ${idx >= 4 ? 'block lg:hidden' : 'block'}`}
+                >
+                  <ProductCard product={prod} />
+                </div>
               ))}
             </div>
           </section>
