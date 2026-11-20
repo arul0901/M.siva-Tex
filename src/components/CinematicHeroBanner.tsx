@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useShop } from '../context/ShopContext';
 import { HERO_SLIDES, TransitionDirection } from './hero/HeroTypes';
 import { HeroBackground } from './hero/HeroBackground';
-import { HeroImageLayer } from './hero/HeroImageLayer';
 import { HeroVideoLayer } from './hero/HeroVideoLayer';
 import { FabricAnimation } from './hero/FabricAnimation';
 import { HeroContent } from './hero/HeroContent';
@@ -125,7 +124,7 @@ export const CinematicHeroBanner: React.FC = () => {
 
   // 6. CTA Action Handlers
   const handlePrimaryCta = () => {
-    setSelectedCategoryFilter(activeSlide.categoryTarget);
+    setSelectedCategoryFilter(null);
     setCurrentView('shop');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -159,16 +158,7 @@ export const CinematicHeroBanner: React.FC = () => {
       {/* 1. Ambient Background Layer, Lighting Overlays & Floating Petals */}
       <HeroBackground />
 
-      {/* 2. Crystal-Clear High-Resolution Model Layer (Instant Fallback / Low-Bandwidth Layer) */}
-      <HeroImageLayer
-        slides={HERO_SLIDES}
-        currentSlide={currentSlide}
-        prevSlide={prevSlide}
-        transitionDirection={transitionDirection}
-        isTransitioning={isTransitioning}
-      />
-
-      {/* 3. Master Cinematic Video Banner (banner.mp4 with 60fps luxury playback & scroll animation) */}
+      {/* 2. Master Cinematic Video Banner (banner.mp4 with 60fps luxury playback & scroll animation) */}
       <HeroVideoLayer
         videoRef={videoRef}
         currentSlide={currentSlide}
@@ -215,10 +205,6 @@ export const CinematicHeroBanner: React.FC = () => {
 
       {/* 8. Bottom Navigation Controls & Audio Sync */}
       <HeroNavigation
-        onPrevSlide={prevSlideFn}
-        onNextSlide={nextSlide}
-        isPlaying={isPlaying}
-        onTogglePlay={() => setIsPlaying(!isPlaying)}
         isMuted={isMuted}
         onToggleMute={() => setIsMuted(!isMuted)}
       />

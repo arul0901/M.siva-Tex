@@ -25,7 +25,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     secondaryCta: 'Our Heritage',
     categoryTarget: 'Kanchipuram Silk',
     tag: 'Pure Kanchipuram Silk',
-    image: '/assets/hero-full.jpg',
+    image: '/assets/video/banner_poster.jpg',
     posClass: 'cinematic-hero-model-pos-1'
   },
   {

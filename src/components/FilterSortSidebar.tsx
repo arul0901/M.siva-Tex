@@ -81,7 +81,7 @@ export const OCCASION_OPTIONS = [
 ];
 
 export const SORT_OPTIONS = [
-  { value: 'recommended', label: 'Recommended' },
+  { value: 'recommended', label: 'Sort By' },
   { value: 'newest', label: 'New Arrivals' },
   { value: 'popularity', label: 'Popularity' },
   { value: 'price-low', label: 'Price: Low to High' },

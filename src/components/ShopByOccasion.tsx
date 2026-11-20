@@ -73,6 +73,7 @@ const OCCASIONS: OccasionItem[] = [
 
 export const ShopByOccasion: React.FC = () => {
   const { setCurrentView, setSelectedCategoryFilter } = useShop();
+  const sectionRef = useRef<HTMLElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -100,6 +101,59 @@ export const ShopByOccasion: React.FC = () => {
     const handleResize = () => checkScrollState();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
+  }, [checkScrollState]);
+
+  // Automatic Horizontal Swipe Driven by Vertical Scroll:
+  // As the user scrolls down into #shop-by-occasion, the categories smoothly swipe forward,
+  // occupying the left space. When scrolling back up, it smoothly negative-swipes back to the original place.
+  useEffect(() => {
+    let ticking = false;
+
+    const handleWindowScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          if (!scrollRef.current || !sectionRef.current || isDraggingRef.current) {
+            ticking = false;
+            return;
+          }
+
+          const section = sectionRef.current;
+          const track = scrollRef.current;
+          const rect = section.getBoundingClientRect();
+          const windowHeight = window.innerHeight;
+
+          // Activation trigger zone:
+          // startY: when the top of the section enters the lower portion of the screen
+          // endY: when the section has reached the upper portion of the screen
+          const startY = windowHeight * 0.75;
+          const endY = 80;
+          const range = startY - endY;
+
+          if (rect.top <= startY && rect.bottom >= 100) {
+            const progress = Math.min(Math.max((startY - rect.top) / range, 0), 1);
+            
+            // Calculate swipe amount:
+            // Scroll past the left editorial sidebar so all 7 occasion categories occupy the screen
+            const sidebar = track.querySelector('.occasion-sidebar-card') as HTMLElement;
+            const sidebarWidth = sidebar ? sidebar.offsetWidth + 26 : 340;
+            const maxScroll = track.scrollWidth - track.clientWidth;
+            const targetSwipe = Math.min(sidebarWidth + 80, maxScroll);
+
+            track.scrollLeft = progress * targetSwipe;
+          } else if (rect.top > startY) {
+            // Above the trigger zone (scrolled back up towards the hero banner)
+            track.scrollLeft = 0;
+          }
+
+          checkScrollState();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleWindowScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleWindowScroll);
   }, [checkScrollState]);
 
   const handleSelectOccasion = (cat: string) => {
@@ -161,7 +215,12 @@ export const ShopByOccasion: React.FC = () => {
   };
 
   return (
-    <section className="occasion-section" id="shop-by-occasion" aria-label="Curated By Celebration - Shop By Occasion">
+    <section
+      ref={sectionRef}
+      className="occasion-section"
+      id="shop-by-occasion"
+      aria-label="Curated By Celebration - Shop By Occasion"
+    >
       <div className="occasion-container">
         
         {/* Floating Navigation Controls (Appear when swiping across categories) */}

@@ -437,8 +437,9 @@ export const ShopView: React.FC = () => {
                   aria-label="Sort products dropdown"
                 >
                   <ArrowUpDown className="w-3.5 h-3.5 text-gold toolbar-btn-icon" />
-                  <span className="hidden xs:inline">Sort:</span>
-                  <span className="font-semibold">{currentSortOption.label}</span>
+                  <span className="font-semibold">
+                    {currentSortOption.value === 'recommended' ? 'Sort By' : `Sort: ${currentSortOption.label}`}
+                  </span>
                   <ChevronDown className={`w-3.5 h-3.5 text-gold transition-transform duration-200 ${sortDropdownOpen ? 'rotate-180' : ''}`} />
                 </button>
 
@@ -726,14 +727,6 @@ export const ShopView: React.FC = () => {
                         </div>
                         <div className="flex items-center gap-2">
                           <button
-                            onClick={() => setQuickViewProduct(product)}
-                            className="min-h-[44px] min-w-[44px] px-3 py-2 bg-beige/50 hover:bg-beige border border-gold/30 rounded-xs text-burgundy text-xs font-serif flex items-center justify-center gap-1.5 transition-colors"
-                            title="Quick View"
-                          >
-                            <Eye className="w-3.5 h-3.5" />
-                            <span className="hidden xs:inline">Quick View</span>
-                          </button>
-                          <button
                             onClick={() => toggleWishlist(product)}
                             className={`min-h-[44px] min-w-[44px] p-2.5 rounded-xs border transition-colors flex items-center justify-center ${
                               inWishlist ? 'border-wine bg-wine text-ivory' : 'border-gold/30 text-burgundy hover:border-gold'
@@ -743,11 +736,10 @@ export const ShopView: React.FC = () => {
                             <Heart className={`w-4 h-4 ${inWishlist ? 'fill-current' : ''}`} />
                           </button>
                           <button
-                            onClick={() => addToCart(product, 1)}
-                            className="min-h-[44px] flex-1 sm:flex-none px-4 py-2 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark text-xs font-serif uppercase tracking-wider font-semibold rounded-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm"
+                            onClick={() => openProductDetail(product)}
+                            className="min-h-[44px] px-4 py-2 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark text-xs font-serif uppercase tracking-wider font-semibold rounded-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm"
                           >
-                            <ShoppingBag className="w-3.5 h-3.5" />
-                            <span>Add to Bag</span>
+                            <span>View Details</span>
                           </button>
                         </div>
                       </div>
