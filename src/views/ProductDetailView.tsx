@@ -81,8 +81,7 @@ export const ProductDetailView: React.FC = () => {
     exchange: false,
     shipping: false,
     care: false,
-    seller: false,
-    help: false
+    seller: false
   });
 
   const toggleAccordion = (key: string) => {
@@ -217,11 +216,11 @@ export const ProductDetailView: React.FC = () => {
   ];
 
   return (
-    <div className="pdp-page-wrapper py-6 sm:py-10 pb-28 sm:pb-12">
+    <div className="pdp-page-wrapper pt-3 pb-20 sm:pt-4 sm:pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* 1. Breadcrumbs */}
-        <nav className="pdp-breadcrumb" aria-label="Breadcrumb navigation">
+        <nav className="pdp-breadcrumb mb-2 sm:mb-3" aria-label="Breadcrumb navigation">
           <button onClick={() => setCurrentView('home')}>Home</button>
           <span>/</span>
           <button onClick={() => setCurrentView('shop')}>Sarees</button>
@@ -231,11 +230,11 @@ export const ProductDetailView: React.FC = () => {
           <span className="pdp-breadcrumb-active">{product.name}</span>
         </nav>
 
-        {/* 2. Main Product Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+        {/* 2. Main Product Grid: 40% Left Gallery, 60% Right Product Info */}
+        <div className="grid grid-cols-1 lg:grid-cols-10 gap-6 lg:gap-8 items-start">
           
-          {/* Left Column: Media Gallery (Col 1 - 7) */}
-          <div className="lg:col-span-7 pdp-gallery-container">
+          {/* Left Column: Media Gallery (40% width, sticky with zero below spacing) */}
+          <div className="lg:col-span-4 pdp-gallery-container lg:sticky lg:top-24 self-start">
             
             {/* Thumbnails Strip */}
             <div className="pdp-thumbnails-strip scrollbar-none" aria-label="Product thumbnails">
@@ -297,11 +296,11 @@ export const ProductDetailView: React.FC = () => {
 
           </div>
 
-          {/* Right Column: Product Info & Purchase Engine (Col 8 - 12) */}
-          <div className="lg:col-span-5 flex flex-col justify-between">
+          {/* Right Column: Product Info & Purchase Engine (60% width) */}
+          <div className="lg:col-span-6 flex flex-col">
             <div>
               {/* Origin & In-Stock Line */}
-              <div className="flex items-center justify-between text-[11px] font-secondary uppercase tracking-[0.12em] text-[#8C6D62] pb-1.5 border-b border-[#D4AF37]/15 mb-2.5">
+              <div className="flex items-center justify-between text-[11px] font-secondary uppercase tracking-[0.12em] text-[#8C6D62] pb-1 border-b border-[#D4AF37]/15 mb-2">
                 <span>{product.origin || 'HANDCRAFTED IN KANCHIPURAM, TAMIL NADU'}</span>
                 <span className="flex items-center gap-1.5 text-emerald-800 font-semibold normal-case tracking-normal">
                   <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
@@ -310,17 +309,17 @@ export const ProductDetailView: React.FC = () => {
               </div>
 
               {/* Brand / Vendor Label */}
-              <span className="pdp-vendor-pill">
+              <span className="pdp-vendor-pill mb-1">
                 VRINDAVAN FASHION • M. SIVA-TEX
               </span>
 
               {/* Product Title */}
-              <h1 className="pdp-product-title">
+              <h1 className="pdp-product-title text-2xl sm:text-3xl font-semibold mb-2">
                 {product.name}
               </h1>
 
               {/* Rating & Review Link + Share */}
-              <div className="flex items-center justify-between gap-4 mb-3">
+              <div className="flex items-center justify-between gap-4 mb-2.5">
                 <div className="flex items-center gap-2">
                   <div className="pdp-stars-group">
                     {[...Array(5)].map((_, i) => (
@@ -350,9 +349,9 @@ export const ProductDetailView: React.FC = () => {
               </div>
 
               {/* Price Row */}
-              <div className="pdp-price-row">
+              <div className="pdp-price-row mb-0.5">
                 <span className="text-xs text-brown-deep/60 uppercase font-secondary mr-1">Sale price</span>
-                <span className="pdp-price-sale">
+                <span className="pdp-price-sale text-2xl font-bold">
                   ₹ {product.price.toLocaleString('en-IN')}
                 </span>
                 {product.originalPrice > product.price && (
@@ -366,83 +365,18 @@ export const ProductDetailView: React.FC = () => {
                   </span>
                 )}
               </div>
-              <p className="pdp-tax-notice">Inclusive of all taxes.</p>
+              <p className="pdp-tax-notice text-xs mb-2">Inclusive of all taxes.</p>
 
-              {/* Live Viewers Indicator (Vrindavan Fashion Scarcity) */}
-              <div className="pdp-live-visitors">
+              {/* Live Viewers Indicator */}
+              <div className="pdp-live-visitors mb-3">
                 <div className="pdp-live-dot" />
                 <Eye className="w-3.5 h-3.5 text-emerald-800" />
                 <span><strong>{liveViewers} People</strong> Are Watching Right Now.</span>
               </div>
 
-              {/* PREPAID OFFER Card (Exact Gokwik / Vrindavan Fashion Layout) */}
-              <div className="pdp-prepaid-card">
-                {/* <div className="pdp-prepaid-top">
-                  <span className="pdp-prepaid-badge">
-                    <Zap className="w-3 h-3 fill-current" />
-                    PREPAID OFFER
-                  </span>
-                  <span className="pdp-prepaid-title">Extra ₹100 OFF + Surprise Gift 🎁</span>
-                </div> */}
-
-                <div className="pdp-prepaid-price-row">
-                  <span className="pdp-prepaid-price-val">
-                    ₹{(product.price - 100).toLocaleString('en-IN')}
-                  </span>
-                  <span className="pdp-prepaid-price-cut">
-                    ₹{product.price.toLocaleString('en-IN')}
-                  </span>
-                  <span className="pdp-prepaid-save-pill">You Save ₹100</span>
-                </div>
-
-                <div className="pdp-prepaid-footer">
-                  <div className="flex items-center gap-1.5 text-xs">
-                    <Lock className="w-3.5 h-3.5 text-emerald-700" />
-                    <span>UPI • Card • Wallet</span>
-                  </div>
-                  <div className="pdp-prepaid-timer">
-                    <Clock className="w-3.5 h-3.5" />
-                    <span>{formatTimer(timeLeft)}</span>
-                  </div>
-                </div>
-                <p className="text-[11px] text-[#7A6560] mt-1.5 font-sans italic">
-                  *Most customers choose prepaid to save ₹100 & receive an authentic surprise keepsake gift.
-                </p>
-              </div>
-
-              {/* Delivery Details Pincode Checker */}
-              <div className="pdp-pincode-box">
-                <div className="pdp-pincode-header">
-                  <MapPin className="w-3.5 h-3.5 text-gold" />
-                  <span>Check Delivery Details</span>
-                </div>
-                <form onSubmit={handleCheckPincode} className="pdp-pincode-form">
-                  <input
-                    type="text"
-                    maxLength={6}
-                    value={pincode}
-                    onChange={(e) => setPincode(e.target.value)}
-                    placeholder="Enter 6-digit Pincode"
-                    className="pdp-pincode-input"
-                  />
-                  <button type="submit" className="pdp-pincode-btn">
-                    Check
-                  </button>
-                </form>
-                {pincodeStatus && (
-                  <p className={`pdp-pincode-status ${pincodeStatus.startsWith('Available') ? 'text-emerald-700' : 'text-rose-600'}`}>
-                    {pincodeStatus}
-                  </p>
-                )}
-              </div>
-
-              {/* Subtotal & Quantity */}
-              <p className="pdp-subtotal-text">
-                Subtotal: ₹{(product.price * quantity).toLocaleString('en-IN')}.00
-              </p>
-
-              {/* Actions: Quantity Stepper, Add to Cart, Buy Now */}
-              <div className="pdp-actions-row">
+              {/* Actions: Quantity Stepper, Add to Cart, Wishlist, Share, and Buy It Now
+                  Positioned immediately above-the-fold so they are 100% visible without scrolling! */}
+              <div className="pdp-actions-row mb-4">
                 <div className="pdp-qty-add-group">
                   {/* Quantity Stepper */}
                   <div className="pdp-qty-stepper">
@@ -475,23 +409,23 @@ export const ProductDetailView: React.FC = () => {
                   {/* Wishlist Button */}
                   <button
                     onClick={() => toggleWishlist(product)}
-                    className={`w-12 h-12 flex items-center justify-center rounded-sm border transition-colors ${
+                    className={`w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center rounded-sm border transition-colors shrink-0 ${
                       inWishlist ? 'border-wine bg-wine text-white' : 'border-gray-300 bg-white text-gray-700 hover:border-burgundy'
                     }`}
                     aria-label="Save to Wishlist"
                     title={inWishlist ? 'Saved in Wishlist' : 'Add to Wishlist'}
                   >
-                    <Heart className={`w-5 h-5 ${inWishlist ? 'fill-current' : ''}`} />
+                    <Heart className={`w-4 h-4 sm:w-5 sm:h-5 ${inWishlist ? 'fill-current' : ''}`} />
                   </button>
 
                   {/* Share Button */}
                   <button
                     onClick={handleShare}
-                    className="w-12 h-12 flex items-center justify-center rounded-sm border border-gray-300 bg-white text-gray-700 hover:border-burgundy transition-colors"
+                    className="w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center rounded-sm border border-gray-300 bg-white text-gray-700 hover:border-burgundy transition-colors shrink-0"
                     aria-label="Share product"
                     title="Share product link"
                   >
-                    <Share2 className="w-5 h-5" />
+                    <Share2 className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
                 </div>
 
@@ -505,8 +439,8 @@ export const ProductDetailView: React.FC = () => {
                 </button>
               </div>
 
-              {/* Delivery Timeline (Custom Delivery Timeline like Vrindavan Fashion) */}
-              <div className="cdt-container">
+              {/* Delivery Timeline (Custom Delivery Timeline) */}
+              <div className="cdt-container my-3">
                 <div className="cdt-headline">
                   <Zap className="w-3.5 h-3.5 text-amber-500 fill-current" />
                   <span>Prepaid orders are delivered faster than COD.</span>
@@ -544,8 +478,34 @@ export const ProductDetailView: React.FC = () => {
                 </div>
               </div>
 
+              {/* Delivery Details Pincode Checker */}
+              <div className="pdp-pincode-box my-3">
+                <div className="pdp-pincode-header">
+                  <MapPin className="w-3.5 h-3.5 text-gold" />
+                  <span>Check Delivery Details</span>
+                </div>
+                <form onSubmit={handleCheckPincode} className="pdp-pincode-form">
+                  <input
+                    type="text"
+                    maxLength={6}
+                    value={pincode}
+                    onChange={(e) => setPincode(e.target.value)}
+                    placeholder="Enter 6-digit Pincode"
+                    className="pdp-pincode-input"
+                  />
+                  <button type="submit" className="pdp-pincode-btn">
+                    Check
+                  </button>
+                </form>
+                {pincodeStatus && (
+                  <p className={`pdp-pincode-status ${pincodeStatus.startsWith('Available') ? 'text-emerald-700' : 'text-rose-600'}`}>
+                    {pincodeStatus}
+                  </p>
+                )}
+              </div>
+
               {/* Trust Icons Strip (4 Badges) */}
-              <div className="pdp-trust-strip">
+              <div className="pdp-trust-strip my-3">
                 <div className="pdp-trust-item">
                   <Truck className="pdp-trust-icon" />
                   <span className="pdp-trust-label">Cash on Delivery</span>
@@ -564,7 +524,7 @@ export const ProductDetailView: React.FC = () => {
                 </div>
               </div>
 
-              {/* 6 Collapsible Accordions */}
+              {/* 5 Collapsible Accordions (Product Details is 1st, Need Help Removed) */}
               <div className="pdp-accordions-wrap">
                 
                 {/* 1. Product Details */}
@@ -696,31 +656,6 @@ export const ProductDetailView: React.FC = () => {
                       <p><strong>Atelier Address:</strong> 8107, Avadh Textile Market, opposite New Bombay Market, Ring Road, Surat - 395010</p>
                       <p><strong>Country Of Origin:</strong> India</p>
                       <p><strong>Silk Mark Certification:</strong> 100% Genuine Handloom Purity Certified.</p>
-                    </div>
-                  )}
-                </div>
-
-                {/* 6. Need Help? */}
-                <div className={`pdp-accordion-box ${openAccordions.help ? 'is-open' : ''}`}>
-                  <button onClick={() => toggleAccordion('help')} className="pdp-accordion-summary">
-                    <span>Need Help?</span>
-                    <ChevronRight className="pdp-accordion-chevron" />
-                  </button>
-                  {openAccordions.help && (
-                    <div className="pdp-accordion-body space-y-3">
-                      <div className="flex items-center gap-2">
-                        <Phone className="w-4 h-4 text-emerald-700" />
-                        <span><strong>Call Us:</strong> <a href="tel:+918072983876" className="text-burgundy underline">+91 8072983876</a></span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <MessageCircle className="w-4 h-4 text-emerald-700" />
-                        <span><strong>WhatsApp Us:</strong> <a href="https://wa.me/918072983876" target="_blank" rel="noreferrer" className="text-emerald-700 underline font-semibold">+91 8072983876 (Instant Chat)</a></span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Mail className="w-4 h-4 text-emerald-700" />
-                        <span><strong>Email Us:</strong> <a href="mailto:Care@vrindavanfashion.com" className="text-burgundy underline">Care@vrindavanfashion.com</a></span>
-                      </div>
-                      <p className="text-xs text-gray-500"><strong>Timings:</strong> 10:30 AM - 7:00 PM (Monday - Saturday)</p>
                     </div>
                   )}
                 </div>
