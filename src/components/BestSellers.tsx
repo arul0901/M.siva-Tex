@@ -1,8 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { SAREE_PRODUCTS } from '../data/sarees';
 import { ProductCard } from './ProductCard';
 import { useShop } from '../context/ShopContext';
-import { Sparkles, ArrowRight, Video, ShieldCheck, Award, Truck } from 'lucide-react';
+import { 
+  Sparkles, 
+  ArrowRight, 
+  Video, 
+  ShieldCheck, 
+  Award, 
+  Truck, 
+  ChevronLeft, 
+  ChevronRight 
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface TabItem {
@@ -14,6 +23,17 @@ interface TabItem {
 export const BestSellers: React.FC = () => {
   const { setCurrentView, setSelectedCategoryFilter, setIsConciergeOpen } = useShop();
   const [activeTab, setActiveTab] = useState('all');
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  // Mouse drag-to-scroll state
+  const isDraggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const scrollLeftRef = useRef(0);
+  const dragDistanceRef = useRef(0);
 
   // Define tab categories and compute real dynamic counts
   const tabs: TabItem[] = [
@@ -49,6 +69,64 @@ export const BestSellers: React.FC = () => {
     ? SAREE_PRODUCTS.filter(p => p.isBestSeller)
     : SAREE_PRODUCTS.filter(p => p.category === activeTab);
 
+  // Check scroll position to toggle navigation buttons and update progress bar
+  const checkScrollState = () => {
+    if (!scrollRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+    setCanScrollLeft(scrollLeft > 15);
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 15);
+
+    const maxScroll = scrollWidth - clientWidth;
+    if (maxScroll > 0) {
+      setScrollProgress(Math.min(100, Math.max(0, (scrollLeft / maxScroll) * 100)));
+    } else {
+      setScrollProgress(0);
+    }
+  };
+
+  useEffect(() => {
+    // Reset scroll when tab changes
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+    }
+    const timer = setTimeout(checkScrollState, 150);
+    return () => clearTimeout(timer);
+  }, [activeTab]);
+
+  useEffect(() => {
+    checkScrollState();
+    window.addEventListener('resize', checkScrollState);
+    return () => window.removeEventListener('resize', checkScrollState);
+  }, [filteredProducts]);
+
+  const scrollCarousel = (direction: 'left' | 'right') => {
+    if (!scrollRef.current) return;
+    const cardWidth = 265; // card width + gap
+    const scrollAmount = direction === 'left' ? -cardWidth * 2 : cardWidth * 2;
+    scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+  };
+
+  // Drag handlers for desktop mouse dragging
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!scrollRef.current) return;
+    isDraggingRef.current = true;
+    dragDistanceRef.current = 0;
+    startXRef.current = e.pageX - scrollRef.current.offsetLeft;
+    scrollLeftRef.current = scrollRef.current.scrollLeft;
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDraggingRef.current || !scrollRef.current) return;
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = (x - startXRef.current);
+    dragDistanceRef.current = Math.abs(walk);
+    scrollRef.current.scrollLeft = scrollLeftRef.current - walk;
+  };
+
+  const handleMouseUpOrLeave = () => {
+    isDraggingRef.current = false;
+  };
+
   const handleViewAll = () => {
     setSelectedCategoryFilter(activeTab === 'all' ? null : activeTab);
     setCurrentView('shop');
@@ -57,14 +135,14 @@ export const BestSellers: React.FC = () => {
 
   return (
     <section 
-      className="py-20 sm:py-28 bg-[#FAF7F2] border-b border-gold/25 relative overflow-hidden" 
+      className="py-16 sm:py-24 bg-[#FAF7F2] border-b border-gold/25 relative overflow-hidden" 
       id="bestsellers" 
       aria-label="Bestsellers — Iconic Masterpiece Sarees"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10">
           <div className="inline-flex items-center gap-2 text-gold font-secondary font-semibold text-xs tracking-[0.28em] uppercase mb-2.5">
             <Sparkles className="w-3.5 h-3.5 text-gold animate-pulse" />
             <span>LOVED BY MANY • ICONIC CREATIONS</span>
@@ -77,15 +155,15 @@ export const BestSellers: React.FC = () => {
             </span>
           </h2>
           
-          <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-gold to-transparent mx-auto my-3.5" />
+          <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-gold to-transparent mx-auto my-3" />
 
           <p className="font-secondary text-sm sm:text-base text-brown-deep/75 font-light leading-relaxed">
             Discover our most celebrated handlooms — woven with authentic mulberry silk, certified silver-gold zari, and heritage pit-loom craftsmanship.
           </p>
         </div>
 
-        {/* Luxury Filter Segmented Rail (Full width container, centered on desktop, scrollable on mobile) */}
-        <div className="mb-10 sm:mb-14 flex justify-center px-2">
+        {/* Luxury Filter Segmented Rail */}
+        <div className="mb-8 sm:mb-10 flex justify-center px-2">
           <div className="inline-flex items-center gap-1.5 p-1.5 bg-white/80 border border-gold/30 rounded-xs shadow-xs max-w-full overflow-x-auto no-scrollbar">
             {tabs.map(tab => {
               const isActive = activeTab === tab.id;
@@ -93,7 +171,7 @@ export const BestSellers: React.FC = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`relative min-h-[40px] px-4 py-2 text-xs font-secondary uppercase tracking-wider rounded-xs transition-colors duration-200 shrink-0 flex items-center gap-2 ${
+                  className={`relative min-h-[38px] px-3.5 sm:px-4 py-1.5 text-xs font-secondary uppercase tracking-wider rounded-xs transition-colors duration-200 shrink-0 flex items-center gap-2 ${
                     isActive
                       ? 'text-gold-pale font-semibold'
                       : 'text-brown-deep/75 hover:text-burgundy'
@@ -120,29 +198,114 @@ export const BestSellers: React.FC = () => {
           </div>
         </div>
 
-        {/* 4-Column Responsive Grid with Stagger & Spring Motion */}
-        <motion.div
-          layout
-          className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-7"
-        >
-          <AnimatePresence mode="popLayout">
-            {filteredProducts.map((product) => (
-              <motion.div
-                layout
-                key={product.id}
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.94 }}
-                transition={{ duration: 0.3 }}
-              >
-                <ProductCard product={product} />
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+        {/* Single-Row Carousel Showcase Container */}
+        <div className="relative group/carousel">
+          {/* Floating Left Navigation Arrow (Desktop) */}
+          <button
+            onClick={() => scrollCarousel('left')}
+            disabled={!canScrollLeft}
+            aria-label="Previous sarees"
+            className={`hidden md:flex absolute -left-3 lg:-left-5 top-1/2 -translate-y-1/2 w-10 h-10 lg:w-11 lg:h-11 rounded-full bg-white/95 border border-gold/35 text-burgundy shadow-md items-center justify-center transition-all duration-300 z-20 ${
+              canScrollLeft
+                ? 'opacity-100 hover:bg-burgundy hover:text-gold-pale hover:border-gold hover:scale-105 cursor-pointer'
+                : 'opacity-0 pointer-events-none'
+            }`}
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+
+          {/* Floating Right Navigation Arrow (Desktop) */}
+          <button
+            onClick={() => scrollCarousel('right')}
+            disabled={!canScrollRight}
+            aria-label="Next sarees"
+            className={`hidden md:flex absolute -right-3 lg:-right-5 top-1/2 -translate-y-1/2 w-10 h-10 lg:w-11 lg:h-11 rounded-full bg-white/95 border border-gold/35 text-burgundy shadow-md items-center justify-center transition-all duration-300 z-20 ${
+              canScrollRight
+                ? 'opacity-100 hover:bg-burgundy hover:text-gold-pale hover:border-gold hover:scale-105 cursor-pointer'
+                : 'opacity-0 pointer-events-none'
+            }`}
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+
+          {/* Single Horizontal Row Track */}
+          <div
+            ref={scrollRef}
+            onScroll={checkScrollState}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUpOrLeave}
+            onMouseLeave={handleMouseUpOrLeave}
+            className="flex items-stretch gap-4 sm:gap-5 overflow-x-auto no-scrollbar scroll-smooth py-2 px-1 snap-x snap-mandatory cursor-grab active:cursor-grabbing"
+          >
+            <AnimatePresence mode="popLayout">
+              {filteredProducts.map((product) => (
+                <motion.div
+                  layout
+                  key={product.id}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.92 }}
+                  transition={{ duration: 0.3 }}
+                  className="w-[215px] xs:w-[230px] sm:w-[250px] md:w-[260px] shrink-0 snap-start flex flex-col"
+                >
+                  <ProductCard product={product} compact={true} />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+
+          {/* Progress / Scroll Indicator Rail */}
+          <div className="flex items-center justify-between mt-5 px-1 pt-1">
+            <div className="text-xs font-secondary text-brown-deep/70 flex items-center gap-2">
+              <span className="font-semibold text-burgundy">{filteredProducts.length}</span>
+              <span>Exclusive Masterpieces</span>
+              <span className="hidden sm:inline text-gold/40">•</span>
+              <span className="hidden sm:inline text-brown-deep/50 text-[11px]">Swipe or use arrows to view all</span>
+            </div>
+
+            <div className="flex items-center gap-3">
+              {/* Visual Gold Progress Bar */}
+              <div className="w-24 sm:w-36 h-1 bg-gold/20 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-gradient-to-r from-gold to-burgundy transition-all duration-200 rounded-full"
+                  style={{ width: `${Math.max(15, scrollProgress)}%` }}
+                />
+              </div>
+
+              {/* Navigation Arrows */}
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => scrollCarousel('left')}
+                  disabled={!canScrollLeft}
+                  aria-label="Previous sarees"
+                  className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-gold/30 bg-white/90 text-burgundy flex items-center justify-center text-xs transition-all shadow-xs ${
+                    canScrollLeft 
+                      ? 'opacity-100 hover:bg-burgundy hover:text-white hover:border-gold cursor-pointer' 
+                      : 'opacity-30 cursor-not-allowed'
+                  }`}
+                >
+                  <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                </button>
+                <button
+                  onClick={() => scrollCarousel('right')}
+                  disabled={!canScrollRight}
+                  aria-label="Next sarees"
+                  className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-gold/30 bg-white/90 text-burgundy flex items-center justify-center text-xs transition-all shadow-xs ${
+                    canScrollRight 
+                      ? 'opacity-100 hover:bg-burgundy hover:text-white hover:border-gold cursor-pointer' 
+                      : 'opacity-30 cursor-not-allowed'
+                  }`}
+                >
+                  <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* Dual High-Intent Action CTAs */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-12 sm:mt-16">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-10 sm:mt-14">
           <button
             onClick={handleViewAll}
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 border border-burgundy bg-burgundy text-gold-pale hover:bg-gold hover:text-brown-dark hover:border-gold font-primary text-xs uppercase tracking-[0.2em] font-semibold transition-all duration-300 shadow-sm rounded-xs"
@@ -161,7 +324,7 @@ export const BestSellers: React.FC = () => {
         </div>
 
         {/* Luxury Brand Reassurance Bar */}
-        <div className="mt-16 pt-10 border-t border-gold/20 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        <div className="mt-14 pt-8 border-t border-gold/20 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           <div className="flex flex-col items-center gap-1.5 p-2">
             <Award className="w-5 h-5 text-gold" />
             <h5 className="font-primary text-xs uppercase tracking-wider text-burgundy font-semibold">
