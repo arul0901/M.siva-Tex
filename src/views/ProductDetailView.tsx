@@ -155,14 +155,48 @@ export const ProductDetailView: React.FC = () => {
     setNewReviewComment('');
   };
 
+  const mobileScrollRef = React.useRef<HTMLDivElement>(null);
+
+  const scrollToMobileImage = (index: number) => {
+    setActiveImageIndex(index);
+    if (mobileScrollRef.current) {
+      const clientWidth = mobileScrollRef.current.clientWidth;
+      mobileScrollRef.current.scrollTo({
+        left: index * clientWidth,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const handleMobileScroll = () => {
+    if (!mobileScrollRef.current) return;
+    const { scrollLeft, clientWidth } = mobileScrollRef.current;
+    if (clientWidth > 0) {
+      const newIndex = Math.round(scrollLeft / clientWidth);
+      if (newIndex >= 0 && newIndex < images.length && newIndex !== activeImageIndex) {
+        setActiveImageIndex(newIndex);
+      }
+    }
+  };
+
   // Next / Prev Gallery Navigation
   const prevImage = () => {
-    setActiveImageIndex(prev => (prev === 0 ? images.length - 1 : prev - 1));
+    const newIdx = activeImageIndex === 0 ? images.length - 1 : activeImageIndex - 1;
+    scrollToMobileImage(newIdx);
   };
 
   const nextImage = () => {
-    setActiveImageIndex(prev => (prev === images.length - 1 ? 0 : prev + 1));
+    const newIdx = activeImageIndex === images.length - 1 ? 0 : activeImageIndex + 1;
+    scrollToMobileImage(newIdx);
   };
+
+  // Reset scroll on product change
+  useEffect(() => {
+    setActiveImageIndex(0);
+    if (mobileScrollRef.current) {
+      mobileScrollRef.current.scrollLeft = 0;
+    }
+  }, [product.id]);
 
   // Related Products: 8 items for 2-row mobile scroll & 4-card desktop grid
   const relatedSarees = SAREE_PRODUCTS.filter(p => p.id !== product.id).slice(0, 8);
@@ -216,11 +250,11 @@ export const ProductDetailView: React.FC = () => {
   ];
 
   return (
-    <div className="pdp-page-wrapper pt-3 pb-20 sm:pt-4 sm:pb-12">
+    <div className="pdp-page-wrapper pt-4 pb-20 sm:pt-6 sm:pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* 1. Breadcrumbs */}
-        <nav className="pdp-breadcrumb mb-2 sm:mb-3" aria-label="Breadcrumb navigation">
+        <nav className="pdp-breadcrumb mb-3 sm:mb-4" aria-label="Breadcrumb navigation">
           <button onClick={() => setCurrentView('home')}>Home</button>
           <span>/</span>
           <button onClick={() => setCurrentView('shop')}>Sarees</button>
@@ -235,7 +269,88 @@ export const ProductDetailView: React.FC = () => {
           
           {/* Left Column: Media Gallery (50% width, sticky with tall luxury viewer) */}
           <div className="w-full flex flex-col lg:sticky lg:top-24 self-start">
-            <div className="pdp-gallery-container">
+
+            {/* Mobile View: Swipeable Horizontal Carousel (< md) */}
+            <div className="md:hidden relative w-full overflow-hidden rounded-xs bg-[#F4EFEB] border border-gold/20 shadow-xs mb-3">
+              <div
+                ref={mobileScrollRef}
+                onScroll={handleMobileScroll}
+                className="flex w-full overflow-x-auto snap-x snap-mandatory scrollbar-none scroll-smooth touch-pan-x"
+              >
+                {images.map((img, idx) => (
+                  <div key={idx} className="min-w-full w-full aspect-[4/5] shrink-0 snap-center relative">
+                    <img
+                      src={img}
+                      alt={`${product.name} drape photo ${idx + 1}`}
+                      className="w-full h-full object-cover object-top cursor-zoom-in"
+                      onClick={() => {
+                        setActiveImageIndex(idx);
+                        setIsLightboxOpen(true);
+                      }}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* Discount Badge */}
+              <div className="pdp-badge-discount">
+                {product.discountPercent}% OFF
+              </div>
+
+              {/* Popular Badge */}
+              <div className="pdp-badge-popular">
+                <Sparkles className="w-3 h-3 text-gold" />
+                <span>Most Popular</span>
+              </div>
+
+              {/* Mobile Navigation Arrows */}
+              {images.length > 1 && (
+                <div className="absolute inset-y-0 inset-x-0 flex items-center justify-between px-2.5 pointer-events-none">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      prevImage();
+                    }}
+                    className="w-8 h-8 rounded-full bg-white/80 text-burgundy shadow-sm flex items-center justify-center pointer-events-auto backdrop-blur-xs hover:bg-white transition-all"
+                    aria-label="Previous photo"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      nextImage();
+                    }}
+                    className="w-8 h-8 rounded-full bg-white/80 text-burgundy shadow-sm flex items-center justify-center pointer-events-auto backdrop-blur-xs hover:bg-white transition-all"
+                    aria-label="Next photo"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
+
+              {/* Counter Tag */}
+              <div className="pdp-photo-counter">
+                {activeImageIndex + 1} / {images.length}
+              </div>
+
+              {/* Pagination Dots on Mobile */}
+              <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10 pointer-events-none">
+                {images.map((_, i) => (
+                  <span
+                    key={i}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      activeImageIndex === i
+                        ? 'w-5 bg-white shadow-md'
+                        : 'w-1.5 bg-white/60 backdrop-blur-xs'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Desktop View: Thumbnails Strip + Tall Luxury Hero Viewer (md+) */}
+            <div className="hidden md:flex pdp-gallery-container">
               {/* Thumbnails Strip */}
               <div className="pdp-thumbnails-strip scrollbar-none" aria-label="Product thumbnails">
                 {images.map((img, idx) => (
@@ -727,124 +842,7 @@ export const ProductDetailView: React.FC = () => {
           </div>
         </div>
 
-        {/* 4. Customer Reviews Section (Judge.me Style) */}
-        <section id="customer-reviews" className="pdp-reviews-section">
-          <div className="pdp-reviews-heading-wrap">
-            <span className="text-xs font-secondary uppercase tracking-[0.2em] text-gold font-semibold">Verified Buyer Feedback</span>
-            <h2 className="font-primary text-2xl sm:text-3xl text-burgundy mt-1">Customer Reviews ({product.reviewCount})</h2>
-          </div>
-
-          {/* Rating Breakdown & Stats */}
-          <div className="pdp-reviews-score-hero">
-            <div className="flex flex-col items-center">
-              <span className="pdp-score-big">{product.rating}</span>
-              <div className="flex text-amber-500 my-1">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-current" />
-                ))}
-              </div>
-              <span className="text-xs text-gray-500">Based on {product.reviewCount} reviews</span>
-            </div>
-
-            {/* Progress Bars */}
-            <div className="pdp-rating-bars">
-              <div className="pdp-bar-row">
-                <span>5 ★</span>
-                <div className="pdp-bar-track">
-                  <div className="pdp-bar-fill" style={{ width: '92%' }} />
-                </div>
-                <span>92%</span>
-              </div>
-              <div className="pdp-bar-row">
-                <span>4 ★</span>
-                <div className="pdp-bar-track">
-                  <div className="pdp-bar-fill" style={{ width: '8%' }} />
-                </div>
-                <span>8%</span>
-              </div>
-              <div className="pdp-bar-row">
-                <span>3 ★</span>
-                <div className="pdp-bar-track">
-                  <div className="pdp-bar-fill" style={{ width: '0%' }} />
-                </div>
-                <span>0%</span>
-              </div>
-              <div className="pdp-bar-row">
-                <span>2 ★</span>
-                <div className="pdp-bar-track">
-                  <div className="pdp-bar-fill" style={{ width: '0%' }} />
-                </div>
-                <span>0%</span>
-              </div>
-              <div className="pdp-bar-row">
-                <span>1 ★</span>
-                <div className="pdp-bar-track">
-                  <div className="pdp-bar-fill" style={{ width: '0%' }} />
-                </div>
-                <span>0%</span>
-              </div>
-            </div>
-
-            {/* Write a review button */}
-            <div>
-              <button
-                onClick={() => setIsReviewModalOpen(true)}
-                className="px-5 py-2.5 border border-burgundy text-burgundy hover:bg-burgundy hover:text-white font-serif text-xs uppercase tracking-wider font-semibold rounded-sm transition-colors"
-              >
-                Write A Review
-              </button>
-            </div>
-          </div>
-
-          {/* Customer Photos Gallery Strip */}
-          <div>
-            <h4 className="text-xs uppercase font-serif tracking-wider text-gray-700 font-semibold mb-3">
-              Customer Draped Photos (4)
-            </h4>
-            <div className="pdp-customer-photos-strip scrollbar-none">
-              {reviewsList.map((rev, i) => (
-                <div 
-                  key={i} 
-                  className="pdp-customer-photo-card"
-                  onClick={() => setIsLightboxOpen(true)}
-                >
-                  <img src={rev.image} alt={rev.author} className="w-full h-full object-cover" />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Review Cards Grid */}
-          <div className="pdp-review-cards-grid">
-            {reviewsList.map((rev) => (
-              <div key={rev.id} className="pdp-review-card">
-                <div className="pdp-review-header">
-                  <span className="pdp-reviewer-name">
-                    {rev.author}
-                    <span className="pdp-verified-badge">
-                      <CheckCircle2 className="w-3.5 h-3.5 fill-current" />
-                      Verified Buyer
-                    </span>
-                  </span>
-                  <span className="text-[11px] text-gray-400">{rev.date}</span>
-                </div>
-
-                <div className="flex text-amber-500 mb-2">
-                  {[...Array(rev.rating)].map((_, idx) => (
-                    <Star key={idx} className="w-3.5 h-3.5 fill-current" />
-                  ))}
-                </div>
-
-                <h5 className="pdp-review-title">{rev.title}</h5>
-                <p className="pdp-review-body">{rev.comment}</p>
-                <div className="mt-3 flex items-center gap-1 text-[11px] text-gray-500">
-                  <ThumbsUp className="w-3 h-3 text-gold" />
-                  <span>Verified Purchase • {rev.location}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+       
 
         {/* 5. Related Products Section: Mobile 2-Row Horizontal Scroll & Desktop 4-Card Grid */}
         {relatedSarees.length > 0 && (
