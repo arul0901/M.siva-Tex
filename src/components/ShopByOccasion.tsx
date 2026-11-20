@@ -116,18 +116,18 @@ export const ShopByOccasion: React.FC = () => {
       if (track.scrollLeft < 50) {
         // First swipe: scroll past the sidebar so the categories occupy the left space
         const sidebar = track.querySelector('.occasion-sidebar-card') as HTMLElement;
-        const scrollAmount = sidebar ? sidebar.offsetWidth + 24 : 344;
+        const scrollAmount = sidebar ? sidebar.offsetWidth + 26 : 340;
         track.scrollBy({ left: scrollAmount, behavior: 'smooth' });
       } else {
         // Subsequent swipes: scroll forward by 2 cards
-        track.scrollBy({ left: 500, behavior: 'smooth' });
+        track.scrollBy({ left: 350, behavior: 'smooth' });
       }
     } else {
       // Negative swipe: if close to the sidebar, return directly to initial position (0)
-      if (track.scrollLeft <= 420) {
+      if (track.scrollLeft <= 360) {
         track.scrollTo({ left: 0, behavior: 'smooth' });
       } else {
-        track.scrollBy({ left: -500, behavior: 'smooth' });
+        track.scrollBy({ left: -350, behavior: 'smooth' });
       }
     }
   };
