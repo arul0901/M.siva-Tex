@@ -25,6 +25,22 @@ export const HeroVideoLayer: React.FC<HeroVideoLayerProps> = ({
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const isSeekingRef = useRef(false);
 
+  // Responsive check for mobile banner video
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth <= 768;
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   // Sync play/pause with prop
   useEffect(() => {
     const video = videoRef.current;
@@ -85,6 +101,7 @@ export const HeroVideoLayer: React.FC<HeroVideoLayerProps> = ({
       <div className="cinematic-hero-video-container">
         <video
           ref={videoRef}
+          key={isMobile ? 'hero-mobile-video' : 'hero-desktop-video'}
           autoPlay
           loop
           muted={isMuted}
@@ -96,8 +113,20 @@ export const HeroVideoLayer: React.FC<HeroVideoLayerProps> = ({
           onCanPlay={() => setIsVideoLoaded(true)}
           onTimeUpdate={handleTimeUpdate}
         >
-          <source src="/banner.mp4" type="video/mp4" />
-          <source src="/videos/banner.mp4" type="video/mp4" />
+          {isMobile ? (
+            <>
+              <source src="/assets/video/banner_mobile.mp4" type="video/mp4" />
+              <source src="/assests/video/banner_mobile.mp4" type="video/mp4" />
+              <source src="/videos/banner_mobile.mp4" type="video/mp4" />
+              <source src="/banner_mobile.mp4" type="video/mp4" />
+            </>
+          ) : (
+            <>
+              <source src="/banner.mp4" type="video/mp4" />
+              <source src="/videos/banner.mp4" type="video/mp4" />
+              <source src="/assets/video/banner.mp4" type="video/mp4" />
+            </>
+          )}
           Your browser does not support high-definition video banner.
         </video>
 
