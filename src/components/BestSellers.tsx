@@ -135,7 +135,7 @@ export const BestSellers: React.FC = () => {
 
   return (
     <section 
-      className="py-16 sm:py-24 bg-[#FAF7F2] border-b border-gold/25 relative overflow-hidden" 
+      className="pt-3 sm:pt-5 pb-16 sm:pb-24 bg-[#FAF7F2] border-b border-gold/25 relative overflow-hidden" 
       id="bestsellers" 
       aria-label="Bestsellers — Iconic Masterpiece Sarees"
     >
@@ -305,23 +305,7 @@ export const BestSellers: React.FC = () => {
         </div>
 
         {/* Dual High-Intent Action CTAs */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-10 sm:mt-14">
-          <button
-            onClick={handleViewAll}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 border border-burgundy bg-burgundy text-gold-pale hover:bg-gold hover:text-brown-dark hover:border-gold font-primary text-xs uppercase tracking-[0.2em] font-semibold transition-all duration-300 shadow-sm rounded-xs"
-          >
-            <span>Explore All Handlooms</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
-          
-          <button
-            onClick={() => setIsConciergeOpen(true)}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 border border-gold/40 bg-white/60 text-burgundy hover:bg-white hover:border-gold font-secondary text-xs uppercase tracking-[0.15em] font-medium transition-all duration-300 rounded-xs"
-          >
-            <Video className="w-3.5 h-3.5 text-gold" />
-            <span>Book Video Concierge</span>
-          </button>
-        </div>
+        
 
         {/* Luxury Brand Reassurance Bar */}
         <div className="mt-14 pt-8 border-t border-gold/20 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">

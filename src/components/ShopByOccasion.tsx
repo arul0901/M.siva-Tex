@@ -154,8 +154,8 @@ export const ShopByOccasion: React.FC = () => {
           if (rect.top <= 0) {
             const totalProgress = Math.min(Math.max(-rect.top / totalDistance, 0), 1);
             
-            const stage2Start = 0.12;
-            const stage2End = 0.70;
+            const stage2Start = 0.08;
+            const stage2End = 0.82;
             const rawP2 = Math.min(Math.max((totalProgress - stage2Start) / (stage2End - stage2Start), 0), 1);
             
             // Smooth ease in-out
@@ -163,30 +163,32 @@ export const ShopByOccasion: React.FC = () => {
               ? 2 * rawP2 * rawP2 
               : 1 - Math.pow(-2 * rawP2 + 2, 2) / 2;
 
-            // Animate left sidebar content: slides left and fades out
+            // Fade left sidebar content gracefully in place (zero negative translation to prevent text clipping)
             if (sidebar) {
-              const sidebarX = easeP2 * 280;
-              const sidebarOpacity = Math.max(0, 1 - easeP2 * 1.5);
-              const sidebarScale = 1 - easeP2 * 0.1;
-              sidebar.style.transform = `translateX(-${sidebarX}px) scale(${sidebarScale})`;
+              const sidebarOpacity = Math.max(0, 1 - easeP2 * 2.0);
+              const sidebarScale = 1 - easeP2 * 0.05;
+              sidebar.style.transform = `scale(${sidebarScale})`;
               sidebar.style.opacity = `${sidebarOpacity}`;
-              sidebar.style.pointerEvents = easeP2 > 0.8 ? 'none' : 'auto';
+              sidebar.style.pointerEvents = easeP2 > 0.5 ? 'none' : 'auto';
             }
 
-            // Scroll track to reveal all categories
+            // Scroll track smoothly so categories slide across and occupy the space
             if (!isDraggingRef.current) {
               const maxScroll = track.scrollWidth - track.clientWidth;
               track.scrollLeft = easeP2 * maxScroll;
             }
 
-            // Phase 3: Moves toward the next section
-            // From totalProgress 0.70 to 1.00: all categories stay visible,
-            // then as user scrolls past 1.00 the pinned container naturally scrolls up
-            // and transitions into the next section!
+            // Phase 3: Moves smoothly toward the next section
+            // When totalProgress approaches 1, stage naturally lifts slightly into Bestsellers
+            if (totalProgress > 0.70) {
+              const p3 = (totalProgress - 0.70) / 0.30;
+              const liftY = p3 * 60;
+              stage.style.transform = `translate(0px, -${liftY}px) scale(1) rotate(0deg)`;
+            }
           } else {
             // Above pinned point: reset sidebar and track for clean reverse scrolling
             if (sidebar) {
-              sidebar.style.transform = 'translateX(0px) scale(1)';
+              sidebar.style.transform = 'scale(1)';
               sidebar.style.opacity = '1';
               sidebar.style.pointerEvents = 'auto';
             }
