@@ -110,17 +110,31 @@ export const StylingSuggestions: React.FC = () => {
     <section className="styling-section">
       <div className="styling-container">
         
-        {/* Section Header */}
-        <div className="styling-header">
-          <div className="styling-eyebrow">
-            <Sparkles className="styling-eyebrow-icon" />
-            <span>DRAPED YOUR WAY</span>
+        {/* Section Header with Left/Right alignment */}
+        <div className="styling-header-row">
+          <div>
+            <div className="styling-eyebrow">
+              <Sparkles className="styling-eyebrow-icon" />
+              <span>DRAPED YOUR WAY</span>
+            </div>
+            
+            <h2 className="styling-title">
+              The Art of <span className="styling-title-accent">Styling</span>
+            </h2>
           </div>
-          
-          <h2 className="styling-title">
-            The Art of <span className="styling-title-accent">Styling</span>
-          </h2>
-          <div className="styling-divider" />
+
+          {/* "GET INSPIRED" relocated to Section Header */}
+          <button
+            onClick={() => {
+              setSelectedCategoryFilter(null);
+              setCurrentView('shop');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="styling-cta-btn"
+          >
+            <span>GET INSPIRED</span>
+            <span className="styling-btn-arrow">&rarr;</span>
+          </button>
         </div>
 
         {/* Carousel Container with Left/Right Arrows */}
@@ -151,12 +165,6 @@ export const StylingSuggestions: React.FC = () => {
                 onClick={() => handleCardClick(look)}
                 className="styling-card"
               >
-                {/* Top Look Number and Occasion */}
-                <div className="styling-card-meta">
-                  <span className="styling-look-eyebrow">{look.eyebrow}</span>
-                  <span className="styling-look-tag">{look.occasionTag}</span>
-                </div>
-
                 {/* Outfit Editorial Composition Image */}
                 <div className="styling-card-img-wrap">
                   <img
@@ -196,21 +204,6 @@ export const StylingSuggestions: React.FC = () => {
             ))}
           </div>
 
-        </div>
-
-        {/* Minimal Outlined Button Below Cards */}
-        <div className="styling-btn-wrap">
-          <button
-            onClick={() => {
-              setSelectedCategoryFilter(null);
-              setCurrentView('shop');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            className="styling-cta-btn"
-          >
-            <span>GET INSPIRED</span>
-            <span className="styling-btn-arrow">&rarr;</span>
-          </button>
         </div>
 
       </div>

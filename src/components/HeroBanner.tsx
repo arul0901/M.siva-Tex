@@ -11,6 +11,8 @@ import {
   Pause
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import heroWebm from '../assets/banner/hero.webm';
+import heroMp4 from '../assets/banner/hero-1.mp4';
 import '../styles/hero.css';
 
 interface HeroSlide {
