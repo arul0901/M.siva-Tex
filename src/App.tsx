@@ -7,6 +7,7 @@ import { CinematicHeroBanner } from './components/CinematicHeroBanner';
 // Redesigned Homepage Sections (Inspired by Master Luxury Reference)
 import { ShopByCategory } from './components/ShopByCategory';
 import { ShopByOccasion } from './components/ShopByOccasion';
+import { BestSellers } from './components/BestSellers';
 import { StylingSuggestions } from './components/StylingSuggestions';
 import { CustomerTestimonials } from './components/CustomerTestimonials';
 import { TrustService } from './components/TrustService';
@@ -46,10 +47,13 @@ export const App: React.FC = () => {
             {/* 2. Shop By Category (8 Saree Categories with Weave Details & Product Counts) */}
             {/* <ShopByCategory /> */}
 
-            {/* 3. Shop By Occasion (5 Arched Editorial Cards + Left Heading) */}
+            {/* 2. Shop By Occasion (3-Phase Scrollytelling Showcase) */}
             <ShopByOccasion />
 
-            {/* 3. Styling Suggestions ("DRAPED YOUR WAY" — The Art of Styling) */}
+            {/* 3. Bestsellers Section (Loved by Many • Iconic Creations) */}
+            <BestSellers />
+
+            {/* 4. Styling Suggestions ("DRAPED YOUR WAY" — The Art of Styling) */}
             <StylingSuggestions />
 
             {/* 4. Customer Testimonials ("LOVED BY OUR COMMUNITY" — 4 Cards with Gold Stars) */}
