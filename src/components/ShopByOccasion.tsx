@@ -73,7 +73,9 @@ const OCCASIONS: OccasionItem[] = [
 
 export const ShopByOccasion: React.FC = () => {
   const { setCurrentView, setSelectedCategoryFilter } = useShop();
-  const sectionRef = useRef<HTMLElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const sidebarRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -103,46 +105,94 @@ export const ShopByOccasion: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, [checkScrollState]);
 
-  // Automatic Horizontal Swipe Driven by Vertical Scroll:
-  // As the user scrolls down into #shop-by-occasion, the categories smoothly swipe forward,
-  // occupying the left space. When scrolling back up, it smoothly negative-swipes back to the original place.
+  // 3-Phase Scrollytelling Architecture:
+  // - 1st Scroll: Arrive smoothly from bottom-right corner into center
+  // - 2nd Scroll: Content goes away, categories swipe across to make all 7 visible
+  // - 3rd Scroll: Moves smoothly toward the next section (The Art of Styling)
   useEffect(() => {
     let ticking = false;
 
     const handleWindowScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          if (!scrollRef.current || !sectionRef.current || isDraggingRef.current) {
+          if (!containerRef.current || !stageRef.current || !scrollRef.current) {
             ticking = false;
             return;
           }
 
-          const section = sectionRef.current;
+          const container = containerRef.current;
+          const stage = stageRef.current;
           const track = scrollRef.current;
-          const rect = section.getBoundingClientRect();
+          const sidebar = sidebarRef.current;
+
+          const rect = container.getBoundingClientRect();
           const windowHeight = window.innerHeight;
+          const windowWidth = window.innerWidth;
+          const totalDistance = Math.max(container.offsetHeight - windowHeight, 1);
 
-          // Activation trigger zone:
-          // startY: when the top of the section enters the lower portion of the screen
-          // endY: when the section has reached the upper portion of the screen
-          const startY = windowHeight * 0.75;
-          const endY = 80;
-          const range = startY - endY;
+          // Phase 1: Arrive from bottom-right corner into center
+          // Triggered as the user scrolls down from the hero banner
+          let p1 = 0;
+          if (rect.top <= windowHeight && rect.top > 0) {
+            p1 = (windowHeight - rect.top) / windowHeight;
+          } else if (rect.top <= 0) {
+            const pinnedProgress = Math.min(Math.max(-rect.top / totalDistance, 0), 1);
+            p1 = Math.min(1, 0.85 + (pinnedProgress / 0.15) * 0.15);
+          }
 
-          if (rect.top <= startY && rect.bottom >= 100) {
-            const progress = Math.min(Math.max((startY - rect.top) / range, 0), 1);
+          const easeP1 = 1 - Math.pow(1 - Math.min(Math.max(p1, 0), 1), 3);
+          const canvasX = (1 - easeP1) * (windowWidth * 0.45);
+          const canvasY = (1 - easeP1) * (windowHeight * 0.22);
+          const canvasScale = 0.88 + 0.12 * easeP1;
+          const canvasRotate = (1 - easeP1) * 3;
+          const canvasOpacity = 0.2 + 0.8 * easeP1;
+
+          stage.style.transform = `translate(${canvasX}px, ${canvasY}px) scale(${canvasScale}) rotate(${canvasRotate}deg)`;
+          stage.style.opacity = `${canvasOpacity}`;
+
+          // Phase 2: Content goes and all categories become visible
+          if (rect.top <= 0) {
+            const totalProgress = Math.min(Math.max(-rect.top / totalDistance, 0), 1);
             
-            // Calculate swipe amount:
-            // Scroll past the left editorial sidebar so all 7 occasion categories occupy the screen
-            const sidebar = track.querySelector('.occasion-sidebar-card') as HTMLElement;
-            const sidebarWidth = sidebar ? sidebar.offsetWidth + 26 : 340;
-            const maxScroll = track.scrollWidth - track.clientWidth;
-            const targetSwipe = Math.min(sidebarWidth + 80, maxScroll);
+            const stage2Start = 0.12;
+            const stage2End = 0.70;
+            const rawP2 = Math.min(Math.max((totalProgress - stage2Start) / (stage2End - stage2Start), 0), 1);
+            
+            // Smooth ease in-out
+            const easeP2 = rawP2 < 0.5 
+              ? 2 * rawP2 * rawP2 
+              : 1 - Math.pow(-2 * rawP2 + 2, 2) / 2;
 
-            track.scrollLeft = progress * targetSwipe;
-          } else if (rect.top > startY) {
-            // Above the trigger zone (scrolled back up towards the hero banner)
-            track.scrollLeft = 0;
+            // Animate left sidebar content: slides left and fades out
+            if (sidebar) {
+              const sidebarX = easeP2 * 280;
+              const sidebarOpacity = Math.max(0, 1 - easeP2 * 1.5);
+              const sidebarScale = 1 - easeP2 * 0.1;
+              sidebar.style.transform = `translateX(-${sidebarX}px) scale(${sidebarScale})`;
+              sidebar.style.opacity = `${sidebarOpacity}`;
+              sidebar.style.pointerEvents = easeP2 > 0.8 ? 'none' : 'auto';
+            }
+
+            // Scroll track to reveal all categories
+            if (!isDraggingRef.current) {
+              const maxScroll = track.scrollWidth - track.clientWidth;
+              track.scrollLeft = easeP2 * maxScroll;
+            }
+
+            // Phase 3: Moves toward the next section
+            // From totalProgress 0.70 to 1.00: all categories stay visible,
+            // then as user scrolls past 1.00 the pinned container naturally scrolls up
+            // and transitions into the next section!
+          } else {
+            // Above pinned point: reset sidebar and track for clean reverse scrolling
+            if (sidebar) {
+              sidebar.style.transform = 'translateX(0px) scale(1)';
+              sidebar.style.opacity = '1';
+              sidebar.style.pointerEvents = 'auto';
+            }
+            if (!isDraggingRef.current) {
+              track.scrollLeft = 0;
+            }
           }
 
           checkScrollState();
@@ -153,6 +203,7 @@ export const ShopByOccasion: React.FC = () => {
     };
 
     window.addEventListener('scroll', handleWindowScroll, { passive: true });
+    handleWindowScroll(); // Initial frame
     return () => window.removeEventListener('scroll', handleWindowScroll);
   }, [checkScrollState]);
 
@@ -215,45 +266,51 @@ export const ShopByOccasion: React.FC = () => {
   };
 
   return (
-    <section
-      ref={sectionRef}
-      className="occasion-section"
+    <div
+      ref={containerRef}
+      className="occasion-scrolly-container"
       id="shop-by-occasion"
       aria-label="Curated By Celebration - Shop By Occasion"
     >
-      <div className="occasion-container">
-        
-        {/* Floating Navigation Controls (Appear when swiping across categories) */}
-        <button
-          onClick={() => scroll('left')}
-          className={`occasion-floating-nav-btn occasion-floating-prev ${canScrollLeft ? 'is-visible' : 'is-hidden'}`}
-          aria-label="Previous occasions / Return to original view"
-        >
-          <ChevronLeft className="w-5 h-5" />
-        </button>
+      <div className="occasion-sticky-viewport">
+        <div ref={stageRef} className="occasion-anim-stage">
+          <section className="occasion-section">
+            <div className="occasion-container">
+              
+              {/* Floating Navigation Controls (Appear when swiping across categories) */}
+              <button
+                onClick={() => scroll('left')}
+                className={`occasion-floating-nav-btn occasion-floating-prev ${canScrollLeft ? 'is-visible' : 'is-hidden'}`}
+                aria-label="Previous occasions / Return to original view"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
 
-        <button
-          onClick={() => scroll('right')}
-          className={`occasion-floating-nav-btn occasion-floating-next ${canScrollRight ? 'is-visible' : 'is-hidden'}`}
-          aria-label="Next occasions"
-        >
-          <ChevronRight className="w-5 h-5" />
-        </button>
+              <button
+                onClick={() => scroll('right')}
+                className={`occasion-floating-nav-btn occasion-floating-next ${canScrollRight ? 'is-visible' : 'is-hidden'}`}
+                aria-label="Next occasions"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
 
-        <div className="occasion-track-outer">
-          <div
-            ref={scrollRef}
-            className="occasion-scroll-track no-scrollbar"
-            onScroll={checkScrollState}
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}
-            onMouseLeave={handleMouseUp}
-          >
-            {/* 1. Left Editorial Sidebar: Occupies the start position. 
-                When swiping, it scrolls out so the 7 categories occupy that space.
-                When negative swiping, it returns back to its original place. */}
-            <div className={`occasion-sidebar-card ${isSwiped ? 'is-swiped' : 'is-start'}`}>
+              <div className="occasion-track-outer">
+                <div
+                  ref={scrollRef}
+                  className="occasion-scroll-track no-scrollbar"
+                  onScroll={checkScrollState}
+                  onMouseDown={handleMouseDown}
+                  onMouseMove={handleMouseMove}
+                  onMouseUp={handleMouseUp}
+                  onMouseLeave={handleMouseUp}
+                >
+                  {/* 1. Left Editorial Sidebar: Occupies the start position. 
+                      When swiping, it scrolls out so the 7 categories occupy that space.
+                      When negative swiping, it returns back to its original place. */}
+                  <div 
+                    ref={sidebarRef}
+                    className={`occasion-sidebar-card ${isSwiped ? 'is-swiped' : 'is-start'}`}
+                  >
               <div className="occasion-sidebar-content">
                 <div>
                   <p className="occasion-eyebrow">
@@ -345,7 +402,10 @@ export const ShopByOccasion: React.FC = () => {
           </div>
         </div>
 
+            </div>
+          </section>
+        </div>
       </div>
-    </section>
+    </div>
   );
 };

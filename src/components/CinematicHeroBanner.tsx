@@ -6,7 +6,6 @@ import { HeroVideoLayer } from './hero/HeroVideoLayer';
 import { FabricAnimation } from './hero/FabricAnimation';
 import { HeroContent } from './hero/HeroContent';
 import { HeroProgressIndicator } from './hero/HeroProgressIndicator';
-import { HeroNavigation } from './hero/HeroNavigation';
 import '../styles/cinematic-hero.css';
 
 export const CinematicHeroBanner: React.FC = () => {
@@ -202,12 +201,6 @@ export const CinematicHeroBanner: React.FC = () => {
           <div className="cinematic-hero-scroll-line" />
         </div>
       </button>
-
-      {/* 8. Bottom Navigation Controls & Audio Sync */}
-      <HeroNavigation
-        isMuted={isMuted}
-        onToggleMute={() => setIsMuted(!isMuted)}
-      />
 
       {/* Audio Element for Runway Soundtrack */}
       <audio

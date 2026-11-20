@@ -1,7 +1,46 @@
 /* ========================================================
    Shop By Occasion Styles (M. SIVA-TEX)
-   Seamless Swipeable Carousel with Dynamic Sidebar Space
+   3-Phase Scrollytelling Architecture:
+   - Phase 1: Arrive from bottom-right corner into center
+   - Phase 2: Content slides away, all categories visible
+   - Phase 3: Moves smoothly toward the next section
    ======================================================== */
+
+.occasion-scrolly-container {
+  position: relative;
+  width: 100%;
+  height: 270vh;
+  background-color: var(--color-logo-beige, #F8F4ED);
+}
+
+.occasion-sticky-viewport {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: var(--color-logo-beige, #F8F4ED);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.occasion-anim-stage {
+  width: 100%;
+  position: relative;
+  will-change: transform, opacity;
+  transform-origin: center center;
+}
+
+.occasion-sticky-viewport .occasion-section {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  background-color: transparent;
+  border-bottom: none;
+  width: 100%;
+}
 
 .occasion-section {
   padding-top: 5rem;
