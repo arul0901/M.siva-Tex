@@ -287,12 +287,12 @@ export const CinematicHeroBanner: React.FC = () => {
       />
 
       {/* 4. Flowing Silk Fabric Transition Wave (Triggered on slide change) */}
-      <FabricAnimation
+      {/* <FabricAnimation
         isTransitioning={isTransitioning}
         transitionDirection={transitionDirection}
         currentSlide={currentSlide}
         prevSlide={prevSlide}
-      />
+      /> */}
 
       {/* 5. Editorial Narrative Content & CTAs */}
       <HeroContent

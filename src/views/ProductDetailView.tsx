@@ -301,7 +301,7 @@ export const ProductDetailView: React.FC = () => {
           <div className="lg:col-span-5 flex flex-col justify-between">
             <div>
               {/* Origin & In-Stock Line */}
-              <div className="flex items-center justify-between text-[11px] font-serif uppercase tracking-[0.14em] text-[#8C6D62] pb-1.5 border-b border-[#D4AF37]/15 mb-2.5">
+              <div className="flex items-center justify-between text-[11px] font-secondary uppercase tracking-[0.12em] text-[#8C6D62] pb-1.5 border-b border-[#D4AF37]/15 mb-2.5">
                 <span>{product.origin || 'HANDCRAFTED IN KANCHIPURAM, TAMIL NADU'}</span>
                 <span className="flex items-center gap-1.5 text-emerald-800 font-semibold normal-case tracking-normal">
                   <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
@@ -351,7 +351,7 @@ export const ProductDetailView: React.FC = () => {
 
               {/* Price Row */}
               <div className="pdp-price-row">
-                <span className="text-xs text-brown-deep/60 uppercase font-serif mr-1">Sale price</span>
+                <span className="text-xs text-brown-deep/60 uppercase font-secondary mr-1">Sale price</span>
                 <span className="pdp-price-sale">
                   ₹ {product.price.toLocaleString('en-IN')}
                 </span>
@@ -766,16 +766,16 @@ export const ProductDetailView: React.FC = () => {
             {/* Bundle Pricing & CTA */}
             <div className="pdp-bundle-pricing-side">
               <div className="flex items-baseline gap-2 mb-1">
-                <span className="text-xs text-gray-500 uppercase font-serif">Bundle Total:</span>
-                <span className="text-lg font-bold text-burgundy font-serif">₹{bundleDiscountedPrice}</span>
-                <span className="text-xs text-gray-400 line-through">₹{bundleTotalPrice}</span>
+                <span className="text-xs text-gray-500 uppercase font-secondary">Bundle Total:</span>
+                <span className="text-lg font-bold text-burgundy font-secondary">₹{bundleDiscountedPrice}</span>
+                <span className="text-xs text-gray-400 line-through font-secondary">₹{bundleTotalPrice}</span>
               </div>
-              <span className="inline-block text-[11px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-sm mb-3">
+              <span className="inline-block text-[11px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-sm mb-3 font-secondary">
                 Save 15% with Bundle Privilege
               </span>
               <button
                 onClick={handleAddBundleToCart}
-                className="w-full py-2.5 px-4 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark font-serif text-xs uppercase tracking-wider font-semibold rounded-sm transition-colors flex items-center justify-center gap-2"
+                className="w-full py-2.5 px-4 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark font-secondary text-xs uppercase tracking-wider font-semibold rounded-sm transition-colors flex items-center justify-center gap-2"
               >
                 <ShoppingBag className="w-3.5 h-3.5" />
                 <span>Add All 3 to Cart</span>
@@ -787,8 +787,8 @@ export const ProductDetailView: React.FC = () => {
         {/* 4. Customer Reviews Section (Judge.me Style) */}
         <section id="customer-reviews" className="pdp-reviews-section">
           <div className="pdp-reviews-heading-wrap">
-            <span className="text-xs font-serif uppercase tracking-[0.25em] text-gold font-semibold">Verified Buyer Feedback</span>
-            <h2 className="font-serif text-2xl sm:text-3xl text-burgundy mt-1">Customer Reviews ({product.reviewCount})</h2>
+            <span className="text-xs font-secondary uppercase tracking-[0.2em] text-gold font-semibold">Verified Buyer Feedback</span>
+            <h2 className="font-primary text-2xl sm:text-3xl text-burgundy mt-1">Customer Reviews ({product.reviewCount})</h2>
           </div>
 
           {/* Rating Breakdown & Stats */}

@@ -15,10 +15,10 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem;
-  font-family: 'Cinzel', Georgia, serif;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
   font-size: 0.6875rem;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   color: #7A6560;
   margin-bottom: 1.5rem;
 }
@@ -182,12 +182,12 @@
   left: 1rem;
   background: #E11D48;
   color: #fff;
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
   font-size: 0.6875rem;
   font-weight: 700;
   padding: 0.35rem 0.75rem;
   border-radius: 2px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   box-shadow: 0 2px 10px rgba(225, 29, 72, 0.35);
   z-index: 2;
@@ -200,12 +200,12 @@
   background: rgba(250, 247, 242, 0.95);
   border: 1px solid rgba(212, 175, 55, 0.5);
   color: var(--color-primary-maroon, #4D0007);
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
   font-size: 0.625rem;
   font-weight: 700;
   padding: 0.3rem 0.65rem;
   border-radius: 2px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   display: flex;
   align-items: center;
@@ -232,10 +232,10 @@
    Product Info & Buying Column
    -------------------------------------------------------- */
 .pdp-vendor-pill {
-  font-family: 'Cinzel', Georgia, serif;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
   font-size: 0.6875rem;
   text-transform: uppercase;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.18em;
   font-weight: 600;
   color: var(--color-antique-gold, #B18A52);
   margin-bottom: 0.5rem;
@@ -243,7 +243,7 @@
 }
 
 .pdp-product-title {
-  font-family: 'Cinzel', Georgia, serif;
+  font-family: var(--font-primary, 'Bodoni Moda', serif);
   font-size: 1.875rem;
   line-height: 1.2;
   font-weight: 600;
@@ -270,7 +270,7 @@
   font-size: 1.875rem;
   font-weight: 700;
   color: var(--color-primary-maroon, #4D0007);
-  font-family: 'Cinzel', Georgia, serif;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
 }
 
 .pdp-price-regular {
@@ -451,11 +451,11 @@
 }
 
 .pdp-pincode-header {
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
   font-size: 0.6875rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   color: #8C6D62;
   display: flex;
   align-items: center;
@@ -475,6 +475,7 @@
   border: 1px solid rgba(212, 175, 55, 0.35);
   background: #fff;
   border-radius: 2px;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
   font-size: 0.8125rem;
   outline: none;
   transition: border-color 0.2s ease;
@@ -490,10 +491,10 @@
   color: #fff;
   border: none;
   border-radius: 2px;
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
   font-size: 0.6875rem;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -574,11 +575,11 @@
   color: #fff;
   border: 1px solid #1F2937;
   border-radius: 4px;
-  font-family: 'Cinzel', Georgia, serif;
-  font-size: 0.75rem;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
+  font-size: 0.8125rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.12em;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -601,11 +602,11 @@
   color: #360005;
   border: none;
   border-radius: 4px;
-  font-family: 'Cinzel', Georgia, serif;
-  font-size: 0.8125rem;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
+  font-size: 0.875rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.12em;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -751,11 +752,11 @@
 }
 
 .pdp-trust-label {
-  font-family: 'Cinzel', serif;
-  font-size: 0.625rem;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
+  font-size: 0.6875rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   color: var(--color-primary-maroon, #4D0007);
 }
 
@@ -795,11 +796,11 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  font-family: 'Cinzel', Georgia, serif;
-  font-size: 0.8125rem;
+  font-family: var(--font-primary, 'Bodoni Moda', serif);
+  font-size: 0.875rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   color: var(--color-primary-maroon, #4D0007);
   text-align: left;
 }
@@ -862,7 +863,7 @@
 }
 
 .pdp-bundle-title {
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-primary, 'Bodoni Moda', serif);
   font-size: 1.25rem;
   color: var(--color-primary-maroon, #4D0007);
   font-weight: 600;
@@ -952,7 +953,7 @@
 }
 
 .pdp-score-big {
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-primary, 'Bodoni Moda', serif);
   font-size: 3rem;
   font-weight: 700;
   color: var(--color-primary-maroon, #4D0007);

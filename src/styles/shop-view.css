@@ -20,11 +20,11 @@
   background-color: #FFFFFF;
   border: 1px solid rgba(212, 175, 55, 0.35);
   border-radius: 2px;
-  font-family: 'Cinzel', Georgia, serif;
-  font-size: 0.6875rem;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
+  font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   color: #4D0007;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
   transition: all 0.25s ease;
@@ -60,7 +60,7 @@
   border-radius: 9999px;
   background-color: #D4AF37;
   color: #4D0007;
-  font-family: 'Jost', system-ui, sans-serif;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
   font-size: 0.625rem;
   font-weight: 700;
   line-height: 1;
@@ -87,8 +87,9 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.6rem 0.95rem;
-  font-family: 'Cinzel', Georgia, serif;
-  font-size: 0.725rem;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
+  font-size: 0.75rem;
+  font-weight: 500;
   color: #34252A;
   text-align: left;
   border: none;
@@ -217,20 +218,20 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: 'Cinzel', Georgia, serif;
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-family: var(--font-primary, 'Bodoni Moda', serif);
+  font-size: 0.8125rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   color: #4D0007;
   transition: color 0.2s ease;
 }
 
 .filter-active-chip {
-  font-family: 'Jost', system-ui, sans-serif;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
   font-size: 0.5625rem;
   font-weight: 600;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   text-transform: none;
   padding: 0.15rem 0.45rem;
   background-color: rgba(212, 175, 55, 0.2);
@@ -251,6 +252,7 @@
   background-color: transparent;
   border: 1px solid transparent;
   color: #34252A;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
   transition: all 0.2s ease;
   cursor: pointer;
 }
@@ -275,7 +277,7 @@
 
 .category-item-count {
   font-size: 0.625rem;
-  font-family: 'Jost', system-ui, sans-serif;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
   color: rgba(52, 37, 42, 0.55);
   padding: 0.1rem 0.35rem;
   border-radius: 9999px;

@@ -375,7 +375,7 @@ export const ShopView: React.FC = () => {
             Top Header Bar: Left Title/Breadcrumbs + Right Toolbar
             ======================================================== */}
         <div className="mb-6 sm:mb-8 border-b border-gold/20 pb-5 sm:pb-6">
-          <div className="flex items-center gap-2 text-xs font-serif uppercase tracking-widest text-brown-deep/60 mb-2">
+          <div className="flex items-center gap-2 text-xs font-secondary uppercase tracking-widest text-brown-deep/60 mb-2">
             <span>Home</span>
             <span>/</span>
             <span>Boutique Catalog</span>
@@ -395,14 +395,14 @@ export const ShopView: React.FC = () => {
           
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
-              <h1 className="font-serif text-3xl sm:text-4xl text-burgundy font-normal tracking-wide">
+              <h1 className="font-primary text-3xl sm:text-4xl text-burgundy font-normal tracking-tight">
                 {filters.categories.length === 1 
                   ? filters.categories[0] 
                   : filters.categories.length > 1 
                     ? 'Curated Saree Collections' 
                     : 'All Handloom Sarees'}
               </h1>
-              <p className="text-xs sm:text-sm text-brown-deep/70 font-light mt-1">
+              <p className="text-xs sm:text-sm font-secondary text-brown-deep/70 font-light mt-1">
                 Showing {filteredProducts.length} authentic handcrafted silk and artisanal handlooms.
               </p>
             </div>

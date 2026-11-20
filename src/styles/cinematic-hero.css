@@ -382,7 +382,7 @@
 
 /* Editorial Title with Serif Display */
 .cinematic-hero-title {
-  font-family: 'Cinzel', Georgia, serif;
+  font-family: var(--font-primary, 'Bodoni Moda', serif);
   font-size: 2.5rem;
   line-height: 1.1;
   font-weight: 500;
@@ -409,12 +409,12 @@
 
 .cinematic-hero-title-sub {
   display: block;
-  font-family: 'Playfair Display', 'Cinzel', serif;
+  font-family: var(--font-special, 'Instrument Serif', serif);
   font-style: italic;
   font-weight: 400;
-  font-size: 0.65em;
+  font-size: 0.72em;
   color: var(--color-antique-gold, #B18A52);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   margin-top: 0.25rem;
 }
 
@@ -429,6 +429,7 @@
 
 /* Storytelling Description */
 .cinematic-hero-desc {
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
   font-size: 0.8125rem;
   line-height: 1.65;
   color: #4A3E3D;
@@ -459,10 +460,10 @@
   padding: 0.875rem 1.875rem;
   background-color: var(--color-rich-gold, #D4AF37);
   color: var(--color-maroon-dark, #360005);
-  font-family: 'Cinzel', Georgia, serif;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
   font-size: 0.6875rem;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.14em;
   font-weight: 700;
   border-radius: 2px;
   border: 1px solid var(--color-rich-gold, #D4AF37);
@@ -502,10 +503,10 @@
   padding: 0.875rem 1.5rem;
   background-color: transparent;
   color: var(--color-primary-maroon, #4D0007);
-  font-family: 'Cinzel', Georgia, serif;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
   font-size: 0.6875rem;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
   font-weight: 600;
   border-radius: 2px;
   border: 1px solid var(--color-primary-maroon, #4D0007);
@@ -533,8 +534,8 @@
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
-  font-size: 0.6875rem;
-  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  font-family: var(--font-special, 'Instrument Serif', serif);
   font-style: italic;
   color: var(--color-antique-gold, #B18A52);
   border-left: 1px solid rgba(177, 138, 82, 0.4);
@@ -758,9 +759,9 @@
 
 .cinematic-hero-hallmark-text {
   font-size: 0.625rem;
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
   font-weight: 600;
   color: var(--color-primary-maroon, #4D0007);
 }
@@ -1045,10 +1046,10 @@
 }
 
 .cinematic-hero-scroll-text {
-  font-family: 'Cinzel', Georgia, serif;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
   font-size: 0.625rem;
   text-transform: uppercase;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.16em;
   font-weight: 600;
   white-space: nowrap;
   opacity: 0.85;

@@ -68,9 +68,13 @@ export default {
         }
       },
       fontFamily: {
-        serif: ['"Cormorant Garamond"', 'Cinzel', 'Playfair Display', 'Georgia', 'serif'],
-        display: ['Cinzel', '"Cormorant Garamond"', 'serif'],
-        sans: ['"Plus Jakarta Sans"', 'Montserrat', 'Inter', 'sans-serif'],
+        primary: ['var(--font-primary)', "'Bodoni Moda'", 'Georgia', 'serif'],
+        secondary: ['var(--font-secondary)', 'Manrope', '-apple-system', 'sans-serif'],
+        special: ['var(--font-special)', "'Instrument Serif'", 'Georgia', 'serif'],
+        editorial: ['var(--font-special)', "'Instrument Serif'", 'Georgia', 'serif'],
+        serif: ['var(--font-primary)', "'Bodoni Moda'", 'Georgia', 'serif'],
+        display: ['var(--font-primary)', "'Bodoni Moda'", 'Georgia', 'serif'],
+        sans: ['var(--font-secondary)', 'Manrope', '-apple-system', 'sans-serif'],
       },
       boxShadow: {
         'luxury': '0 20px 40px -15px rgba(48, 17, 36, 0.08), 0 0 1px 1px rgba(177, 138, 82, 0.15)',

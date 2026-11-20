@@ -335,7 +335,7 @@
 }
 
 .header-mega-heading {
-  font-family: 'Cinzel', Georgia, serif;
+  font-family: var(--font-primary, 'Bodoni Moda', serif);
   font-size: 0.875rem;
   font-weight: 700;
   color: var(--color-primary-maroon, #4D0007);
@@ -434,12 +434,13 @@
 .header-mega-card-title {
   color: #FFFFFF;
   font-size: 0.75rem;
-  font-family: 'Cinzel', Georgia, serif;
+  font-family: var(--font-primary, 'Bodoni Moda', serif);
 }
 
 .header-mega-card-desc {
-  font-size: 0.6875rem;
-  color: rgba(48, 34, 31, 0.8);
+  font-size: 0.75rem;
+  color: rgba(48, 34, 31, 0.85);
+  font-family: var(--font-special, 'Instrument Serif', serif);
   font-style: italic;
   line-height: 1.5;
   margin: 0;
@@ -720,7 +721,7 @@
 }
 
 .mobile-drawer-concierge-title {
-  font-family: 'Cinzel', Georgia, serif;
+  font-family: var(--font-primary, 'Bodoni Moda', serif);
   font-weight: 700;
   color: var(--color-bright-gold, #ECBA51);
   font-size: 0.875rem;

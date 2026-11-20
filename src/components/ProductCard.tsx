@@ -67,13 +67,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       {/* Product Details */}
       <div className="pt-4 pb-2 flex flex-col flex-1">
         {/* Saree Type / Weave */}
-        <div className="flex items-center justify-between text-[11px] text-gold font-serif uppercase tracking-wider mb-1">
+        <div className="flex items-center justify-between text-[11px] text-gold font-primary uppercase tracking-wider mb-1">
           <span>{product.category}</span>
-          <span className="text-brown-deep/50 lowercase italic font-sans">{product.zari}</span>
+          <span className="text-brown-deep/60 font-special italic lowercase text-xs">{product.zari}</span>
         </div>
 
-        {/* Product Name */}
-        <h4 className="font-serif text-sm sm:text-base font-medium text-burgundy group-hover:text-gold-dark transition-colors line-clamp-1">
+        {/* Product Name (Manrope for clean contemporary luxury readability) */}
+        <h4 className="font-secondary text-sm sm:text-base font-semibold text-burgundy group-hover:text-gold-dark transition-colors line-clamp-1">
           {product.name}
         </h4>
 
@@ -91,18 +91,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               />
             ))}
           </div>
-          <span className="text-[11px] text-brown-deep/60">
+          <span className="text-[11px] font-secondary text-brown-deep/60">
             {product.rating} ({product.reviewCount})
           </span>
         </div>
 
         {/* Price Section */}
-        <div className="mt-auto flex items-baseline gap-2 pt-1">
-          <span className="text-base sm:text-lg font-serif font-bold text-burgundy">
+        <div className="mt-auto flex items-baseline gap-2 pt-1 font-secondary">
+          <span className="text-base sm:text-lg font-bold text-burgundy">
             ₹{product.price.toLocaleString('en-IN')}
           </span>
           {product.originalPrice > product.price && (
-            <span className="text-xs text-brown-deep/50 line-through">
+            <span className="text-xs text-brown-deep/50 line-through font-normal">
               ₹{product.originalPrice.toLocaleString('en-IN')}
             </span>
           )}

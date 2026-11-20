@@ -50,21 +50,22 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
   font-size: 0.6875rem;
   text-transform: uppercase;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.18em;
   color: var(--color-rich-gold, #D4AF37);
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
 
 .shop-cat-title {
-  font-family: 'Cinzel', Georgia, serif;
+  font-family: var(--font-primary, 'Bodoni Moda', serif);
   font-size: 2rem;
   line-height: 1.15;
   color: #FDFBF7;
   font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 @media (min-width: 640px) {
@@ -74,12 +75,14 @@
 }
 
 .shop-cat-title-italic {
+  font-family: var(--font-special, 'Instrument Serif', serif);
   font-style: italic;
   font-weight: 400;
   color: var(--color-rich-gold, #D4AF37);
 }
 
 .shop-cat-subtitle {
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
   font-size: 0.8125rem;
   color: #D6C2B4;
   max-width: 34rem;
@@ -91,10 +94,10 @@
   display: inline-flex;
   align-items: center;
   gap: 0.625rem;
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
   font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.12em;
   font-weight: 600;
   color: #FDFBF7;
   padding: 0.65rem 1.25rem;
@@ -225,10 +228,10 @@
   align-items: center;
   gap: 0.35rem;
   align-self: flex-start;
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
   font-size: 0.625rem;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   font-weight: 700;
   padding: 0.2rem 0.6rem;
   background: rgba(212, 175, 55, 0.18);
@@ -240,7 +243,7 @@
 }
 
 .shop-cat-card-title {
-  font-family: 'Cinzel', Georgia, serif;
+  font-family: var(--font-primary, 'Bodoni Moda', serif);
   font-size: 1.1875rem;
   font-weight: 600;
   color: #FDFBF7;
@@ -253,6 +256,7 @@
 }
 
 .shop-cat-card-subtitle {
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
   font-size: 0.75rem;
   color: #D6C2B4;
   line-height: 1.4;
@@ -266,10 +270,10 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
   font-size: 0.6875rem;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   color: var(--color-rich-gold, #D4AF37);
   font-weight: 600;
   margin-top: 0.5rem;
