@@ -276,6 +276,19 @@
   padding-left: 1.5rem;
   padding-right: 1.5rem;
   box-sizing: border-box;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cinematic-hero-content-wrap.content-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+}
+
+.cinematic-hero-content-wrap.content-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
 }
 
 @media (min-width: 640px) {
@@ -796,23 +809,27 @@
 /* Mobile Specific Comprehensive Responsiveness */
 @media (max-width: 767px) {
   .cinematic-hero-wrapper {
-    min-height: 100svh;
-    height: auto;
+    height: calc(100vh - 64px);
+    height: calc(100svh - 64px);
+    height: calc(100dvh - 64px);
+    min-height: 520px;
+    max-height: none;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     align-items: stretch;
-    padding-top: 1rem;
-    padding-bottom: 1.25rem;
+    padding-top: 0;
+    padding-bottom: 4.75rem; /* Clearance for fixed mobile bottom navigation bar */
     position: relative;
+    overflow: hidden;
   }
 
   .cinematic-hero-model-container {
     width: 100%;
-    height: 60%;
+    height: 100%;
     top: 0;
-    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 100%);
-    mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 100%);
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 
   .cinematic-hero-model-pos-1,
@@ -820,98 +837,127 @@
   .cinematic-hero-model-pos-3,
   .cinematic-hero-model-pos-4,
   .cinematic-hero-model-pos-5 {
-    object-position: center 8%;
+    object-position: center top;
+  }
+
+  .cinematic-hero-video-element {
+    object-position: center top;
   }
 
   .cinematic-hero-content-wrap {
     position: relative;
     z-index: 25;
-    padding-left: 0.875rem;
-    padding-right: 0.875rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
     margin-top: auto;
-    margin-bottom: 0.875rem;
+    margin-bottom: 0.5rem;
+    width: 100%;
+    box-sizing: border-box;
   }
 
+  /* Ultra-sheer, compact transparent container so saree is 100% visible */
   .cinematic-hero-text-block {
     max-width: 100%;
-    padding: 0.875rem 1rem;
-    background: linear-gradient(180deg, rgba(250, 247, 242, 0.94) 0%, rgba(250, 247, 242, 0.98) 100%);
-    border: 1px solid rgba(212, 175, 55, 0.35);
-    border-radius: 4px;
-    box-shadow: 0 8px 32px rgba(77, 0, 7, 0.08);
+    padding: 0.65rem 0.85rem;
+    background: rgba(250, 247, 242, 0.45);
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+    transition: background 0.3s ease, border-color 0.3s ease;
   }
 
+  /* Compact Brand Eyebrow Badge */
   .cinematic-hero-brand-pill {
-    margin-bottom: 0.4rem;
-    padding: 0.2rem 0.55rem;
+    display: inline-flex;
+    margin-bottom: 0.25rem;
+    padding: 0.18rem 0.55rem;
+    background: rgba(77, 0, 7, 0.88);
+    border: 1px solid rgba(236, 186, 81, 0.7);
+    border-radius: 9999px;
+    box-shadow: 0 2px 8px rgba(77, 0, 7, 0.15);
   }
 
+  .cinematic-hero-eyebrow-text {
+    font-size: 0.5625rem;
+    letter-spacing: 0.16em;
+  }
+
+  .cinematic-hero-eyebrow-icon {
+    width: 0.65rem;
+    height: 0.65rem;
+  }
+
+  /* Compact Royal Serif Title & Subtitle */
   .cinematic-hero-title {
-    font-size: clamp(1.35rem, 5.2vw, 1.85rem);
-    line-height: 1.15;
-    margin-bottom: 0.25rem;
+    font-size: clamp(1.2rem, 5vw, 1.48rem);
+    line-height: 1.1;
+    margin-bottom: 0;
+  }
+
+  .cinematic-hero-title-main {
+    font-size: 1em;
+    color: #360005;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.9);
+  }
+
+  .cinematic-hero-title-sub {
+    font-size: 0.82em;
+    margin-top: 0.1rem;
+    color: #633E0B;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.9);
+  }
+
+  /* Less Content: HIDE bulky elements on mobile so saree shines through */
+  .cinematic-hero-gold-line-wrap {
+    display: none !important;
   }
 
   .cinematic-hero-desc {
-    font-size: 0.75rem;
-    line-height: 1.45;
-    margin-bottom: 0.75rem;
-    color: #3D2E2B;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    display: none !important;
   }
 
-  .cinematic-hero-gold-line {
-    margin-top: 0.35rem;
-    margin-bottom: 0.5rem;
+  .cinematic-hero-btn-outline {
+    display: none !important;
   }
 
+  .cinematic-hero-tag-pill {
+    display: none !important;
+  }
+
+  /* Sleek, Compact Single Primary Gold CTA */
   .cinematic-hero-cta-group {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0;
+    margin-top: 0.5rem;
     margin-bottom: 0;
   }
 
-  .cinematic-hero-btn-gold,
-  .cinematic-hero-btn-outline {
-    min-height: 42px;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    flex: 1 1 50%;
-    justify-content: center;
-    text-align: center;
-    white-space: nowrap;
-  }
-
-  .cinematic-hero-tag-pill {
-    display: none;
+  .cinematic-hero-btn-gold {
+    min-height: 38px;
+    padding: 0.45rem 1.15rem;
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    border-radius: 4px;
+    flex: 0 0 auto;
+    width: auto;
+    box-shadow: 0 4px 14px rgba(184, 134, 11, 0.35);
   }
 
   .cinematic-hero-vertical-indicators {
-    display: none;
+    display: none !important;
+  }
+
+  .cinematic-hero-scroll-prompt {
+    display: none !important;
   }
 
   .cinematic-hero-bottom-bar {
-    position: static;
-    padding: 0.75rem 1rem 0;
-    pointer-events: auto;
-    margin-top: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .cinematic-hero-control-btn,
-  .cinematic-hero-audio-btn {
-    min-width: 44px;
-    min-height: 44px;
+    display: none !important;
   }
 }
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { TransitionDirection } from './HeroTypes';
 
-export const SCENE_TIMESTAMPS = [0, 4.6, 10.2, 15.8, 21.2];
+export const SCENE_TIMESTAMPS = [0, 4.8, 10.4, 16.0];
 
 interface HeroVideoLayerProps {
   videoRef: React.RefObject<HTMLVideoElement | null>;
@@ -11,6 +11,7 @@ interface HeroVideoLayerProps {
   isTransitioning: boolean;
   transitionDirection: TransitionDirection;
   onSlideChange?: (index: number) => void;
+  onTransitionStateChange?: (inTransition: boolean) => void;
 }
 
 export const HeroVideoLayer: React.FC<HeroVideoLayerProps> = ({
@@ -20,10 +21,13 @@ export const HeroVideoLayer: React.FC<HeroVideoLayerProps> = ({
   isMuted,
   isTransitioning,
   transitionDirection,
-  onSlideChange
+  onSlideChange,
+  onTransitionStateChange
 }) => {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const isSeekingRef = useRef(false);
+  const lastTransitionStateRef = useRef<boolean>(false);
+  const lastSlideRef = useRef<number>(currentSlide);
 
   // Responsive check for mobile banner video
   const [isMobile, setIsMobile] = useState(() => {
@@ -77,24 +81,49 @@ export const HeroVideoLayer: React.FC<HeroVideoLayerProps> = ({
     }
   }, [currentSlide, videoRef]);
 
-  // Listen to video time updates to synchronize active slide content during linear playback
-  const handleTimeUpdate = () => {
-    if (isSeekingRef.current || !onSlideChange) return;
-    const video = videoRef.current;
-    if (!video) return;
+  // High-precision RAF loop to hide text during saree transitions and reveal when the lady appears
+  useEffect(() => {
+    let animId: number;
 
-    const t = video.currentTime;
-    let newSlide = 0;
-    if (t >= 21.2) newSlide = 4;
-    else if (t >= 15.8) newSlide = 3;
-    else if (t >= 10.2) newSlide = 2;
-    else if (t >= 4.6) newSlide = 1;
-    else newSlide = 0;
+    const checkTransitionSync = () => {
+      const video = videoRef.current;
+      if (video && !isSeekingRef.current) {
+        const t = video.currentTime;
 
-    if (newSlide !== currentSlide) {
-      onSlideChange(newSlide);
-    }
-  };
+        // Transition windows where saree fabric sweep/camera movement is taking place
+        const inTransition =
+          (t >= 3.7 && t < 4.8) ||
+          (t >= 9.3 && t < 10.4) ||
+          (t >= 14.9 && t < 16.0) ||
+          (t >= 20.5 && t < 21.6);
+
+        // Notify transition state change (hide text during saree transition)
+        if (inTransition !== lastTransitionStateRef.current) {
+          lastTransitionStateRef.current = inTransition;
+          onTransitionStateChange?.(inTransition);
+        }
+
+        // When lady arrives with the saree (out of transition), sync the active slide
+        if (!inTransition) {
+          let targetSlide = 0;
+          if (t >= 16.0 && t < 20.5) targetSlide = 3;
+          else if (t >= 10.4 && t < 14.9) targetSlide = 2;
+          else if (t >= 4.8 && t < 9.3) targetSlide = 1;
+          else targetSlide = 0; // t >= 21.6 or t < 3.7
+
+          if (targetSlide !== lastSlideRef.current) {
+            lastSlideRef.current = targetSlide;
+            onSlideChange?.(targetSlide);
+          }
+        }
+      }
+
+      animId = requestAnimationFrame(checkTransitionSync);
+    };
+
+    animId = requestAnimationFrame(checkTransitionSync);
+    return () => cancelAnimationFrame(animId);
+  }, [onSlideChange, onTransitionStateChange, videoRef]);
 
   return (
     <div className={`cinematic-hero-video-stage ${isVideoLoaded ? 'is-ready' : 'is-loading'}`}>
@@ -111,7 +140,6 @@ export const HeroVideoLayer: React.FC<HeroVideoLayerProps> = ({
           className="cinematic-hero-video-element"
           onLoadedData={() => setIsVideoLoaded(true)}
           onCanPlay={() => setIsVideoLoaded(true)}
-          onTimeUpdate={handleTimeUpdate}
         >
           {isMobile ? (
             <>

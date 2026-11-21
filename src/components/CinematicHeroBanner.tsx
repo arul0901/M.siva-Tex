@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useShop } from '../context/ShopContext';
 import { HERO_SLIDES, TransitionDirection } from './hero/HeroTypes';
+import { SCENE_TIMESTAMPS } from './hero/HeroVideoLayer';
 import { HeroBackground } from './hero/HeroBackground';
 import { HeroVideoLayer } from './hero/HeroVideoLayer';
 import { FabricAnimation } from './hero/FabricAnimation';
@@ -15,6 +16,7 @@ export const CinematicHeroBanner: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isContentVisible, setIsContentVisible] = useState(true);
 
   const { setCurrentView, setSelectedCategoryFilter, setIsConciergeOpen } = useShop();
 
@@ -24,7 +26,7 @@ export const CinematicHeroBanner: React.FC = () => {
   const touchStartXRef = useRef<number | null>(null);
   const transitionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const activeSlide = HERO_SLIDES[currentSlide];
+  const activeSlide = HERO_SLIDES[currentSlide] || HERO_SLIDES[0];
 
   // 1. Audio Ambient Runway Soundtrack Sync
   useEffect(() => {
@@ -39,7 +41,7 @@ export const CinematicHeroBanner: React.FC = () => {
     }
   }, [isMuted, isPlaying]);
 
-  // 2. Slide Transition Handlers
+  // 2. Slide Transition Handlers: Hides content during transition and reveals when lady arrives
   const goToSlide = useCallback((index: number, direction?: TransitionDirection) => {
     if (index === currentSlide) return;
     if (transitionTimeoutRef.current) {
@@ -47,14 +49,20 @@ export const CinematicHeroBanner: React.FC = () => {
     }
     const dir = direction || (index > currentSlide ? 'next' : 'prev');
     setPrevSlide(currentSlide);
-    setCurrentSlide(index);
     setTransitionDirection(dir);
     setIsTransitioning(true);
+    setIsContentVisible(false); // Hide text contents while saree transition takes place!
+
+    if (videoRef.current) {
+      videoRef.current.currentTime = SCENE_TIMESTAMPS[index] ?? 0;
+    }
 
     transitionTimeoutRef.current = setTimeout(() => {
+      setCurrentSlide(index);
       setPrevSlide(null);
       setIsTransitioning(false);
-    }, 1250);
+      setIsContentVisible(true); // Reveal content when the lady and saree appear!
+    }, 450);
   }, [currentSlide]);
 
   const nextSlide = useCallback(() => {
@@ -68,19 +76,14 @@ export const CinematicHeroBanner: React.FC = () => {
   // Handle continuous video scene updates
   const handleVideoSceneSync = useCallback((sceneIndex: number) => {
     if (sceneIndex === currentSlide) return;
-    setPrevSlide(currentSlide);
     setCurrentSlide(sceneIndex);
-    setTransitionDirection('next');
-    setIsTransitioning(true);
-
-    if (transitionTimeoutRef.current) {
-      clearTimeout(transitionTimeoutRef.current);
-    }
-    transitionTimeoutRef.current = setTimeout(() => {
-      setPrevSlide(null);
-      setIsTransitioning(false);
-    }, 1250);
   }, [currentSlide]);
+
+  // Synchronize transition state: hide text during transition, reveal when lady appears
+  const handleTransitionStateChange = useCallback((inTransition: boolean) => {
+    setIsContentVisible(!inTransition);
+    setIsTransitioning(inTransition);
+  }, []);
 
   // Clean up transition timer on unmount
   useEffect(() => {
@@ -168,6 +171,7 @@ export const CinematicHeroBanner: React.FC = () => {
         isTransitioning={isTransitioning}
         transitionDirection={transitionDirection}
         onSlideChange={handleVideoSceneSync}
+        onTransitionStateChange={handleTransitionStateChange}
       />
 
       {/* 4. Flowing Silk Fabric Transition Wave (Triggered on slide change) */}
@@ -178,9 +182,10 @@ export const CinematicHeroBanner: React.FC = () => {
         prevSlide={prevSlide}
       /> */}
 
-      {/* 5. Editorial Narrative Content & CTAs */}
+      {/* 5. Editorial Narrative Content & CTAs (Hides during transition, reveals when lady arrives) */}
       <HeroContent
         slide={activeSlide}
+        isVisible={isContentVisible}
         onPrimaryCta={handlePrimaryCta}
         onSecondaryCta={handleSecondaryCta}
       />
