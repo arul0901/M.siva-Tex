@@ -1,14 +1,14 @@
 /* ========================================================
    Editorial Triptych Section Styles (M. SIVA-TEX)
    "A Symphony of Tradition & Craftsmanship" • "The Legacy of Divinity"
-   Haute Couture Indian Editorial Showcase
+   Haute Couture Indian Editorial Showcase - Compact & Mobile-First
    ======================================================== */
 
 .editorial-triptych-section {
   position: relative;
   background: radial-gradient(circle at 50% 30%, #3B0006 0%, #220003 70%, #150002 100%);
-  padding-top: 3.5rem;
-  padding-bottom: 3.5rem;
+  padding-top: 1.75rem;
+  padding-bottom: 2rem;
   overflow: hidden;
   border-top: 1px solid rgba(212, 175, 55, 0.35);
   border-bottom: 1px solid rgba(212, 175, 55, 0.35);
@@ -16,8 +16,8 @@
 
 @media (min-width: 1024px) {
   .editorial-triptych-section {
-    padding-top: 4.5rem;
-    padding-bottom: 4.5rem;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
   }
 }
 
@@ -37,51 +37,43 @@
 
 /* Container */
 .editorial-triptych-container {
-  max-width: 1440px;
+  max-width: 1360px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
   position: relative;
   z-index: 10;
 }
 
 @media (min-width: 640px) {
   .editorial-triptych-container {
-    padding-left: 2rem;
-    padding-right: 2rem;
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
   }
 }
 
 @media (min-width: 1024px) {
   .editorial-triptych-container {
-    padding-left: 3rem;
-    padding-right: 3rem;
+    padding-left: 2.25rem;
+    padding-right: 2.25rem;
   }
 }
 
 /* ========================================================
    Main Triptych Layout (3 Columns on Desktop)
+   Compact 1fr 1.35fr 1fr Proportion
    ======================================================== */
 .editorial-triptych-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1.32fr 1fr;
+  gap: 1.35rem;
   align-items: center;
-}
-
-@media (min-width: 1024px) {
-  .editorial-triptych-grid {
-    display: grid;
-    grid-template-columns: 1fr 1.35fr 1fr;
-    gap: 2.25rem;
-    align-items: center;
-  }
 }
 
 @media (min-width: 1280px) {
   .editorial-triptych-grid {
-    gap: 3rem;
+    gap: 1.85rem;
   }
 }
 
@@ -90,30 +82,31 @@
    ======================================================== */
 .editorial-wing {
   position: relative;
-  padding: 2rem 1.75rem;
-  background: linear-gradient(145deg, rgba(77, 0, 7, 0.65) 0%, rgba(34, 0, 4, 0.85) 100%);
+  padding: 1.25rem 1.15rem;
+  background: linear-gradient(145deg, rgba(77, 0, 7, 0.72) 0%, rgba(34, 0, 4, 0.88) 100%);
   border: 1px solid rgba(212, 175, 55, 0.35);
   border-radius: 4px;
-  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.5), inset 0 0 24px rgba(212, 175, 55, 0.05);
+  box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(212, 175, 55, 0.04);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+  transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
 }
 
 @media (min-width: 1024px) {
   .editorial-wing {
-    min-height: 480px;
-    padding: 2.5rem 2.25rem;
+    min-height: 390px;
+    height: 390px;
+    padding: 1.5rem 1.45rem;
   }
 }
 
 .editorial-wing:hover {
   border-color: rgba(236, 186, 81, 0.65);
-  box-shadow: 0 16px 40px -6px rgba(0, 0, 0, 0.65), inset 0 0 30px rgba(212, 175, 55, 0.08);
+  box-shadow: 0 14px 32px -6px rgba(0, 0, 0, 0.65), inset 0 0 24px rgba(212, 175, 55, 0.07);
   transform: translateY(-2px);
 }
 
@@ -122,22 +115,22 @@
 .editorial-wing::after {
   content: '';
   position: absolute;
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   border-color: #ECBA51;
   pointer-events: none;
 }
 
 .editorial-wing::before {
-  top: 8px;
-  left: 8px;
+  top: 7px;
+  left: 7px;
   border-top: 1.5px solid #ECBA51;
   border-left: 1.5px solid #ECBA51;
 }
 
 .editorial-wing::after {
-  bottom: 8px;
-  right: 8px;
+  bottom: 7px;
+  right: 7px;
   border-bottom: 1.5px solid #ECBA51;
   border-right: 1.5px solid #ECBA51;
 }
@@ -145,52 +138,52 @@
 /* Eyebrow Label */
 .editorial-eyebrow {
   font-family: var(--font-secondary, 'Manrope', sans-serif);
-  font-size: 10.5px;
-  letter-spacing: 0.22em;
+  font-size: 9.5px;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--color-rich-gold, #D4AF37);
   font-weight: 600;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .editorial-eyebrow::after {
   content: '';
   display: inline-block;
   height: 1px;
-  width: 24px;
+  width: 18px;
   background: linear-gradient(90deg, #D4AF37, transparent);
 }
 
 /* Majestic Serif Heading */
 .editorial-title {
   font-family: var(--font-primary, 'Bodoni Moda', serif);
-  font-size: 1.75rem;
+  font-size: 1.25rem;
   line-height: 1.2;
   font-weight: 500;
   letter-spacing: 0.02em;
   text-transform: uppercase;
   color: #FDFBF7;
-  margin-bottom: 1rem;
+  margin-bottom: 0.6rem;
 }
 
 @media (min-width: 640px) {
   .editorial-title {
-    font-size: 2rem;
+    font-size: 1.35rem;
   }
 }
 
 @media (min-width: 1024px) {
   .editorial-title {
-    font-size: 1.85rem;
+    font-size: 1.35rem;
   }
 }
 
 @media (min-width: 1280px) {
   .editorial-title {
-    font-size: 2.15rem;
+    font-size: 1.48rem;
   }
 }
 
@@ -205,59 +198,62 @@
 .editorial-divider {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
-  margin-bottom: 1.25rem;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
   color: #ECBA51;
-  font-size: 11px;
+  font-size: 10px;
 }
 
 .editorial-divider-line {
   height: 1px;
-  width: 48px;
+  width: 32px;
   background: linear-gradient(90deg, rgba(212, 175, 55, 0.8), transparent);
 }
 
 /* Poetic Narrative Paragraph */
 .editorial-desc {
   font-family: var(--font-secondary, 'Manrope', sans-serif);
-  font-size: 0.875rem;
-  line-height: 1.75;
+  font-size: 0.8125rem;
+  line-height: 1.6;
   color: rgba(253, 251, 247, 0.85);
   font-weight: 300;
-  margin-bottom: 1.75rem;
+  margin-bottom: 1.15rem;
 }
 
 @media (min-width: 1024px) {
   .editorial-desc {
-    font-size: 0.9rem;
+    font-size: 0.815rem;
+    line-height: 1.62;
+    margin-bottom: 1.35rem;
   }
 }
 
 /* Button CTA */
 .editorial-cta-btn {
   font-family: var(--font-secondary, 'Manrope', sans-serif);
-  font-size: 10.5px;
+  font-size: 9.5px;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   font-weight: 600;
-  padding: 0.75rem 1.35rem;
+  padding: 0.55rem 1.15rem;
   border: 1px solid #ECBA51;
   color: #ECBA51;
   background: transparent;
   border-radius: 2px;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.45rem;
   cursor: pointer;
-  transition: all 0.35s ease;
+  transition: all 0.3s ease;
   width: fit-content;
+  min-height: 40px;
 }
 
 .editorial-cta-btn:hover {
   background: linear-gradient(135deg, #ECBA51, #D4AF37);
   color: #2A0004;
   border-color: #ECBA51;
-  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.35);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.35);
   transform: translateY(-1px);
 }
 
@@ -271,48 +267,46 @@
   overflow: hidden;
   border: 1.5px solid rgba(212, 175, 55, 0.55);
   box-shadow: 
-    0 20px 45px -10px rgba(0, 0, 0, 0.8),
+    0 16px 36px -8px rgba(0, 0, 0, 0.75),
     0 0 0 1px rgba(236, 186, 81, 0.25),
-    inset 0 0 35px rgba(0, 0, 0, 0.4);
+    inset 0 0 30px rgba(0, 0, 0, 0.4);
   background-color: #1a0003;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
 }
 
 @media (min-width: 1024px) {
   .editorial-center-frame {
-    min-height: 480px;
-    height: 100%;
+    min-height: 390px;
+    height: 390px;
   }
 }
 
 .editorial-center-frame:hover {
-  transform: scale(1.015);
+  transform: scale(1.012);
   border-color: #ECBA51;
   box-shadow: 
-    0 24px 50px -10px rgba(0, 0, 0, 0.85),
-    0 0 20px rgba(212, 175, 55, 0.35);
+    0 18px 40px -8px rgba(0, 0, 0, 0.8),
+    0 0 16px rgba(212, 175, 55, 0.3);
 }
 
 /* Editorial Image */
 .editorial-hero-img {
   width: 100%;
   height: 100%;
-  min-height: 380px;
-  max-height: 520px;
   object-fit: cover;
   object-position: center top;
   display: block;
-  transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @media (min-width: 1024px) {
   .editorial-hero-img {
-    height: 480px;
+    height: 390px;
   }
 }
 
 .editorial-center-frame:hover .editorial-hero-img {
-  transform: scale(1.04);
+  transform: scale(1.035);
 }
 
 /* Dark Vignette Overlay for Dramatic Palace Mood */
@@ -329,23 +323,23 @@
 .editorial-center-frame::after {
   content: '';
   position: absolute;
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   border-color: #ECBA51;
   z-index: 15;
   pointer-events: none;
 }
 
 .editorial-center-frame::before {
-  top: 10px;
-  left: 10px;
-  border-top: 2px solid #ECBA51;
-  border-left: 2px solid #ECBA51;
+  top: 8px;
+  left: 8px;
+  border-top: 1.5px solid #ECBA51;
+  border-left: 1.5px solid #ECBA51;
 }
 
 .editorial-center-frame::after {
-  bottom: 10px;
-  right: 10px;
-  border-bottom: 2px solid #ECBA51;
-  border-right: 2px solid #ECBA51;
+  bottom: 8px;
+  right: 8px;
+  border-bottom: 1.5px solid #ECBA51;
+  border-right: 1.5px solid #ECBA51;
 }
