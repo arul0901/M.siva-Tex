@@ -51,6 +51,8 @@ interface ShopContextType {
   setIsSearchOpen: (open: boolean) => void;
   isConciergeOpen: boolean;
   setIsConciergeOpen: (open: boolean) => void;
+  isAuthModalOpen: boolean;
+  setIsAuthModalOpen: (open: boolean) => void;
 
   // Orders
   orders: Order[];
@@ -147,6 +149,7 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [quickViewProduct, setQuickViewProduct] = useState<SareeProduct | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isConciergeOpen, setIsConciergeOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [couponCode, setCouponCode] = useState('WELCOME10');
   const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
@@ -340,6 +343,8 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setIsSearchOpen,
         isConciergeOpen,
         setIsConciergeOpen,
+        isAuthModalOpen,
+        setIsAuthModalOpen,
         orders,
         placeOrder,
         toasts,

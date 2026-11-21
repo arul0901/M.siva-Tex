@@ -3,8 +3,8 @@
    ======================================================== */
 
 .styling-section {
-  padding-top: 2.75rem;
-  padding-bottom: 2.75rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
   background-color: var(--color-primary-maroon, #4D0007);
   border-bottom: 1px solid rgba(212, 175, 55, 0.3);
   color: #FDFBF7;
@@ -13,8 +13,8 @@
 
 @media (min-width: 640px) {
   .styling-section {
-    padding-top: 3.25rem;
-    padding-bottom: 3.25rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
   }
 }
 
@@ -162,9 +162,21 @@
   overflow-x: auto;
   padding-bottom: 1rem;
   padding-top: 0.25rem;
-  scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  cursor: grab;
+  user-select: none;
+}
+
+.styling-grid.is-dragging {
+  cursor: grabbing !important;
+  scroll-behavior: auto !important;
+  scroll-snap-type: none !important;
+}
+
+.styling-grid:not(.is-dragging) {
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
 }
 
 .styling-grid::-webkit-scrollbar {

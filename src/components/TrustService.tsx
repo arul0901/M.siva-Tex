@@ -7,22 +7,22 @@ export const TrustService: React.FC = () => {
     {
       icon: Truck,
       title: 'Free Insured Shipping',
-      description: 'Complimentary tamper-proof express delivery across India on orders above ₹3,000.'
+      description: 'Free express delivery on orders above ₹3,000.'
     },
     {
       icon: ShieldCheck,
       title: '100% Secure Payments',
-      description: 'Bank-grade encrypted transactions via UPI, Credit/Debit cards & NetBanking.'
+      description: 'UPI, Cards & NetBanking — fully encrypted.'
     },
     {
       icon: RefreshCw,
       title: '7-Day Easy Returns',
-      description: 'Hassle-free doorstep returns and exchanges on all eligible unstitched handlooms.'
+      description: 'Hassle-free returns on all eligible handlooms.'
     },
     {
       icon: Headphones,
-      title: 'Dedicated Saree Concierge',
-      description: 'Personal styling advice, blouse consultation & virtual video shopping sessions.'
+      title: 'Saree Concierge',
+      description: 'Personal styling & virtual shopping sessions.'
     }
   ];
 

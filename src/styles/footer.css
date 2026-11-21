@@ -86,18 +86,18 @@
   max-width: 80rem;
   margin-left: auto;
   margin-right: auto;
-  padding: 4rem 1rem;
+  padding: 2.5rem 1rem;
 }
 
 @media (min-width: 640px) {
   .footer-main-container {
-    padding: 5rem 1.5rem;
+    padding: 3rem 1.5rem;
   }
 }
 
 @media (min-width: 1024px) {
   .footer-main-container {
-    padding: 5rem 2rem;
+    padding: 3rem 2rem;
   }
 }
 
@@ -115,8 +115,8 @@
 
 @media (min-width: 1024px) {
   .footer-grid {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: 2rem;
+    grid-template-columns: 2fr 1.2fr 1.2fr 2fr;
+    gap: 2.5rem;
   }
 }
 
@@ -129,7 +129,7 @@
 
 @media (min-width: 1024px) {
   .footer-brand-col {
-    grid-column: span 4 / span 4;
+    /* auto-sized by 2fr column */
   }
 }
 
@@ -224,12 +224,12 @@
 .footer-links-col {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 
 @media (min-width: 1024px) {
   .footer-links-col {
-    grid-column: span 2 / span 2;
+    /* auto-sized by 1.2fr column */
   }
 }
 
@@ -241,8 +241,8 @@
   text-transform: uppercase;
   letter-spacing: 0.15em;
   border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-  padding-bottom: 0.5rem;
-  margin: 0;
+  padding-bottom: 0.4rem;
+  margin: 0 0 0.1rem 0;
 }
 
 .footer-links-list {
@@ -251,7 +251,7 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.3rem;
   font-size: 0.75rem;
   color: rgba(253, 251, 247, 0.8);
   font-weight: 300;
@@ -260,12 +260,14 @@
 .footer-link-btn {
   background: none;
   border: none;
-  padding: 0;
+  padding: 0.15rem 0;
   color: inherit;
   font: inherit;
   cursor: pointer;
   text-align: left;
   transition: color 0.2s ease;
+  min-height: unset;
+  display: inline;
 }
 
 .footer-link-btn:hover {
@@ -276,12 +278,12 @@
 .footer-newsletter-col {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 
 @media (min-width: 1024px) {
   .footer-newsletter-col {
-    grid-column: span 4 / span 4;
+    /* auto-sized by 2fr column */
   }
 }
 
@@ -388,8 +390,8 @@
 
 /* Copyright Bottom Bar */
 .footer-copyright-bar {
-  margin-top: 3.5rem;
-  padding-top: 2rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
   border-top: 1px solid rgba(212, 175, 55, 0.2);
   display: flex;
   flex-direction: column;
@@ -438,18 +440,12 @@
 /* Mobile-First Touch & Spacing Enhancements */
 .footer-nav-link-btn,
 .footer-legal-btn {
-  min-height: 44px;
   display: inline-flex;
   align-items: center;
 }
 
-.footer-social-icon-box {
-  min-width: 44px;
-  min-height: 44px;
-}
-
 .footer-newsletter-submit-btn {
-  min-height: 44px;
+  min-height: 40px;
 }
 
 @media (max-width: 479px) {

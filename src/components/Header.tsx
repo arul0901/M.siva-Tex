@@ -13,6 +13,7 @@ export const Header: React.FC = () => {
     setIsCartOpen,
     setIsSearchOpen,
     setIsConciergeOpen,
+    setIsAuthModalOpen,
     setSelectedCategoryFilter
   } = useShop();
 
@@ -314,12 +315,12 @@ export const Header: React.FC = () => {
                 <Search className="header-action-icon" />
               </button>
 
-              {/* Account */}
+              {/* Account / Login & Signup Modal Trigger */}
               <button
-                onClick={() => setCurrentView('account')}
+                onClick={() => setIsAuthModalOpen(true)}
                 className="header-action-btn header-action-user-btn"
                 aria-label="Customer Account"
-                title="My Account & Orders"
+                title="Sign In / Register"
               >
                 <User className="header-action-icon" />
               </button>
@@ -458,12 +459,12 @@ export const Header: React.FC = () => {
 
                   <button
                     onClick={() => {
-                      setCurrentView('account');
+                      setIsAuthModalOpen(true);
                       setMobileMenuOpen(false);
                     }}
                     className="mobile-drawer-link-btn"
                   >
-                    My Account & Orders
+                    My Account / Sign In
                   </button>
 
                   <button

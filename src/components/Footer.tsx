@@ -24,6 +24,12 @@ const YoutubeIcon: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 );
 
+const WhatsappIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+  </svg>
+);
+
 export const Footer: React.FC = () => {
   const { setCurrentView, setSelectedCategoryFilter, addToast } = useShop();
   const [email, setEmail] = useState('');
@@ -82,7 +88,8 @@ export const Footer: React.FC = () => {
 
       {/* Main Footer Links & Newsletter */}
       <div className="footer-main-container">
-        <div className="footer-grid">
+        {/* Desktop View (Standard Grid) */}
+        <div className="footer-grid footer-grid-desktop hidden md:grid">
           
           {/* Brand Section (Col 1-4) */}
           <div className="footer-brand-col">
@@ -138,17 +145,10 @@ export const Footer: React.FC = () => {
 
           {/* Quick Links (Col 5-6) */}
           <div className="footer-links-col">
-            <button
-              type="button"
-              onClick={() => setMobileQuickLinksOpen(!mobileQuickLinksOpen)}
-              className="w-full flex items-center justify-between text-left md:pointer-events-none pb-2 md:pb-0 border-b md:border-b-0 border-[#D4AF37]/20"
-            >
-              <h4 className="footer-links-title mb-0">
-                Quick Links
-              </h4>
-              <ChevronDown className={`w-4 h-4 text-[#ECBA51] transition-transform md:hidden ${mobileQuickLinksOpen ? 'rotate-180' : ''}`} />
-            </button>
-            <ul className={`footer-links-list ${mobileQuickLinksOpen ? 'block' : 'hidden md:block'} mt-2.5 md:mt-0`}>
+            <h4 className="footer-links-title mb-0">
+              Quick Links
+            </h4>
+            <ul className="footer-links-list mt-2.5 md:mt-0">
               <li>
                 <button onClick={() => navigateTo('home')} className="footer-link-btn">
                   Home
@@ -184,17 +184,10 @@ export const Footer: React.FC = () => {
 
           {/* Customer Support (Col 7-8) */}
           <div className="footer-links-col">
-            <button
-              type="button"
-              onClick={() => setMobileConciergeOpen(!mobileConciergeOpen)}
-              className="w-full flex items-center justify-between text-left md:pointer-events-none pb-2 md:pb-0 border-b md:border-b-0 border-[#D4AF37]/20"
-            >
-              <h4 className="footer-links-title mb-0">
-                Client Concierge
-              </h4>
-              <ChevronDown className={`w-4 h-4 text-[#ECBA51] transition-transform md:hidden ${mobileConciergeOpen ? 'rotate-180' : ''}`} />
-            </button>
-            <ul className={`footer-links-list ${mobileConciergeOpen ? 'block' : 'hidden md:block'} mt-2.5 md:mt-0`}>
+            <h4 className="footer-links-title mb-0">
+              Client Concierge
+            </h4>
+            <ul className="footer-links-list mt-2.5 md:mt-0">
               <li>
                 <button onClick={() => navigateTo('contact')} className="footer-link-btn">
                   Shipping Policy
@@ -208,11 +201,6 @@ export const Footer: React.FC = () => {
               <li>
                 <button onClick={() => navigateTo('heritage')} className="footer-link-btn">
                   Saree Draping & Care Guide
-                </button>
-              </li>
-              <li>
-                <button onClick={() => navigateTo('account')} className="footer-link-btn">
-                  Track Your Order
                 </button>
               </li>
               <li>
@@ -257,17 +245,140 @@ export const Footer: React.FC = () => {
                 </button>
               </div>
             </form>
+          </div>
 
-            <div className="footer-payments-wrap">
-              <p className="footer-payments-title">Accepted Payment Modes</p>
-              <div className="footer-payments-badges">
-                <span className="footer-payment-badge">UPI (GPay / PhonePe)</span>
-                <span className="footer-payment-badge">Visa / Mastercard</span>
-                <span className="footer-payment-badge">RuPay</span>
-                <span className="footer-payment-badge">NetBanking</span>
-                <span className="footer-payment-badge">Cash on Delivery</span>
-              </div>
+        </div>
+
+        {/* Mobile View: Same Desktop Features in Clean 2-Column Screenshot Layout */}
+        <div className="footer-mobile-view block md:hidden">
+          
+          {/* Top Brand Logo & Description */}
+          <div className="footer-mobile-brand">
+            <button
+              onClick={() => navigateTo('home')}
+              className="footer-brand-logo-btn"
+              aria-label="M. SIVA-TEX Home"
+            >
+              <img
+                src="/assets/logo-gold-transparent.png"
+                alt="M. SIVA-TEX"
+                className="footer-mobile-logo-img"
+              />
+            </button>
+            <p className="footer-brand-desc mt-2">
+              Dedicated exclusively to the art of the saree. Weaving pure mulberry silk with real gold zari for discerning connoisseurs.
+            </p>
+          </div>
+
+          {/* 2-Column Grid for Links (Exact Screenshot Layout) */}
+          <div className="footer-mobile-grid">
+            
+            {/* Box 1: QUICK LINKS (Same features from Desktop) */}
+            <div className="footer-mobile-col">
+              <h4 className="footer-mobile-heading">QUICK LINKS</h4>
+              <ul className="footer-mobile-list">
+                <li><button onClick={() => navigateTo('home')} className="footer-mobile-link">Home</button></li>
+                <li><button onClick={() => navigateTo('shop')} className="footer-mobile-link">Shop Sarees</button></li>
+                <li><button onClick={() => navigateTo('shop', 'Bridal Silk')} className="footer-mobile-link">Bridal Trousseau</button></li>
+                <li><button onClick={() => navigateTo('shop', 'Kanchipuram Silk')} className="footer-mobile-link">Kanchipuram Silks</button></li>
+                <li><button onClick={() => navigateTo('heritage')} className="footer-mobile-link">Our Heritage & Looms</button></li>
+                <li><button onClick={() => navigateTo('contact')} className="footer-mobile-link">Contact & Boutiques</button></li>
+              </ul>
             </div>
+
+            {/* Box 2: CLIENT CONCIERGE (Same features from Desktop) */}
+            <div className="footer-mobile-col">
+              <h4 className="footer-mobile-heading">CLIENT CONCIERGE</h4>
+              <ul className="footer-mobile-list">
+                <li><button onClick={() => navigateTo('contact')} className="footer-mobile-link">Shipping Policy</button></li>
+                <li><button onClick={() => navigateTo('contact')} className="footer-mobile-link">Returns & Exchanges</button></li>
+                <li><button onClick={() => navigateTo('heritage')} className="footer-mobile-link">Saree Draping & Care</button></li>
+                <li><button onClick={() => navigateTo('contact')} className="footer-mobile-link">FAQs & Silk Mark Info</button></li>
+                <li><button onClick={() => navigateTo('contact')} className="footer-mobile-link">Book Video Appointment</button></li>
+              </ul>
+            </div>
+
+            {/* Box 3: CONNECT & SOCIALS (Screenshot icon box style) */}
+            <div className="footer-mobile-col">
+              <h4 className="footer-mobile-heading">CONNECT WITH US</h4>
+              <div className="footer-mobile-socials">
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="footer-mobile-social-btn"
+                  aria-label="Instagram"
+                >
+                  <InstagramIcon className="w-4 h-4" />
+                </a>
+                <a
+                  href="https://facebook.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="footer-mobile-social-btn"
+                  aria-label="Facebook"
+                >
+                  <FacebookIcon className="w-4 h-4" />
+                </a>
+                <a
+                  href="https://youtube.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="footer-mobile-social-btn"
+                  aria-label="YouTube"
+                >
+                  <YoutubeIcon className="w-4 h-4" />
+                </a>
+              </div>
+              <a href="mailto:care@msivatex.com" className="footer-mobile-email">
+                <Send className="w-3.5 h-3.5 rotate-[-45deg] shrink-0" />
+                <span>care@msivatex.com</span>
+              </a>
+            </div>
+
+            {/* Box 4: LEGAL & POLICIES */}
+            <div className="footer-mobile-col">
+              <h4 className="footer-mobile-heading">LEGAL & TRUST</h4>
+              <ul className="footer-mobile-list">
+                <li><button onClick={() => navigateTo('contact')} className="footer-mobile-link">Privacy Policy</button></li>
+                <li><button onClick={() => navigateTo('contact')} className="footer-mobile-link">Terms of Service</button></li>
+                <li><button onClick={() => navigateTo('contact')} className="footer-mobile-link">Authenticity Guarantee</button></li>
+              </ul>
+            </div>
+
+          </div>
+
+          {/* Newsletter Box (Same Desktop feature preserved) */}
+          <div className="footer-mobile-newsletter mt-6 pt-5 border-t border-white/10">
+            <h4 className="footer-mobile-heading mb-1">BE PART OF OUR STORY</h4>
+            <p className="text-xs text-[#FDFBF7]/70 font-light mb-3">
+              Subscribe for private previews of new loom releases & royal bridal launches.
+            </p>
+            <form onSubmit={handleSubscribe} className="footer-newsletter-form">
+              <div className="footer-newsletter-input-wrap">
+                <input
+                  type="email"
+                  inputMode="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email address"
+                  className="footer-newsletter-input text-xs"
+                  aria-label="Email for newsletter"
+                />
+                <button
+                  type="submit"
+                  className="footer-newsletter-submit-btn min-w-[40px] min-h-[40px]"
+                  aria-label="Subscribe"
+                >
+                  {subscribed ? <Check className="w-4 h-4" /> : <Send className="w-3.5 h-3.5" />}
+                </button>
+              </div>
+            </form>
+          </div>
+
+          {/* Watermark Brand Outline */}
+          <div className="footer-mobile-watermark">
+            M. SIVA-TEX
           </div>
 
         </div>
@@ -275,17 +386,17 @@ export const Footer: React.FC = () => {
         {/* Bottom Legal Copyright */}
         <div className="footer-copyright-bar">
           <p className="footer-copyright-text">
-            &copy; {new Date().getFullYear()} M. SIVA-TEX HANDLOOM PRIVATE LIMITED. All rights reserved. Handcrafted with reverence in India.
+            M. SIVA-TEX &bull; &copy; {new Date().getFullYear()}. ALL RIGHTS RESERVED
           </p>
-          <div className="footer-legal-links">
+          <div className="footer-legal-links hidden md:flex">
             <button onClick={() => navigateTo('contact')} className="footer-legal-btn">
               Privacy Policy
             </button>
-            <span className="footer-legal-sep">•</span>
+            <span className="footer-legal-sep">&bull;</span>
             <button onClick={() => navigateTo('contact')} className="footer-legal-btn">
               Terms of Service
             </button>
-            <span className="footer-legal-sep">•</span>
+            <span className="footer-legal-sep">&bull;</span>
             <button onClick={() => navigateTo('contact')} className="footer-legal-btn">
               Authenticity Guarantee
             </button>

@@ -3,13 +3,15 @@ import { useShop } from './context/ShopContext';
 import { Header } from './components/Header';
 // import { HeroBanner } from './components/HeroBanner'; // Previous banner disabled as requested
 import { CinematicHeroBanner } from './components/CinematicHeroBanner';
+import './styles/mobile-fixes.css';
 
 // Redesigned Homepage Sections (Inspired by Master Luxury Reference)
 import { ShopByCategory } from './components/ShopByCategory';
 import { ShopByOccasion } from './components/ShopByOccasion';
 import { BestSellers } from './components/BestSellers';
+import { EditorialTriptych } from './components/EditorialTriptych';
+import { DualPromoBanner } from './components/DualPromoBanner';
 import { StylingSuggestions } from './components/StylingSuggestions';
-import { CustomerTestimonials } from './components/CustomerTestimonials';
 import { TrustService } from './components/TrustService';
 import { Footer } from './components/Footer';
 import { CartDrawer } from './components/CartDrawer';
@@ -17,6 +19,8 @@ import { QuickViewModal } from './components/QuickViewModal';
 import { SearchOverlay } from './components/SearchOverlay';
 import { ConciergeModal } from './components/ConciergeModal';
 import { ToastContainer } from './components/ToastContainer';
+import { MobileBottomNav } from './components/MobileBottomNav';
+import { AuthModal } from './components/AuthModal';
 
 // Routed Views
 import { ShopView } from './views/ShopView';
@@ -53,21 +57,20 @@ export const App: React.FC = () => {
             {/* 3. Bestsellers Section (Loved by Many • Iconic Creations) */}
             <BestSellers />
 
-            {/* 4. Styling Suggestions ("DRAPED YOUR WAY" — The Art of Styling) */}
+            {/* 4. Editorial Triptych Showcase (A Symphony of Tradition & Craftsmanship) */}
+            <EditorialTriptych />
+
+            {/* 5. Dual Editorial Promo Banners (Festive Essentials & Heirloom Silks Up to 30% Off) */}
+            <DualPromoBanner />
+
+            {/* 5. Styling Suggestions ("DRAPED YOUR WAY" — The Art of Styling) */}
             <StylingSuggestions />
-
-            {/* 4. Customer Testimonials ("LOVED BY OUR COMMUNITY" — 4 Cards with Gold Stars) */}
-            <CustomerTestimonials />
-
-            {/* 5. Trust and Service Section */}
-            <TrustService />
           </>
         )}
 
         {currentView === 'shop' && <ShopView />}
         {currentView === 'product-detail' && <ProductDetailView />}
         {currentView === 'checkout' && <CheckoutView />}
-        {currentView === 'account' && <AccountView />}
         {currentView === 'wishlist' && <WishlistView />}
         {currentView === 'heritage' && <HeritageView />}
         {currentView === 'contact' && <ContactView />}
@@ -82,6 +85,10 @@ export const App: React.FC = () => {
       <SearchOverlay />
       <ConciergeModal />
       <ToastContainer />
+      <AuthModal />
+
+      {/* Floating Bottom Navigation Bar for Mobile */}
+      <MobileBottomNav />
     </div>
   );
 };

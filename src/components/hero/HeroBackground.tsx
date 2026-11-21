@@ -90,10 +90,7 @@ export const HeroBackground: React.FC = () => {
       {/* 1. Ambient Background Layer */}
       <div className="cinematic-hero-bg-ambience" />
 
-      {/* 2. Lighting Overlays & Vignettes */}
-      <div className="cinematic-hero-gradient-overlay" />
-      <div className="cinematic-hero-vignette-top" />
-      <div className="cinematic-hero-vignette-bottom" />
+      {/* 2. Lighting Overlays & Vignettes removed as requested */}
 
       {/* 3. Canvas Floating Silk Petals & Golden Bokeh */}
       <canvas ref={canvasRef} className="cinematic-hero-canvas-petals" />

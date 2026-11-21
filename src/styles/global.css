@@ -37,6 +37,7 @@
 @layer base {
   html {
     font-family: var(--font-secondary);
+    scroll-behavior: smooth;
   }
 
   body {

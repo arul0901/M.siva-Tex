@@ -1,0 +1,433 @@
+/* ========================================================
+   Best Sellers Section Styles (M. SIVA-TEX)
+   Faithfully inspired by the master luxury reference layout:
+   - Clean "BEST SELLERS" uppercase header with "VIEW ALL BEST SELLERS →"
+   - 5-Card elegant horizontal row with floating right arrow
+   - Portrait 3:4 cards with terracotta/black badges, swatches, 5 stars & prices
+   ======================================================== */
+
+.bestsellers-section {
+  padding-top: 3.5rem;
+  padding-bottom: 2rem;
+  background-color: var(--color-logo-beige, #FAF7F2);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .bestsellers-section {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .bestsellers-section {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+}
+
+.bestsellers-container {
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  position: relative;
+}
+
+@media (min-width: 640px) {
+  .bestsellers-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .bestsellers-container {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+
+/* ========================================================
+   Header Row: "BEST SELLERS" left, "VIEW ALL BEST SELLERS →" right
+   ======================================================== */
+.bestsellers-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .bestsellers-header {
+    margin-bottom: 2.25rem;
+  }
+}
+
+.bestsellers-title {
+  font-family: var(--font-primary, 'Bodoni Moda', serif);
+  font-size: 1.35rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--color-primary-maroon, #4D0007);
+  font-weight: 500;
+  margin: 0;
+}
+
+@media (min-width: 640px) {
+  .bestsellers-title {
+    font-size: 1.65rem;
+    letter-spacing: 0.22em;
+  }
+}
+
+@media (min-width: 1024px) {
+  .bestsellers-title {
+    font-size: 1.85rem;
+    letter-spacing: 0.25em;
+  }
+}
+
+.bestsellers-view-all {
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-weight: 600;
+  color: var(--color-primary-maroon, #4D0007);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0;
+  white-space: nowrap;
+  transition: all 0.25s ease;
+}
+
+@media (min-width: 640px) {
+  .bestsellers-view-all {
+    font-size: 0.75rem;
+  }
+}
+
+.bestsellers-view-all:hover {
+  color: var(--color-rich-gold, #D4AF37);
+  transform: translateX(3px);
+}
+
+/* ========================================================
+   Carousel Outer Wrapper & Floating Circular Navigation Arrows
+   ======================================================== */
+.bestsellers-carousel-outer {
+  position: relative;
+  width: 100%;
+}
+
+.bestsellers-nav-btn {
+  position: absolute;
+  top: 42%;
+  transform: translateY(-50%);
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  color: var(--color-primary-maroon, #4D0007);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px -2px rgba(77, 0, 7, 0.16);
+  cursor: pointer;
+  z-index: 20;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.bestsellers-nav-btn:hover {
+  background-color: var(--color-primary-maroon, #4D0007);
+  color: #FDFBF7;
+  border-color: var(--color-primary-maroon, #4D0007);
+  transform: translateY(-50%) scale(1.06);
+  box-shadow: 0 8px 20px -3px rgba(77, 0, 7, 0.3);
+}
+
+.bestsellers-nav-prev {
+  left: -0.75rem;
+}
+
+.bestsellers-nav-next {
+  right: -0.75rem;
+}
+
+@media (min-width: 1024px) {
+  .bestsellers-nav-prev {
+    left: -1rem;
+  }
+  .bestsellers-nav-next {
+    right: -1rem;
+  }
+}
+
+/* ========================================================
+   Horizontal Track (5 Cards in view on Desktop)
+   ======================================================== */
+.bestsellers-track {
+  display: flex;
+  gap: 1.15rem;
+  overflow-x: auto;
+  padding-bottom: 0.75rem;
+  padding-top: 0.25rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  cursor: grab;
+  user-select: none;
+}
+
+.bestsellers-track::-webkit-scrollbar {
+  display: none;
+}
+
+.bestsellers-track.is-dragging {
+  cursor: grabbing !important;
+  scroll-behavior: auto !important;
+  scroll-snap-type: none !important;
+}
+
+.bestsellers-track:not(.is-dragging) {
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+}
+
+/* ========================================================
+   Product Card
+   ======================================================== */
+.bestsellers-card {
+  flex-shrink: 0;
+  width: 215px;
+  scroll-snap-align: start;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.35s ease;
+}
+
+@media (min-width: 640px) {
+  .bestsellers-card {
+    width: 230px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .bestsellers-card {
+    /* Exactly 5 items across the desktop grid */
+    width: calc((100% - 4 * 1.15rem) / 5);
+    min-width: 200px;
+  }
+}
+
+.bestsellers-card:hover {
+  transform: translateY(-3px);
+}
+
+/* Portrait Image Box (3/4 Ratio) */
+.bestsellers-img-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background-color: #F1ECE3;
+  border-radius: 2px;
+}
+
+.bestsellers-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bestsellers-card:hover .bestsellers-img {
+  transform: scale(1.05);
+}
+
+/* Badges (Top Left corner) */
+.bestsellers-badge {
+  position: absolute;
+  top: 0.65rem;
+  left: 0.65rem;
+  z-index: 10;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.28rem 0.6rem;
+  border-radius: 2px;
+  line-height: 1;
+}
+
+.badge-bestseller {
+  background-color: #8D3228;
+  color: #FFFFFF;
+}
+
+.badge-new {
+  background-color: #1A1A1A;
+  color: #FFFFFF;
+}
+
+.badge-discount {
+  background-color: #8D3228;
+  color: #FFFFFF;
+}
+
+/* Wishlist Icon Button (Top Right) */
+.bestsellers-wishlist-btn {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.65rem;
+  width: 1.85rem;
+  height: 1.85rem;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary-maroon, #4D0007);
+  opacity: 0;
+  transition: all 0.25s ease;
+  z-index: 10;
+  border: none;
+  cursor: pointer;
+}
+
+.bestsellers-card:hover .bestsellers-wishlist-btn,
+.bestsellers-wishlist-btn.is-active {
+  opacity: 1;
+}
+
+.bestsellers-wishlist-btn.is-active {
+  color: #93372B;
+}
+
+.bestsellers-wishlist-btn:hover {
+  background-color: #FFFFFF;
+  transform: scale(1.1);
+}
+
+/* Card Details (Below Image) */
+.bestsellers-details {
+  padding-top: 0.65rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.bestsellers-card-title {
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
+  font-size: 0.825rem;
+  font-weight: 500;
+  color: #2A0004;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.35;
+  transition: color 0.2s ease;
+}
+
+@media (min-width: 640px) {
+  .bestsellers-card-title {
+    font-size: 0.875rem;
+  }
+}
+
+.bestsellers-card:hover .bestsellers-card-title {
+  color: var(--color-primary-maroon, #4D0007);
+}
+
+/* Color Swatches Row */
+.bestsellers-swatches {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0 0.1rem 0;
+}
+
+.bestsellers-swatch-dot {
+  width: 9.5px;
+  height: 9.5px;
+  border-radius: 9999px;
+  border: 1px solid rgba(0, 0, 0, 0.22);
+  transition: transform 0.2s ease;
+}
+
+.bestsellers-card:hover .bestsellers-swatch-dot {
+  transform: scale(1.08);
+}
+
+/* Rating & Price Row */
+.bestsellers-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.45rem;
+  margin-top: 0.1rem;
+}
+
+.bestsellers-stars-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.bestsellers-stars {
+  display: flex;
+  align-items: center;
+  color: #C89D3C;
+}
+
+.bestsellers-review-count {
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
+  font-size: 0.6875rem;
+  color: rgba(42, 0, 4, 0.6);
+  font-weight: 400;
+}
+
+.bestsellers-price-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.bestsellers-price {
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #2A0004;
+}
+
+@media (min-width: 640px) {
+  .bestsellers-price {
+    font-size: 0.875rem;
+  }
+}
+
+.bestsellers-original-price {
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
+  font-size: 0.6875rem;
+  color: rgba(42, 0, 4, 0.45);
+  text-decoration: line-through;
+  font-weight: 400;
+}

@@ -1,0 +1,449 @@
+/* ============================================================
+   Dual Promo Banner — M. SIVA-TEX (Luxury Saree Theme)
+   Full-bleed editorial cards with cinematic overlay treatment
+   ============================================================ */
+
+/* ── Section Shell ───────────────────────────────────────── */
+.dual-promo-section {
+  background-color: var(--color-logo-beige, #FAF7F2);
+  padding: 0 0 1.5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Decorative Zari-line Dividers ───────────────────────── */
+.dual-promo-top-border {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 3rem;
+  opacity: 0.6;
+}
+
+.dual-promo-border-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #D4AF37, transparent);
+}
+
+.dual-promo-border-diamond {
+  font-size: 0.55rem;
+  color: #D4AF37;
+  letter-spacing: 0;
+}
+
+/* ── Container ───────────────────────────────────────────── */
+.dual-promo-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .dual-promo-container { padding: 0 2rem; }
+}
+
+@media (min-width: 1024px) {
+  .dual-promo-container { padding: 0 3rem; }
+}
+
+/* ── Section Header ──────────────────────────────────────── */
+.dual-promo-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.dual-promo-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--color-rich-gold, #D4AF37);
+  margin: 0 0 0.6rem 0;
+}
+
+.dual-promo-eyebrow-icon {
+  width: 12px;
+  height: 12px;
+  color: var(--color-rich-gold, #D4AF37);
+  opacity: 0.75;
+}
+
+.dual-promo-heading {
+  font-family: var(--font-primary, 'Bodoni Moda', serif);
+  font-size: 2.4rem;
+  font-weight: 500;
+  color: var(--color-primary-maroon, #4D0007);
+  letter-spacing: -0.015em;
+  line-height: 1.1;
+  margin: 0 0 0.75rem 0;
+}
+
+.dual-promo-heading em {
+  font-family: var(--font-special, 'Instrument Serif', serif);
+  font-style: italic;
+  color: var(--color-primary-maroon, #4D0007);
+}
+
+@media (min-width: 768px) {
+  .dual-promo-heading { font-size: 3rem; }
+}
+
+.dual-promo-heading-sub {
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
+  font-size: 0.84rem;
+  color: rgba(48, 34, 31, 0.68);
+  font-weight: 300;
+  line-height: 1.65;
+  max-width: 28rem;
+  margin: 0 auto;
+}
+
+/* ── Two-Card Grid ───────────────────────────────────────── */
+.dual-promo-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .dual-promo-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .dual-promo-grid { gap: 2rem; }
+}
+
+/* ── Promo Card Base ─────────────────────────────────────── */
+.dual-promo-card {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  min-height: 360px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  /* Refined gold border */
+  border: 1px solid rgba(212, 175, 55, 0.3);
+
+  /* Subtle depth shadow */
+  box-shadow:
+    0 6px 24px -4px rgba(77, 0, 7, 0.10),
+    0 1px 4px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+
+  transition:
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.4s ease;
+}
+
+@media (min-width: 768px) {
+  .dual-promo-card { min-height: 420px; }
+}
+
+@media (min-width: 1024px) {
+  .dual-promo-card { min-height: 480px; }
+}
+
+.dual-promo-card:hover,
+.dual-promo-card.hovered {
+  transform: translateY(-6px) scale(1.005);
+  box-shadow:
+    0 24px 48px -8px rgba(77, 0, 7, 0.22),
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  border-color: rgba(212, 175, 55, 0.65);
+}
+
+/* ── Full-bleed BG Image ─────────────────────────────────── */
+.dpc-bg-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.dpc-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.dual-promo-card:hover .dpc-bg-img,
+.dual-promo-card.hovered .dpc-bg-img {
+  transform: scale(1.07);
+}
+
+/* Cinematic dual-tone gradient overlay */
+.dpc-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 4, 2, 0.08) 0%,
+    rgba(20, 4, 2, 0.15) 30%,
+    rgba(42, 0, 4, 0.55) 65%,
+    rgba(42, 0, 4, 0.82) 100%
+  );
+  transition: opacity 0.4s ease;
+}
+
+.dpc-bg-overlay-bridal {
+  background: linear-gradient(
+    180deg,
+    rgba(10, 2, 15, 0.10) 0%,
+    rgba(30, 5, 15, 0.20) 30%,
+    rgba(60, 0, 20, 0.58) 65%,
+    rgba(60, 0, 20, 0.84) 100%
+  );
+}
+
+.dual-promo-card:hover .dpc-bg-overlay,
+.dual-promo-card.hovered .dpc-bg-overlay {
+  opacity: 0.9;
+}
+
+/* ── Corner Zari Ornaments ───────────────────────────────── */
+.dpc-corner-ornament {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.dual-promo-card:hover .dpc-corner-ornament,
+.dual-promo-card.hovered .dpc-corner-ornament {
+  opacity: 1;
+}
+
+.dpc-corner-tl { top: 14px; left: 14px; border-top: 1.5px solid #D4AF37; border-left: 1.5px solid #D4AF37; border-top-left-radius: 4px; }
+.dpc-corner-tr { top: 14px; right: 14px; border-top: 1.5px solid #D4AF37; border-right: 1.5px solid #D4AF37; border-top-right-radius: 4px; }
+.dpc-corner-bl { bottom: 14px; left: 14px; border-bottom: 1.5px solid #D4AF37; border-left: 1.5px solid #D4AF37; border-bottom-left-radius: 4px; }
+.dpc-corner-br { bottom: 14px; right: 14px; border-bottom: 1.5px solid #D4AF37; border-right: 1.5px solid #D4AF37; border-bottom-right-radius: 4px; }
+
+/* ── Badge ───────────────────────────────────────────────── */
+.dpc-badge {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 20;
+  padding: 0.3rem 0.85rem;
+  border-radius: 2px;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.badge-gold {
+  background: linear-gradient(135deg, #D4AF37, #C7943A);
+  color: #2A0004;
+  box-shadow: 0 2px 10px rgba(212, 175, 55, 0.4);
+}
+
+.badge-maroon {
+  background: linear-gradient(135deg, #4D0007, #7A0010);
+  color: #FDFBF7;
+  box-shadow: 0 2px 10px rgba(77, 0, 7, 0.4);
+}
+
+/* ── Content Panel ───────────────────────────────────────── */
+.dpc-content {
+  position: relative;
+  z-index: 15;
+  padding: 2rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+
+  /* Subtle frosted glass bottom strip */
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.0) 0%
+  );
+}
+
+@media (min-width: 768px) {
+  .dpc-content {
+    padding: 2.25rem 2.25rem;
+  }
+}
+
+.dpc-eyebrow {
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-rich-gold, #D4AF37);
+  margin: 0;
+  opacity: 0.9;
+}
+
+.dpc-title {
+  font-family: var(--font-primary, 'Bodoni Moda', serif);
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: #FDFBF7;
+  margin: 0.1rem 0 0.1rem 0;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dpc-title em {
+  font-family: var(--font-special, 'Instrument Serif', serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-rich-gold, #D4AF37);
+}
+
+@media (min-width: 768px) {
+  .dpc-title { font-size: 2.4rem; }
+}
+
+@media (min-width: 1280px) {
+  .dpc-title { font-size: 2.65rem; }
+}
+
+.dpc-subtitle {
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
+  font-size: 0.78rem;
+  font-weight: 300;
+  line-height: 1.6;
+  color: rgba(253, 251, 247, 0.78);
+  margin: 0 0 0.6rem 0;
+  max-width: 20rem;
+}
+
+/* ── Action Buttons ──────────────────────────────────────── */
+.dpc-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.4rem;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-top: 0.25rem;
+}
+
+.dpc-btn-icon {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.3s ease;
+}
+
+.dpc-btn:hover .dpc-btn-icon {
+  transform: translateX(4px);
+}
+
+/* Gold variant (card 1) */
+.dpc-btn-gold {
+  background: linear-gradient(135deg, #D4AF37, #C7943A);
+  color: #2A0004;
+  box-shadow: 0 4px 16px rgba(212, 175, 55, 0.35);
+}
+
+.dpc-btn-gold:hover {
+  background: linear-gradient(135deg, #E8C84A, #D4A040);
+  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Ivory variant (card 2) */
+.dpc-btn-ivory {
+  background: rgba(253, 251, 247, 0.95);
+  color: #4D0007;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(4px);
+}
+
+.dpc-btn-ivory:hover {
+  background: #FDFBF7;
+  color: #4D0007;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  transform: translateY(-2px);
+}
+
+/* ── Shimmer Sweep on Hover ──────────────────────────────── */
+.dpc-shimmer {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(212, 175, 55, 0.08) 50%,
+    transparent 60%
+  );
+  transform: translateX(-100%);
+  transition: transform 0s;
+}
+
+.dual-promo-card:hover .dpc-shimmer,
+.dual-promo-card.hovered .dpc-shimmer {
+  transform: translateX(100%);
+  transition: transform 0.65s ease;
+}
+
+/* ── Trust Strip ─────────────────────────────────────────── */
+.dual-promo-trust {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin-top: 2rem;
+  padding: 1rem 1.5rem;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.trust-item {
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--color-primary-maroon, #4D0007);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.trust-divider {
+  color: rgba(212, 175, 55, 0.5);
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+@media (max-width: 480px) {
+  .trust-divider { display: none; }
+  .dual-promo-trust { gap: 0.75rem; }
+}

@@ -223,54 +223,11 @@
   object-position: center top;
 }
 
-/* 3. Subtle Lighting Overlays & Vignettes */
-.cinematic-hero-vignette-top {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 120px;
-  background: linear-gradient(180deg, rgba(77, 0, 7, 0.12) 0%, transparent 100%);
-  z-index: 3;
-  pointer-events: none;
-}
-
-.cinematic-hero-vignette-bottom {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 140px;
-  background: linear-gradient(0deg, rgba(77, 0, 7, 0.15) 0%, transparent 100%);
-  z-index: 3;
-  pointer-events: none;
-}
-
+/* 3. Lighting Overlays & Vignettes (Disabled per request) */
+.cinematic-hero-vignette-top,
+.cinematic-hero-vignette-bottom,
 .cinematic-hero-gradient-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 4;
-  pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    rgba(250, 247, 242, 0.96) 0%,
-    rgba(250, 247, 242, 0.88) 35%,
-    rgba(250, 247, 242, 0.45) 55%,
-    rgba(250, 247, 242, 0.1) 75%,
-    transparent 100%
-  );
-}
-
-@media (max-width: 767px) {
-  .cinematic-hero-gradient-overlay {
-    background: linear-gradient(
-      180deg,
-      rgba(250, 247, 242, 0.92) 0%,
-      rgba(250, 247, 242, 0.75) 45%,
-      rgba(250, 247, 242, 0.95) 90%,
-      rgba(250, 247, 242, 0.98) 100%
-    );
-  }
+  display: none !important;
 }
 
 /* 4. Canvas Floating Petals & Golden Bokeh */
@@ -348,103 +305,139 @@
   }
 }
 
-/* Brand Eyebrow Badge */
+/* Brand Eyebrow Badge (Haute Couture Royal Seal) */
 .cinematic-hero-brand-pill {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.35rem 0.85rem;
-  background-color: rgba(77, 0, 7, 0.06);
-  border: 1px solid rgba(177, 138, 82, 0.4);
+  gap: 0.55rem;
+  padding: 0.45rem 1.15rem;
+  background: linear-gradient(135deg, rgba(77, 0, 7, 0.94) 0%, rgba(38, 0, 4, 0.96) 100%);
+  border: 1px solid rgba(236, 186, 81, 0.8);
   border-radius: 9999px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  margin-bottom: 1.25rem;
-  box-shadow: 0 2px 8px rgba(77, 0, 7, 0.06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  margin-bottom: 1.35rem;
+  box-shadow: 0 4px 16px rgba(77, 0, 7, 0.15);
 }
 
 .cinematic-hero-eyebrow-icon {
   width: 0.875rem;
   height: 0.875rem;
-  color: var(--color-antique-gold, #B18A52);
+  color: #ECBA51;
   flex-shrink: 0;
 }
 
 .cinematic-hero-eyebrow-text {
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   text-transform: uppercase;
-  letter-spacing: 0.25em;
-  font-weight: 600;
-  color: var(--color-primary-maroon, #4D0007);
+  letter-spacing: 0.24em;
+  font-weight: 700;
+  color: #FDFBF7;
+  font-family: var(--font-secondary, 'Manrope', sans-serif);
 }
 
 @media (min-width: 640px) {
   .cinematic-hero-eyebrow-text {
-    font-size: 0.6875rem;
+    font-size: 0.725rem;
   }
 }
 
-/* Editorial Title with Serif Display */
+/* Editorial Title with Clean, Sharp Royal Serif Display (Zero Glow / Zero Blur) */
 .cinematic-hero-title {
-  font-family: var(--font-primary, 'Bodoni Moda', serif);
-  font-size: 2.5rem;
-  line-height: 1.1;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  color: var(--color-primary-maroon, #4D0007);
+  font-family: 'Bodoni Moda', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 2.75rem;
+  line-height: 1.08;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: #4D0007;
   margin: 0 0 0.5rem 0;
+  text-shadow: none !important;
+  filter: none !important;
 }
 
 @media (min-width: 640px) {
   .cinematic-hero-title {
-    font-size: 3.5rem;
+    font-size: 3.85rem;
   }
 }
 
 @media (min-width: 1024px) {
   .cinematic-hero-title {
-    font-size: 4.5rem;
+    font-size: 4.85rem;
   }
 }
 
 .cinematic-hero-title-main {
   display: block;
+  font-family: 'Bodoni Moda', Georgia, serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  color: #4D0007;
+  background: none !important;
+  -webkit-text-fill-color: #4D0007 !important;
+  text-shadow: none !important;
+  filter: none !important;
 }
 
 .cinematic-hero-title-sub {
   display: block;
-  font-family: var(--font-special, 'Instrument Serif', serif);
+  font-family: 'Instrument Serif', Georgia, serif;
   font-style: italic;
   font-weight: 400;
-  font-size: 0.72em;
-  color: var(--color-antique-gold, #B18A52);
-  letter-spacing: 0.01em;
-  margin-top: 0.25rem;
+  font-size: 0.78em;
+  color: #8C5E1E;
+  background: none !important;
+  -webkit-text-fill-color: #8C5E1E !important;
+  letter-spacing: 0.015em;
+  margin-top: 0.35rem;
+  text-shadow: none !important;
+  filter: none !important;
 }
 
-/* Gold Hairline Accent */
+/* Gold Hairline Accent with Diamond Emblem */
+.cinematic-hero-gold-line-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 1.15rem;
+  margin-bottom: 1.35rem;
+}
+
 .cinematic-hero-gold-line {
-  width: 4rem;
+  width: 3.5rem;
   height: 1.5px;
-  background: linear-gradient(90deg, #D4AF37 0%, rgba(212, 175, 55, 0.2) 100%);
-  margin-top: 1rem;
-  margin-bottom: 1.25rem;
+  background: linear-gradient(90deg, #D4AF37, transparent);
+  box-shadow: none !important;
 }
 
-/* Storytelling Description */
+.cinematic-hero-gold-line:first-child {
+  background: linear-gradient(90deg, transparent, #D4AF37);
+}
+
+.cinematic-hero-divider-symbol {
+  font-size: 11px;
+  color: #D4AF37;
+  filter: none !important;
+}
+
+/* Storytelling Description (Sharp, Crisp & Elegant) */
 .cinematic-hero-desc {
-  font-family: var(--font-secondary, 'Manrope', sans-serif);
-  font-size: 0.8125rem;
-  line-height: 1.65;
-  color: #4A3E3D;
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: #382424;
   font-weight: 400;
-  max-width: 500px;
-  margin: 0 0 1.75rem 0;
+  max-width: 520px;
+  margin: 0 0 1.85rem 0;
+  letter-spacing: 0.01em;
+  text-shadow: none !important;
+  filter: none !important;
 }
 
 @media (min-width: 640px) {
   .cinematic-hero-desc {
-    font-size: 0.9375rem;
+    font-size: 1.025rem;
   }
 }
 
@@ -453,97 +446,127 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 1rem;
+  gap: 1.15rem;
   margin-bottom: 1.5rem;
 }
 
+/* 24K Liquid Gold Luxury Primary Button */
 .cinematic-hero-btn-gold {
   display: inline-flex;
   align-items: center;
-  gap: 0.625rem;
-  padding: 0.875rem 1.875rem;
-  background-color: var(--color-rich-gold, #D4AF37);
-  color: var(--color-maroon-dark, #360005);
+  gap: 0.75rem;
+  padding: 0.95rem 2.25rem;
+  background: linear-gradient(135deg, #FBE8B8 0%, #E8C15A 30%, #D4AF37 65%, #B8860B 100%);
+  color: #260004;
   font-family: var(--font-secondary, 'Manrope', sans-serif);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
-  font-weight: 700;
-  border-radius: 2px;
-  border: 1px solid var(--color-rich-gold, #D4AF37);
-  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.35);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  letter-spacing: 0.18em;
+  font-weight: 800;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 245, 205, 0.9);
+  box-shadow: 0 8px 24px -4px rgba(184, 134, 11, 0.45), 0 2px 6px rgba(0, 0, 0, 0.1), inset 0 1px 2px rgba(255, 255, 255, 0.8);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
 }
 
 @media (min-width: 640px) {
   .cinematic-hero-btn-gold {
-    font-size: 0.75rem;
-    padding: 0.9375rem 2.25rem;
+    font-size: 0.8125rem;
+    padding: 1rem 2.45rem;
   }
 }
 
+.cinematic-hero-btn-gold::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.cinematic-hero-btn-gold:hover::after {
+  transform: translateX(100%);
+}
+
 .cinematic-hero-btn-gold:hover {
-  background-color: var(--color-bright-gold, #ECBA51);
-  border-color: var(--color-bright-gold, #ECBA51);
+  background: linear-gradient(135deg, #FFF0C8 0%, #F0CE68 30%, #E5BE57 60%, #C49418 100%);
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
+  box-shadow: 0 12px 30px -3px rgba(184, 134, 11, 0.6), 0 4px 12px rgba(77, 0, 7, 0.25);
 }
 
 .cinematic-hero-btn-arrow {
-  width: 0.875rem;
-  height: 0.875rem;
+  width: 0.925rem;
+  height: 0.925rem;
   transition: transform 0.3s ease;
+  stroke-width: 2.5;
 }
 
 .cinematic-hero-btn-gold:hover .cinematic-hero-btn-arrow {
-  transform: translateX(3px);
+  transform: translateX(4px);
 }
 
+/* Frosted Royal Glassmorphism Secondary Button */
 .cinematic-hero-btn-outline {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.875rem 1.5rem;
-  background-color: transparent;
-  color: var(--color-primary-maroon, #4D0007);
+  padding: 0.95rem 1.85rem;
+  background: rgba(253, 251, 247, 0.88);
+  color: #4D0007;
   font-family: var(--font-secondary, 'Manrope', sans-serif);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
-  font-weight: 600;
-  border-radius: 2px;
-  border: 1px solid var(--color-primary-maroon, #4D0007);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: all 0.3s ease;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  border-radius: 3px;
+  border: 1.5px solid #4D0007;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 14px rgba(77, 0, 7, 0.08);
+  transition: all 0.35s ease;
   cursor: pointer;
 }
 
 @media (min-width: 640px) {
   .cinematic-hero-btn-outline {
-    font-size: 0.75rem;
-    padding: 0.9375rem 1.75rem;
+    font-size: 0.8125rem;
+    padding: 1rem 2.15rem;
   }
 }
 
 .cinematic-hero-btn-outline:hover {
-  background-color: var(--color-primary-maroon, #4D0007);
-  border-color: var(--color-primary-maroon, #4D0007);
-  color: var(--color-warm-ivory, #FAF7F2);
+  background: linear-gradient(135deg, #4D0007 0%, #2A0004 100%);
+  border-color: #ECBA51;
+  color: #FDFBF7;
   transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(77, 0, 7, 0.35);
 }
 
+/* Royal Insignia Chapter Tag */
 .cinematic-hero-tag-pill {
   display: inline-flex;
   align-items: center;
-  gap: 0.375rem;
-  font-size: 0.75rem;
+  gap: 0.45rem;
+  font-size: 0.85rem;
   font-family: var(--font-special, 'Instrument Serif', serif);
   font-style: italic;
-  color: var(--color-antique-gold, #B18A52);
-  border-left: 1px solid rgba(177, 138, 82, 0.4);
-  padding-left: 0.875rem;
+  color: #7A4E12;
+  background: rgba(253, 251, 247, 0.85);
+  border: 1px solid rgba(212, 175, 55, 0.55);
+  border-radius: 9999px;
+  padding: 0.45rem 1rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.cinematic-hero-tag-dot {
+  font-size: 9px;
+  color: #D4AF37;
 }
 
 /* 7. Vertical Slide Indicators (Right Edge, exactly as reference video) */
@@ -936,56 +959,11 @@
   }
 }
 
-/* Left Scrim: Soft warm ivory fade to ensure 100% typography contrast */
-.cinematic-hero-video-scrim-left {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    rgba(250, 247, 242, 0.95) 0%,
-    rgba(250, 247, 242, 0.88) 32%,
-    rgba(250, 247, 242, 0.45) 55%,
-    rgba(250, 247, 242, 0.1) 75%,
-    transparent 100%
-  );
-}
-
-@media (max-width: 767px) {
-  .cinematic-hero-video-scrim-left {
-    background: linear-gradient(
-      180deg,
-      rgba(250, 247, 242, 0.75) 0%,
-      rgba(250, 247, 242, 0.35) 40%,
-      rgba(250, 247, 242, 0.92) 80%,
-      #FAF7F2 100%
-    );
-  }
-}
-
-/* Subtle Vignettes for High Fashion Lighting */
-.cinematic-hero-video-vignette-top {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 120px;
-  background: linear-gradient(180deg, rgba(77, 0, 7, 0.16) 0%, transparent 100%);
-  pointer-events: none;
-  z-index: 2;
-}
-
+/* Left Scrim & Vignettes (Disabled per request) */
+.cinematic-hero-video-scrim-left,
+.cinematic-hero-video-vignette-top,
 .cinematic-hero-video-vignette-bottom {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 160px;
-  background: linear-gradient(0deg, rgba(77, 0, 7, 0.22) 0%, transparent 100%);
-  pointer-events: none;
-  z-index: 2;
-  transition: opacity 0.5s ease;
+  display: none !important;
 }
 
 /* Transition Golden Sheen on Chapter Change */

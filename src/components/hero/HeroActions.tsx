@@ -25,6 +25,7 @@ export const HeroActions: React.FC<HeroActionsProps> = ({
       </button>
 
       <div className="cinematic-hero-tag-pill">
+        <span className="cinematic-hero-tag-dot">✦</span>
         <span>{slide.tag}</span>
       </div>
     </div>

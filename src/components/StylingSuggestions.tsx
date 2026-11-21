@@ -87,6 +87,13 @@ export const StylingSuggestions: React.FC = () => {
   const { setCurrentView, setSelectedCategoryFilter, addToast } = useShop();
   const carouselRef = useRef<HTMLDivElement>(null);
   const [activeLookModal, setActiveLookModal] = useState<StylingLook | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+
+  // Mouse drag tracking for 1:1 smooth dragging
+  const isDraggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const scrollLeftRef = useRef(0);
+  const hasMovedRef = useRef(false);
 
   const scroll = (direction: 'left' | 'right') => {
     if (carouselRef.current) {
@@ -95,7 +102,35 @@ export const StylingSuggestions: React.FC = () => {
     }
   };
 
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!carouselRef.current) return;
+    isDraggingRef.current = true;
+    hasMovedRef.current = false;
+    setIsDragging(true);
+    startXRef.current = e.pageX - carouselRef.current.offsetLeft;
+    scrollLeftRef.current = carouselRef.current.scrollLeft;
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDraggingRef.current || !carouselRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - carouselRef.current.offsetLeft;
+    const walk = (x - startXRef.current) * 1.15;
+    if (Math.abs(walk) > 5) {
+      hasMovedRef.current = true;
+    }
+    carouselRef.current.scrollLeft = scrollLeftRef.current - walk;
+  };
+
+  const handleMouseUpOrLeave = () => {
+    if (isDraggingRef.current) {
+      isDraggingRef.current = false;
+      setIsDragging(false);
+    }
+  };
+
   const handleCardClick = (look: StylingLook) => {
+    if (hasMovedRef.current) return;
     setActiveLookModal(look);
   };
 
@@ -162,7 +197,14 @@ export const StylingSuggestions: React.FC = () => {
           </button>
 
           {/* 4 Cards Grid */}
-          <div ref={carouselRef} className="styling-grid no-scrollbar">
+          <div 
+            ref={carouselRef} 
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUpOrLeave}
+            onMouseLeave={handleMouseUpOrLeave}
+            className={`styling-grid no-scrollbar ${isDragging ? 'is-dragging' : ''}`}
+          >
             {STYLING_LOOKS.map((look) => (
               <div
                 key={look.id}

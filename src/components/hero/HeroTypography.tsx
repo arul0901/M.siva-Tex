@@ -21,8 +21,12 @@ export const HeroTypography: React.FC<HeroTypographyProps> = ({ slide }) => {
         <span className="cinematic-hero-title-sub">{slide.subtitle}</span>
       </h1>
 
-      {/* Gold Hairline Divider */}
-      <div className="cinematic-hero-gold-line" />
+      {/* Gold Hairline Divider with Diamond Emblem */}
+      <div className="cinematic-hero-gold-line-wrap">
+        <div className="cinematic-hero-gold-line" />
+        <span className="cinematic-hero-divider-symbol">❖</span>
+        <div className="cinematic-hero-gold-line" />
+      </div>
 
       {/* Poetic Collection Description */}
       <p className="cinematic-hero-desc">{slide.description}</p>

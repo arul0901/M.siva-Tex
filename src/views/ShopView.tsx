@@ -18,8 +18,6 @@ import {
   SlidersHorizontal, 
   X, 
   Sparkles, 
-  Grid, 
-  LayoutList, 
   Eye, 
   ShoppingBag, 
   Heart,
@@ -96,7 +94,6 @@ export const ShopView: React.FC = () => {
   // Toolbar & View States
   const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
   const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 12;
 
@@ -501,34 +498,6 @@ export const ShopView: React.FC = () => {
                 </AnimatePresence>
               </div>
 
-              {/* 3 & 4. GRID / LIST VIEW Buttons */}
-              <div className="flex items-center border border-gold/35 rounded-xs overflow-hidden bg-white shadow-xs shrink-0">
-                <button
-                  onClick={() => setViewMode('grid')}
-                  className={`min-h-[42px] min-w-[42px] flex items-center justify-center p-2 transition-colors ${
-                    viewMode === 'grid' 
-                      ? 'bg-burgundy text-gold-pale' 
-                      : 'text-brown-deep/60 hover:text-burgundy hover:bg-beige/60'
-                  }`}
-                  title="Grid View"
-                  aria-label="Grid view"
-                >
-                  <Grid className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => setViewMode('list')}
-                  className={`min-h-[42px] min-w-[42px] flex items-center justify-center p-2 transition-colors ${
-                    viewMode === 'list' 
-                      ? 'bg-burgundy text-gold-pale' 
-                      : 'text-brown-deep/60 hover:text-burgundy hover:bg-beige/60'
-                  }`}
-                  title="List View"
-                  aria-label="List view"
-                >
-                  <LayoutList className="w-4 h-4" />
-                </button>
-              </div>
-
             </div>
           </div>
 
@@ -688,88 +657,12 @@ export const ShopView: React.FC = () => {
                 Reset All Filters
               </button>
             </div>
-          ) : viewMode === 'grid' ? (
+          ) : (
             /* Expansive 4-column luxury grid on desktop, 3-col on medium, 2-column on mobile */
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-5 lg:gap-6">
               {paginatedProducts.map(product => (
                 <ProductCard key={product.id} product={product} />
               ))}
-            </div>
-          ) : (
-            /* List View Mode */
-            <div className="space-y-3 sm:space-y-6">
-              {paginatedProducts.map(product => {
-                const inWishlist = isInWishlist(product.id);
-                return (
-                  <div
-                    key={product.id}
-                    className="bg-white p-2.5 sm:p-6 rounded-xs border border-gold/20 flex flex-row gap-3 sm:gap-6 shadow-xs hover:border-gold/50 transition-all"
-                  >
-                    <div
-                      onClick={() => openProductDetail(product)}
-                      className="w-24 xs:w-28 sm:w-56 aspect-[3/4] overflow-hidden rounded-xs bg-beige shrink-0 cursor-pointer group"
-                    >
-                      <img
-                        src={product.primaryImage}
-                        alt={product.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0 flex flex-col justify-between">
-                      <div>
-                        <div className="flex items-center justify-between text-[10px] sm:text-xs text-gold font-serif uppercase tracking-wider mb-0.5 sm:mb-1">
-                          <span className="truncate pr-1">{product.category}</span>
-                          <span className="text-brown-deep/60 font-sans shrink-0">{product.zari}</span>
-                        </div>
-                        <h3
-                          onClick={() => openProductDetail(product)}
-                          className="font-serif text-xs sm:text-lg font-bold text-burgundy mb-1 sm:mb-2 cursor-pointer hover:text-gold transition-colors line-clamp-1 sm:line-clamp-none"
-                        >
-                          {product.name}
-                        </h3>
-                        <p className="text-[11px] sm:text-xs text-brown-deep/80 leading-relaxed font-light mb-2 sm:mb-4 line-clamp-2 hidden xs:line-clamp-2">
-                          {product.description}
-                        </p>
-                        <div className="hidden sm:flex flex-wrap gap-2 text-[11px] text-brown-deep/70 mb-4">
-                          <span className="px-2 py-0.5 bg-beige rounded-xs">Weave: {product.weave}</span>
-                          <span className="px-2 py-0.5 bg-beige rounded-xs">Fabric: {product.fabric}</span>
-                          <span className="px-2 py-0.5 bg-beige rounded-xs">Origin: {product.origin}</span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center justify-between gap-2 pt-1.5 sm:pt-4 border-t border-gold/15">
-                        <div>
-                          <span className="font-serif text-sm sm:text-xl font-bold text-burgundy">
-                            ₹{product.price.toLocaleString('en-IN')}
-                          </span>
-                          {product.originalPrice > product.price && (
-                            <span className="text-[10px] sm:text-xs text-brown-deep/50 line-through ml-1.5">
-                              ₹{product.originalPrice.toLocaleString('en-IN')}
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex items-center gap-1.5 sm:gap-2">
-                          <button
-                            onClick={() => toggleWishlist(product)}
-                            className={`min-h-[36px] min-w-[36px] sm:min-h-[44px] sm:min-w-[44px] p-2 sm:p-2.5 rounded-xs border transition-colors flex items-center justify-center ${
-                              inWishlist ? 'border-wine bg-wine text-ivory' : 'border-gold/30 text-burgundy hover:border-gold'
-                            }`}
-                            aria-label="Save to wishlist"
-                          >
-                            <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${inWishlist ? 'fill-current' : ''}`} />
-                          </button>
-                          <button
-                            onClick={() => openProductDetail(product)}
-                            className="min-h-[36px] sm:min-h-[44px] px-2.5 sm:px-4 py-1.5 sm:py-2 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark text-[10px] sm:text-xs font-serif uppercase tracking-wider font-semibold rounded-xs transition-colors flex items-center justify-center gap-1 sm:gap-1.5 shadow-sm"
-                          >
-                            <span>View Details</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
             </div>
           )}
         </div>

@@ -136,10 +136,7 @@ export const HeroVideoLayer: React.FC<HeroVideoLayerProps> = ({
         )}
       </div>
 
-      {/* Luxury Editorial Lighting Vignettes & Scrims */}
-      <div className="cinematic-hero-video-scrim-left" />
-      <div className="cinematic-hero-video-vignette-top" />
-      <div className="cinematic-hero-video-vignette-bottom" />
+      {/* Lighting overlays and scrims removed as requested */}
     </div>
   );
 };
