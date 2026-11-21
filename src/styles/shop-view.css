@@ -72,6 +72,7 @@
   right: 0;
   top: calc(100% + 6px);
   width: 14.5rem;
+  max-width: calc(100vw - 2rem);
   background-color: #FFFFFF;
   border: 1px solid rgba(212, 175, 55, 0.4);
   border-radius: 2px;
@@ -79,6 +80,13 @@
   z-index: 50;
   overflow: hidden;
   padding: 0.35rem 0;
+}
+
+@media (max-width: 639px) {
+  .sort-dropdown-menu {
+    right: -3rem;
+    width: 13.5rem;
+  }
 }
 
 .sort-dropdown-item {
@@ -174,7 +182,7 @@
 }
 
 .filter-drawer-footer {
-  padding: 1rem 1.35rem;
+  padding: 1rem 1.35rem max(1rem, env(safe-area-inset-bottom));
   border-top: 1px solid rgba(212, 175, 55, 0.25);
   background-color: #F5EFEB;
   display: flex;
@@ -244,6 +252,7 @@
 /* Category item row */
 .category-item-row {
   width: 100%;
+  min-height: 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -353,6 +362,7 @@
 /* Luxury Checkbox Row */
 .luxury-checkbox-row {
   width: 100%;
+  min-height: 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;

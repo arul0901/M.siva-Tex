@@ -149,7 +149,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, compact = fal
         <button
           onClick={handleWishlist}
           aria-label={inWishlist ? "Remove from Wishlist" : "Save to Wishlist"}
-          className={`absolute top-2 right-2 sm:top-2.5 sm:right-2.5 w-7 h-7 sm:w-9 sm:h-9 rounded-full flex items-center justify-center transition-all duration-200 z-10 shadow-sm ${
+          className={`absolute top-2 right-2 sm:top-2.5 sm:right-2.5 w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center transition-all duration-200 z-10 shadow-sm ${
             inWishlist
               ? 'bg-burgundy text-gold-pale'
               : 'bg-white/90 text-burgundy hover:bg-white hover:text-burgundy'

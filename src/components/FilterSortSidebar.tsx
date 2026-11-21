@@ -370,11 +370,13 @@ export const FilterSortSidebar: React.FC<FilterSortSidebarProps> = ({
                       </span>
                       <input
                         type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
                         value={minInput}
                         onChange={handleMinInputChange}
                         onBlur={handlePriceInputCommit}
                         onKeyDown={(e) => e.key === 'Enter' && handlePriceInputCommit()}
-                        className="w-full bg-white border border-gold/30 hover:border-gold focus:border-gold focus:ring-1 focus:ring-gold/30 rounded-xs pl-6 pr-2 py-1.5 text-xs font-serif text-burgundy shadow-xs"
+                        className="w-full bg-white border border-gold/30 hover:border-gold focus:border-gold focus:ring-1 focus:ring-gold/30 rounded-xs pl-6 pr-2 py-1.5 text-base sm:text-xs font-serif text-burgundy shadow-xs min-h-[38px]"
                         placeholder="1,000"
                       />
                     </div>
@@ -390,11 +392,13 @@ export const FilterSortSidebar: React.FC<FilterSortSidebarProps> = ({
                       </span>
                       <input
                         type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
                         value={maxInput}
                         onChange={handleMaxInputChange}
                         onBlur={handlePriceInputCommit}
                         onKeyDown={(e) => e.key === 'Enter' && handlePriceInputCommit()}
-                        className="w-full bg-white border border-gold/30 hover:border-gold focus:border-gold focus:ring-1 focus:ring-gold/30 rounded-xs pl-6 pr-2 py-1.5 text-xs font-serif text-burgundy shadow-xs"
+                        className="w-full bg-white border border-gold/30 hover:border-gold focus:border-gold focus:ring-1 focus:ring-gold/30 rounded-xs pl-6 pr-2 py-1.5 text-base sm:text-xs font-serif text-burgundy shadow-xs min-h-[38px]"
                         placeholder="60,000"
                       />
                     </div>
@@ -406,21 +410,21 @@ export const FilterSortSidebar: React.FC<FilterSortSidebarProps> = ({
                   <button
                     type="button"
                     onClick={() => setPricePreset(MIN_PRICE_BOUND, 20000)}
-                    className="px-2 py-1 bg-white hover:bg-beige border border-gold/30 rounded-xs text-[10px] font-serif text-brown-deep hover:text-burgundy transition-colors"
+                    className="min-h-[32px] px-2.5 py-1 bg-white hover:bg-beige border border-gold/30 rounded-xs text-[10.5px] font-serif text-brown-deep hover:text-burgundy transition-colors flex items-center"
                   >
                     Under ₹20,000
                   </button>
                   <button
                     type="button"
                     onClick={() => setPricePreset(20000, 35000)}
-                    className="px-2 py-1 bg-white hover:bg-beige border border-gold/30 rounded-xs text-[10px] font-serif text-brown-deep hover:text-burgundy transition-colors"
+                    className="min-h-[32px] px-2.5 py-1 bg-white hover:bg-beige border border-gold/30 rounded-xs text-[10.5px] font-serif text-brown-deep hover:text-burgundy transition-colors flex items-center"
                   >
                     ₹20k – ₹35k
                   </button>
                   <button
                     type="button"
                     onClick={() => setPricePreset(35000, MAX_PRICE_BOUND)}
-                    className="px-2 py-1 bg-white hover:bg-beige border border-gold/30 rounded-xs text-[10px] font-serif text-brown-deep hover:text-burgundy transition-colors"
+                    className="min-h-[32px] px-2.5 py-1 bg-white hover:bg-beige border border-gold/30 rounded-xs text-[10.5px] font-serif text-brown-deep hover:text-burgundy transition-colors flex items-center"
                   >
                     Above ₹35,000
                   </button>

@@ -368,14 +368,14 @@ export const ShopView: React.FC = () => {
   const currentSortOption = SORT_OPTIONS.find(o => o.value === filters.sortBy) || SORT_OPTIONS[0];
 
   return (
-    <div className="bg-ivory min-h-screen py-8 sm:py-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="bg-ivory min-h-screen py-4 sm:py-8 lg:py-10">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         
         {/* ========================================================
             Top Header Bar: Left Title/Breadcrumbs + Right Toolbar
             ======================================================== */}
-        <div className="mb-6 sm:mb-8 border-b border-gold/20 pb-5 sm:pb-6">
-          <div className="flex items-center gap-2 text-xs font-secondary uppercase tracking-widest text-brown-deep/60 mb-2">
+        <div className="mb-4 sm:mb-8 border-b border-gold/20 pb-4 sm:pb-6">
+          <div className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-secondary uppercase tracking-widest text-brown-deep/60 mb-1.5 sm:mb-2 flex-wrap">
             <span>Home</span>
             <span>/</span>
             <span>Boutique Catalog</span>
@@ -393,30 +393,30 @@ export const ShopView: React.FC = () => {
             )}
           </div>
           
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-4">
             <div>
-              <h1 className="font-primary text-3xl sm:text-4xl text-burgundy font-normal tracking-tight">
+              <h1 className="font-primary text-2xl sm:text-3xl md:text-4xl text-burgundy font-normal tracking-tight">
                 {filters.categories.length === 1 
                   ? filters.categories[0] 
                   : filters.categories.length > 1 
                     ? 'Curated Saree Collections' 
                     : 'All Handloom Sarees'}
               </h1>
-              <p className="text-xs sm:text-sm font-secondary text-brown-deep/70 font-light mt-1">
+              <p className="text-[11px] sm:text-xs md:text-sm font-secondary text-brown-deep/70 font-light mt-0.5 sm:mt-1">
                 Showing {filteredProducts.length} authentic handcrafted silk and artisanal handlooms.
               </p>
             </div>
 
             {/* ========================================================
-                PREMIUM TOP-RIGHT TOOLBAR:
+                PREMIUM TOOLBAR:
                 [ FILTER ⚙ ] [ SORT BY ⇅ ] [ GRID ICON ] [ LIST ICON ]
                 ======================================================== */}
-            <div className="flex items-center gap-2 sm:gap-2.5 self-start md:self-auto flex-wrap sm:flex-nowrap">
+            <div className="flex items-center gap-2 sm:gap-2.5 w-full sm:w-auto">
               
               {/* 1. FILTER Button */}
               <button
                 onClick={() => setFilterDrawerOpen(true)}
-                className={`toolbar-btn ${activeCount > 0 ? 'toolbar-btn-active' : ''}`}
+                className={`flex-1 sm:flex-none justify-center toolbar-btn ${activeCount > 0 ? 'toolbar-btn-active' : ''}`}
                 aria-label="Open filter sidebar drawer"
               >
                 <SlidersHorizontal className="w-3.5 h-3.5 text-gold toolbar-btn-icon" />
@@ -429,18 +429,18 @@ export const ShopView: React.FC = () => {
               </button>
 
               {/* 2. SORT BY Button with Popover Dropdown */}
-              <div className="relative" ref={sortDropdownRef}>
+              <div className="relative flex-1 sm:flex-none" ref={sortDropdownRef}>
                 <button
                   onClick={() => setSortDropdownOpen(prev => !prev)}
-                  className="toolbar-btn"
+                  className="w-full toolbar-btn justify-center"
                   aria-expanded={sortDropdownOpen}
                   aria-label="Sort products dropdown"
                 >
-                  <ArrowUpDown className="w-3.5 h-3.5 text-gold toolbar-btn-icon" />
-                  <span className="font-semibold">
+                  <ArrowUpDown className="w-3.5 h-3.5 text-gold toolbar-btn-icon shrink-0" />
+                  <span className="font-semibold truncate">
                     {currentSortOption.value === 'recommended' ? 'Sort By' : `Sort: ${currentSortOption.label}`}
                   </span>
-                  <ChevronDown className={`w-3.5 h-3.5 text-gold transition-transform duration-200 ${sortDropdownOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`w-3.5 h-3.5 text-gold transition-transform duration-200 shrink-0 ${sortDropdownOpen ? 'rotate-180' : ''}`} />
                 </button>
 
                 {/* Elegant Sort Dropdown anchored directly below */}
@@ -479,7 +479,7 @@ export const ShopView: React.FC = () => {
               </div>
 
               {/* 3 & 4. GRID / LIST VIEW Buttons */}
-              <div className="flex items-center border border-gold/35 rounded-xs overflow-hidden bg-white shadow-xs">
+              <div className="flex items-center border border-gold/35 rounded-xs overflow-hidden bg-white shadow-xs shrink-0">
                 <button
                   onClick={() => setViewMode('grid')}
                   className={`min-h-[42px] min-w-[42px] flex items-center justify-center p-2 transition-colors ${
@@ -511,8 +511,8 @@ export const ShopView: React.FC = () => {
 
           {/* Active Filter Tags Bar with Instant Clear */}
           {activeCount > 0 && (
-            <div className="flex flex-wrap items-center gap-2 mt-4 pt-4 border-t border-gold/15 text-xs">
-              <span className="font-serif text-brown-deep/60 uppercase tracking-wider text-[11px] font-semibold">
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gold/15 text-xs">
+              <span className="font-serif text-brown-deep/60 uppercase tracking-wider text-[10px] sm:text-[11px] font-semibold">
                 Active Filters:
               </span>
 
@@ -520,12 +520,12 @@ export const ShopView: React.FC = () => {
               {filters.categories.map(cat => (
                 <span 
                   key={cat}
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-burgundy text-gold-pale rounded-xs font-serif text-[11px] shadow-xs"
+                  className="inline-flex items-center gap-1.5 pl-2.5 pr-1 py-1 bg-burgundy text-gold-pale rounded-xs font-serif text-[11px] shadow-xs"
                 >
                   <span>{cat}</span>
                   <button 
                     onClick={() => handleCategoryToggle(cat)}
-                    className="hover:text-white transition-colors"
+                    className="w-5 h-5 flex items-center justify-center hover:text-white transition-colors"
                     aria-label={`Remove ${cat} filter`}
                   >
                     <X className="w-3 h-3" />
@@ -535,11 +535,11 @@ export const ShopView: React.FC = () => {
 
               {/* Price range tag */}
               {(filters.priceRange[0] > MIN_PRICE_BOUND || filters.priceRange[1] < MAX_PRICE_BOUND) && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white border border-gold/40 text-burgundy rounded-xs font-serif text-[11px] shadow-xs">
+                <span className="inline-flex items-center gap-1.5 pl-2.5 pr-1 py-1 bg-white border border-gold/40 text-burgundy rounded-xs font-serif text-[11px] shadow-xs">
                   <span>Price: ₹{filters.priceRange[0].toLocaleString('en-IN')} – ₹{filters.priceRange[1].toLocaleString('en-IN')}</span>
                   <button 
                     onClick={() => handlePriceChange([MIN_PRICE_BOUND, MAX_PRICE_BOUND])}
-                    className="hover:text-wine transition-colors"
+                    className="w-5 h-5 flex items-center justify-center hover:text-wine transition-colors"
                     aria-label="Reset price filter"
                   >
                     <X className="w-3 h-3" />
@@ -553,7 +553,7 @@ export const ShopView: React.FC = () => {
                 return (
                   <span 
                     key={colId}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white border border-gold/40 text-burgundy rounded-xs font-serif text-[11px] shadow-xs"
+                    className="inline-flex items-center gap-1.5 pl-2.5 pr-1 py-1 bg-white border border-gold/40 text-burgundy rounded-xs font-serif text-[11px] shadow-xs"
                   >
                     <span 
                       className="w-2.5 h-2.5 rounded-full inline-block border border-black/20"
@@ -562,7 +562,7 @@ export const ShopView: React.FC = () => {
                     <span>{opt?.name || colId}</span>
                     <button 
                       onClick={() => handleColorToggle(colId)}
-                      className="hover:text-wine transition-colors"
+                      className="w-5 h-5 flex items-center justify-center hover:text-wine transition-colors"
                       aria-label={`Remove color ${opt?.name || colId}`}
                     >
                       <X className="w-3 h-3" />
@@ -575,12 +575,12 @@ export const ShopView: React.FC = () => {
               {filters.fabrics.map(fab => (
                 <span 
                   key={fab}
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white border border-gold/40 text-burgundy rounded-xs font-serif text-[11px] shadow-xs"
+                  className="inline-flex items-center gap-1.5 pl-2.5 pr-1 py-1 bg-white border border-gold/40 text-burgundy rounded-xs font-serif text-[11px] shadow-xs"
                 >
                   <span>Fabric: {fab}</span>
                   <button 
                     onClick={() => handleFabricToggle(fab)}
-                    className="hover:text-wine transition-colors"
+                    className="w-5 h-5 flex items-center justify-center hover:text-wine transition-colors"
                     aria-label={`Remove fabric ${fab}`}
                   >
                     <X className="w-3 h-3" />
@@ -592,12 +592,12 @@ export const ShopView: React.FC = () => {
               {filters.occasions.map(occ => (
                 <span 
                   key={occ}
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white border border-gold/40 text-burgundy rounded-xs font-serif text-[11px] shadow-xs"
+                  className="inline-flex items-center gap-1.5 pl-2.5 pr-1 py-1 bg-white border border-gold/40 text-burgundy rounded-xs font-serif text-[11px] shadow-xs"
                 >
                   <span>Occasion: {occ}</span>
                   <button 
                     onClick={() => handleOccasionToggle(occ)}
-                    className="hover:text-wine transition-colors"
+                    className="w-5 h-5 flex items-center justify-center hover:text-wine transition-colors"
                     aria-label={`Remove occasion ${occ}`}
                   >
                     <X className="w-3 h-3" />
@@ -607,11 +607,11 @@ export const ShopView: React.FC = () => {
 
               {/* Availability tag */}
               {filters.availability !== 'all' && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white border border-gold/40 text-burgundy rounded-xs font-serif text-[11px] shadow-xs">
+                <span className="inline-flex items-center gap-1.5 pl-2.5 pr-1 py-1 bg-white border border-gold/40 text-burgundy rounded-xs font-serif text-[11px] shadow-xs">
                   <span>{filters.availability === 'in_stock' ? 'In Stock Only' : 'Out of Stock Only'}</span>
                   <button 
                     onClick={() => handleAvailabilityChange('all')}
-                    className="hover:text-wine transition-colors"
+                    className="w-5 h-5 flex items-center justify-center hover:text-wine transition-colors"
                     aria-label="Reset availability"
                   >
                     <X className="w-3 h-3" />
@@ -621,11 +621,11 @@ export const ShopView: React.FC = () => {
 
               {/* Search query tag */}
               {searchQuery && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-beige border border-gold/40 text-burgundy rounded-xs font-serif text-[11px] shadow-xs">
+                <span className="inline-flex items-center gap-1.5 pl-2.5 pr-1 py-1 bg-beige border border-gold/40 text-burgundy rounded-xs font-serif text-[11px] shadow-xs">
                   <span>Search: "{searchQuery}"</span>
                   <button 
                     onClick={() => setSearchQuery('')}
-                    className="hover:text-wine transition-colors"
+                    className="w-5 h-5 flex items-center justify-center hover:text-wine transition-colors"
                     aria-label="Clear search"
                   >
                     <X className="w-3 h-3" />
@@ -636,7 +636,7 @@ export const ShopView: React.FC = () => {
               {/* Clear all button */}
               <button
                 onClick={handleClearAll}
-                className="text-xs text-wine hover:text-burgundy hover:underline font-serif ml-2 flex items-center gap-1 font-medium"
+                className="text-xs text-wine hover:text-burgundy hover:underline font-serif ml-1 sm:ml-2 flex items-center gap-1 font-medium min-h-[32px] px-2 py-1"
               >
                 <RotateCcw className="w-3 h-3" />
                 <span>Clear All</span>
@@ -650,7 +650,7 @@ export const ShopView: React.FC = () => {
             ======================================================== */}
         <div>
           {filteredProducts.length === 0 ? (
-            <div className="bg-white/70 border border-gold/25 rounded-xs p-16 text-center space-y-4 shadow-sm">
+            <div className="bg-white/70 border border-gold/25 rounded-xs p-8 sm:p-16 text-center space-y-4 shadow-sm">
               <Sparkles className="w-10 h-10 text-gold mx-auto" />
               <h3 className="font-serif text-xl font-bold text-burgundy">
                 No Sarees Found Matching Your Filters
@@ -666,25 +666,25 @@ export const ShopView: React.FC = () => {
               </button>
             </div>
           ) : viewMode === 'grid' ? (
-            /* Expansive 4-column luxury grid on desktop, 3-col on medium, 2-col on tablet/mobile */
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-7">
+            /* Expansive 4-column luxury grid on desktop, 3-col on medium, 2-column on mobile */
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-5 lg:gap-6">
               {filteredProducts.map(product => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
           ) : (
             /* List View Mode */
-            <div className="space-y-6">
+            <div className="space-y-3 sm:space-y-6">
               {filteredProducts.map(product => {
                 const inWishlist = isInWishlist(product.id);
                 return (
                   <div
                     key={product.id}
-                    className="bg-white p-4 sm:p-6 rounded-xs border border-gold/20 flex flex-col sm:flex-row gap-5 sm:gap-6 shadow-xs hover:border-gold/50 transition-all"
+                    className="bg-white p-2.5 sm:p-6 rounded-xs border border-gold/20 flex flex-row gap-3 sm:gap-6 shadow-xs hover:border-gold/50 transition-all"
                   >
                     <div
                       onClick={() => openProductDetail(product)}
-                      className="sm:w-56 aspect-[3/4] overflow-hidden rounded-xs bg-beige shrink-0 cursor-pointer group"
+                      className="w-24 xs:w-28 sm:w-56 aspect-[3/4] overflow-hidden rounded-xs bg-beige shrink-0 cursor-pointer group"
                     >
                       <img
                         src={product.primaryImage}
@@ -692,52 +692,52 @@ export const ShopView: React.FC = () => {
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     </div>
-                    <div className="flex-1 flex flex-col justify-between">
+                    <div className="flex-1 min-w-0 flex flex-col justify-between">
                       <div>
-                        <div className="flex items-center justify-between text-xs text-gold font-serif uppercase tracking-wider mb-1">
-                          <span>{product.category}</span>
-                          <span className="text-brown-deep/60 font-sans">{product.zari}</span>
+                        <div className="flex items-center justify-between text-[10px] sm:text-xs text-gold font-serif uppercase tracking-wider mb-0.5 sm:mb-1">
+                          <span className="truncate pr-1">{product.category}</span>
+                          <span className="text-brown-deep/60 font-sans shrink-0">{product.zari}</span>
                         </div>
                         <h3
                           onClick={() => openProductDetail(product)}
-                          className="font-serif text-lg font-bold text-burgundy mb-2 cursor-pointer hover:text-gold transition-colors"
+                          className="font-serif text-xs sm:text-lg font-bold text-burgundy mb-1 sm:mb-2 cursor-pointer hover:text-gold transition-colors line-clamp-1 sm:line-clamp-none"
                         >
                           {product.name}
                         </h3>
-                        <p className="text-xs text-brown-deep/80 leading-relaxed font-light mb-4 line-clamp-2">
+                        <p className="text-[11px] sm:text-xs text-brown-deep/80 leading-relaxed font-light mb-2 sm:mb-4 line-clamp-2 hidden xs:line-clamp-2">
                           {product.description}
                         </p>
-                        <div className="flex flex-wrap gap-2 text-[11px] text-brown-deep/70 mb-4">
+                        <div className="hidden sm:flex flex-wrap gap-2 text-[11px] text-brown-deep/70 mb-4">
                           <span className="px-2 py-0.5 bg-beige rounded-xs">Weave: {product.weave}</span>
                           <span className="px-2 py-0.5 bg-beige rounded-xs">Fabric: {product.fabric}</span>
                           <span className="px-2 py-0.5 bg-beige rounded-xs">Origin: {product.origin}</span>
                         </div>
                       </div>
 
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-4 border-t border-gold/15">
+                      <div className="flex items-center justify-between gap-2 pt-1.5 sm:pt-4 border-t border-gold/15">
                         <div>
-                          <span className="font-serif text-xl font-bold text-burgundy">
+                          <span className="font-serif text-sm sm:text-xl font-bold text-burgundy">
                             ₹{product.price.toLocaleString('en-IN')}
                           </span>
                           {product.originalPrice > product.price && (
-                            <span className="text-xs text-brown-deep/50 line-through ml-2">
+                            <span className="text-[10px] sm:text-xs text-brown-deep/50 line-through ml-1.5">
                               ₹{product.originalPrice.toLocaleString('en-IN')}
                             </span>
                           )}
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1.5 sm:gap-2">
                           <button
                             onClick={() => toggleWishlist(product)}
-                            className={`min-h-[44px] min-w-[44px] p-2.5 rounded-xs border transition-colors flex items-center justify-center ${
+                            className={`min-h-[36px] min-w-[36px] sm:min-h-[44px] sm:min-w-[44px] p-2 sm:p-2.5 rounded-xs border transition-colors flex items-center justify-center ${
                               inWishlist ? 'border-wine bg-wine text-ivory' : 'border-gold/30 text-burgundy hover:border-gold'
                             }`}
                             aria-label="Save to wishlist"
                           >
-                            <Heart className={`w-4 h-4 ${inWishlist ? 'fill-current' : ''}`} />
+                            <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${inWishlist ? 'fill-current' : ''}`} />
                           </button>
                           <button
                             onClick={() => openProductDetail(product)}
-                            className="min-h-[44px] px-4 py-2 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark text-xs font-serif uppercase tracking-wider font-semibold rounded-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm"
+                            className="min-h-[36px] sm:min-h-[44px] px-2.5 sm:px-4 py-1.5 sm:py-2 bg-burgundy hover:bg-gold text-gold-pale hover:text-brown-dark text-[10px] sm:text-xs font-serif uppercase tracking-wider font-semibold rounded-xs transition-colors flex items-center justify-center gap-1 sm:gap-1.5 shadow-sm"
                           >
                             <span>View Details</span>
                           </button>
