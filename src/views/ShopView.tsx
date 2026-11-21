@@ -26,6 +26,8 @@ import {
   RotateCcw,
   ArrowUpDown,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Check,
   Filter
 } from 'lucide-react';
@@ -95,6 +97,8 @@ export const ShopView: React.FC = () => {
   const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
   const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 12;
 
   const sortDropdownRef = useRef<HTMLDivElement>(null);
 
@@ -291,6 +295,25 @@ export const ShopView: React.FC = () => {
     });
   }, [filters, searchQuery]);
 
+  // Reset pagination to page 1 on filter or search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filters, searchQuery]);
+
+  // Paginated Slices (12 products per page)
+  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
+
+  const paginatedProducts = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredProducts.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [filteredProducts, currentPage]);
+
+  const handlePageChange = (page: number) => {
+    if (page < 1 || page > totalPages) return;
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   // Dynamic Product Counts Calculation
   const filterCounts: DynamicFilterCounts = useMemo(() => {
     const catCounts: Record<string, number> = {};
@@ -403,7 +426,7 @@ export const ShopView: React.FC = () => {
                     : 'All Handloom Sarees'}
               </h1>
               <p className="text-[11px] sm:text-xs md:text-sm font-secondary text-brown-deep/70 font-light mt-0.5 sm:mt-1">
-                Showing {filteredProducts.length} authentic handcrafted silk and artisanal handlooms.
+                Showing {filteredProducts.length > 0 ? (currentPage - 1) * ITEMS_PER_PAGE + 1 : 0}–{Math.min(currentPage * ITEMS_PER_PAGE, filteredProducts.length)} of {filteredProducts.length} authentic handcrafted silk and artisanal handlooms.
               </p>
             </div>
 
@@ -668,14 +691,14 @@ export const ShopView: React.FC = () => {
           ) : viewMode === 'grid' ? (
             /* Expansive 4-column luxury grid on desktop, 3-col on medium, 2-column on mobile */
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-5 lg:gap-6">
-              {filteredProducts.map(product => (
+              {paginatedProducts.map(product => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
           ) : (
             /* List View Mode */
             <div className="space-y-3 sm:space-y-6">
-              {filteredProducts.map(product => {
+              {paginatedProducts.map(product => {
                 const inWishlist = isInWishlist(product.id);
                 return (
                   <div
@@ -750,6 +773,69 @@ export const ShopView: React.FC = () => {
             </div>
           )}
         </div>
+
+        {/* ========================================================
+            LUXURY PAGINATION BAR (12 Products Per Page)
+            ======================================================== */}
+        {totalPages > 1 && (
+          <div className="mt-8 sm:mt-10 pt-5 sm:pt-6 border-t border-gold/20 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-xs font-secondary text-brown-deep/70 order-2 sm:order-1 text-center sm:text-left">
+              Showing <span className="font-semibold text-burgundy">{(currentPage - 1) * ITEMS_PER_PAGE + 1}</span> to <span className="font-semibold text-burgundy">{Math.min(currentPage * ITEMS_PER_PAGE, filteredProducts.length)}</span> of <span className="font-semibold text-burgundy">{filteredProducts.length}</span> Sarees
+            </p>
+
+            <div className="flex items-center gap-1.5 order-1 sm:order-2">
+              {/* Previous Page Button */}
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className={`min-h-[42px] px-3.5 py-2 rounded-xs border text-xs font-serif uppercase tracking-wider flex items-center gap-1.5 transition-all ${
+                  currentPage === 1
+                    ? 'border-gold/20 text-brown-deep/30 cursor-not-allowed bg-white/40'
+                    : 'border-gold/40 text-burgundy hover:border-gold hover:bg-gold hover:text-white bg-white shadow-xs cursor-pointer'
+                }`}
+                aria-label="Previous Page"
+              >
+                <ChevronLeft className="w-4 h-4" />
+                <span className="hidden xs:inline">Prev</span>
+              </button>
+
+              {/* Page Number Buttons */}
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => {
+                const isActive = pageNum === currentPage;
+                return (
+                  <button
+                    key={pageNum}
+                    onClick={() => handlePageChange(pageNum)}
+                    className={`min-h-[42px] min-w-[42px] px-2 py-2 rounded-xs border text-xs font-serif font-bold transition-all flex items-center justify-center cursor-pointer ${
+                      isActive
+                        ? 'border-gold bg-burgundy text-gold-pale shadow-xs'
+                        : 'border-gold/30 bg-white text-brown-deep hover:border-gold hover:bg-beige/60'
+                    }`}
+                    aria-label={`Go to page ${pageNum}`}
+                    aria-current={isActive ? 'page' : undefined}
+                  >
+                    {pageNum}
+                  </button>
+                );
+              })}
+
+              {/* Next Page Button */}
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className={`min-h-[42px] px-3.5 py-2 rounded-xs border text-xs font-serif uppercase tracking-wider flex items-center gap-1.5 transition-all ${
+                  currentPage === totalPages
+                    ? 'border-gold/20 text-brown-deep/30 cursor-not-allowed bg-white/40'
+                    : 'border-gold/40 text-burgundy hover:border-gold hover:bg-gold hover:text-white bg-white shadow-xs cursor-pointer'
+                }`}
+                aria-label="Next Page"
+              >
+                <span className="hidden xs:inline">Next</span>
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        )}
 
       </div>
 
