@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useShop } from '../context/ShopContext';
-import { Sparkles, Send, Check } from 'lucide-react';
+import { Sparkles, Send, Check, ChevronDown } from 'lucide-react';
 import '../styles/footer.css';
 
 const InstagramIcon: React.FC<{ className?: string }> = ({ className }) => (
@@ -28,6 +28,8 @@ export const Footer: React.FC = () => {
   const { setCurrentView, setSelectedCategoryFilter, addToast } = useShop();
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
+  const [mobileQuickLinksOpen, setMobileQuickLinksOpen] = useState(false);
+  const [mobileConciergeOpen, setMobileConciergeOpen] = useState(false);
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -136,10 +138,17 @@ export const Footer: React.FC = () => {
 
           {/* Quick Links (Col 5-6) */}
           <div className="footer-links-col">
-            <h4 className="footer-links-title">
-              Quick Links
-            </h4>
-            <ul className="footer-links-list">
+            <button
+              type="button"
+              onClick={() => setMobileQuickLinksOpen(!mobileQuickLinksOpen)}
+              className="w-full flex items-center justify-between text-left md:pointer-events-none pb-2 md:pb-0 border-b md:border-b-0 border-[#D4AF37]/20"
+            >
+              <h4 className="footer-links-title mb-0">
+                Quick Links
+              </h4>
+              <ChevronDown className={`w-4 h-4 text-[#ECBA51] transition-transform md:hidden ${mobileQuickLinksOpen ? 'rotate-180' : ''}`} />
+            </button>
+            <ul className={`footer-links-list ${mobileQuickLinksOpen ? 'block' : 'hidden md:block'} mt-2.5 md:mt-0`}>
               <li>
                 <button onClick={() => navigateTo('home')} className="footer-link-btn">
                   Home
@@ -175,10 +184,17 @@ export const Footer: React.FC = () => {
 
           {/* Customer Support (Col 7-8) */}
           <div className="footer-links-col">
-            <h4 className="footer-links-title">
-              Client Concierge
-            </h4>
-            <ul className="footer-links-list">
+            <button
+              type="button"
+              onClick={() => setMobileConciergeOpen(!mobileConciergeOpen)}
+              className="w-full flex items-center justify-between text-left md:pointer-events-none pb-2 md:pb-0 border-b md:border-b-0 border-[#D4AF37]/20"
+            >
+              <h4 className="footer-links-title mb-0">
+                Client Concierge
+              </h4>
+              <ChevronDown className={`w-4 h-4 text-[#ECBA51] transition-transform md:hidden ${mobileConciergeOpen ? 'rotate-180' : ''}`} />
+            </button>
+            <ul className={`footer-links-list ${mobileConciergeOpen ? 'block' : 'hidden md:block'} mt-2.5 md:mt-0`}>
               <li>
                 <button onClick={() => navigateTo('contact')} className="footer-link-btn">
                   Shipping Policy
@@ -225,15 +241,16 @@ export const Footer: React.FC = () => {
               <div className="footer-newsletter-input-wrap">
                 <input
                   type="email"
+                  inputMode="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email address"
-                  className="footer-newsletter-input"
+                  className="footer-newsletter-input text-base sm:text-xs"
                   aria-label="Email for newsletter"
                 />
                 <button
                   type="submit"
-                  className="footer-newsletter-submit-btn"
+                  className="footer-newsletter-submit-btn min-w-[44px] min-h-[44px]"
                   aria-label="Subscribe"
                 >
                   {subscribed ? <Check className="w-4 h-4" /> : <Send className="w-3.5 h-3.5" />}

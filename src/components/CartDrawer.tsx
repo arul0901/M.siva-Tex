@@ -178,7 +178,7 @@ export const CartDrawer: React.FC = () => {
                         <div className="flex items-center border border-gold/30 rounded-xs bg-ivory">
                           <button
                             onClick={() => updateCartQuantity(item.product.id, item.quantity - 1)}
-                            className="min-h-[38px] min-w-[36px] flex items-center justify-center hover:text-gold transition-colors"
+                            className="min-h-[40px] min-w-[40px] flex items-center justify-center hover:text-gold transition-colors"
                             aria-label="Decrease quantity"
                           >
                             <Minus className="w-3.5 h-3.5" />
@@ -188,7 +188,7 @@ export const CartDrawer: React.FC = () => {
                           </span>
                           <button
                             onClick={() => updateCartQuantity(item.product.id, item.quantity + 1)}
-                            className="min-h-[38px] min-w-[36px] flex items-center justify-center hover:text-gold transition-colors"
+                            className="min-h-[40px] min-w-[40px] flex items-center justify-center hover:text-gold transition-colors"
                             aria-label="Increase quantity"
                           >
                             <Plus className="w-3.5 h-3.5" />
@@ -207,7 +207,7 @@ export const CartDrawer: React.FC = () => {
 
             {/* Footer with Calculations and Checkout */}
             {cart.length > 0 && (
-              <div className="p-4 sm:p-5 border-t border-gold/25 bg-beige/30 space-y-3">
+              <div className="p-4 sm:p-5 border-t border-gold/25 bg-beige/30 space-y-3 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
                 
                 {/* Coupon Code Input */}
                 <form onSubmit={handleApplyCoupon} className="flex gap-2">
@@ -273,7 +273,7 @@ export const CartDrawer: React.FC = () => {
                 {/* Checkout CTA */}
                 <button
                   onClick={handleProceedToCheckout}
-                  className="w-full py-3.5 bg-gold hover:bg-gold-light text-brown-dark font-serif text-xs uppercase tracking-[0.2em] font-bold rounded-sm transition-all duration-300 shadow-luxury flex items-center justify-center gap-2"
+                  className="w-full min-h-[46px] py-3.5 bg-gold hover:bg-gold-light active:bg-gold-dark text-brown-dark font-serif text-xs uppercase tracking-[0.2em] font-bold rounded-sm transition-all duration-300 shadow-luxury flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <span>Proceed to Sacred Checkout</span>
                   <ArrowRight className="w-4 h-4" />

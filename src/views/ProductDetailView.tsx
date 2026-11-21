@@ -612,13 +612,15 @@ export const ProductDetailView: React.FC = () => {
                 <form onSubmit={handleCheckPincode} className="pdp-pincode-form">
                   <input
                     type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     maxLength={6}
                     value={pincode}
-                    onChange={(e) => setPincode(e.target.value)}
+                    onChange={(e) => setPincode(e.target.value.replace(/\D/g, ''))}
                     placeholder="Enter 6-digit Pincode"
                     className="pdp-pincode-input"
                   />
-                  <button type="submit" className="pdp-pincode-btn">
+                  <button type="submit" className="pdp-pincode-btn min-h-[44px]">
                     Check
                   </button>
                 </form>
@@ -933,13 +935,13 @@ export const ProductDetailView: React.FC = () => {
         <div className="flex items-center flex-1 max-w-[240px] shadow-xs">
           <button
             onClick={handleAddToCart}
-            className="flex-1 py-2.5 bg-white text-black border border-black border-r-0 font-secondary text-[10px] uppercase tracking-[0.14em] font-bold text-center select-none cursor-pointer"
+            className="flex-1 min-h-[44px] py-2.5 bg-white text-black border border-black border-r-0 font-secondary text-[10px] uppercase tracking-[0.14em] font-bold text-center select-none cursor-pointer flex items-center justify-center active:bg-gray-100"
           >
             ADD TO CART
           </button>
           <button
             onClick={handleBuyNow}
-            className="flex-1 py-2.5 bg-black text-white border border-black font-secondary text-[10px] uppercase tracking-[0.14em] font-bold text-center select-none cursor-pointer"
+            className="flex-1 min-h-[44px] py-2.5 bg-black text-white border border-black font-secondary text-[10px] uppercase tracking-[0.14em] font-bold text-center select-none cursor-pointer flex items-center justify-center active:bg-neutral-800"
           >
             BUY IT NOW
           </button>

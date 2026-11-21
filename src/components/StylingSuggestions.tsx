@@ -121,6 +121,10 @@ export const StylingSuggestions: React.FC = () => {
             <h2 className="styling-title">
               The Art of <span className="styling-title-accent">Styling</span>
             </h2>
+            <div className="flex items-center gap-1.5 text-[11px] text-[#ECBA51]/80 mt-1.5 lg:hidden">
+              <span>Swipe to explore looks</span>
+              <span>&rarr;</span>
+            </div>
           </div>
 
           {/* "GET INSPIRED" relocated to Section Header */}

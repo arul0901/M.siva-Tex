@@ -138,7 +138,9 @@ export const CinematicHeroBanner: React.FC = () => {
   };
 
   const handleScrollDown = () => {
-    const nextSection = document.getElementById('shop-by-occasion');
+    const nextSection = window.innerWidth < 768
+      ? document.getElementById('shop-by-occasion-mobile')
+      : document.getElementById('shop-by-occasion');
     if (nextSection) {
       nextSection.scrollIntoView({ behavior: 'smooth' });
     } else {

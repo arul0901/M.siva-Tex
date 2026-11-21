@@ -163,15 +163,15 @@ export const BestSellers: React.FC = () => {
         </div>
 
         {/* Luxury Filter Segmented Rail */}
-        <div className="mb-8 sm:mb-10 flex justify-center px-2">
-          <div className="inline-flex items-center gap-1.5 p-1.5 bg-white/80 border border-gold/30 rounded-xs shadow-xs max-w-full overflow-x-auto no-scrollbar">
+        <div className="mb-6 sm:mb-10 flex justify-start sm:justify-center px-1 overflow-x-auto no-scrollbar">
+          <div className="inline-flex items-center gap-1 sm:gap-1.5 p-1 sm:p-1.5 bg-white/80 border border-gold/30 rounded-xs shadow-xs max-w-full shrink-0">
             {tabs.map(tab => {
               const isActive = activeTab === tab.id;
               return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`relative min-h-[38px] px-3.5 sm:px-4 py-1.5 text-xs font-secondary uppercase tracking-wider rounded-xs transition-colors duration-200 shrink-0 flex items-center gap-2 ${
+                  className={`relative min-h-[38px] px-3 sm:px-4 py-1.5 text-[11px] sm:text-xs font-secondary uppercase tracking-wider rounded-xs transition-colors duration-200 shrink-0 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap ${
                     isActive
                       ? 'text-gold-pale font-semibold'
                       : 'text-brown-deep/75 hover:text-burgundy'
@@ -185,7 +185,7 @@ export const BestSellers: React.FC = () => {
                     />
                   )}
                   <span className="relative z-10">{tab.label}</span>
-                  <span className={`relative z-10 text-[10px] font-mono px-1.5 py-0.5 rounded-full ${
+                  <span className={`relative z-10 text-[9.5px] sm:text-[10px] font-mono px-1.5 py-0.5 rounded-full ${
                     isActive 
                       ? 'bg-gold/25 text-gold-pale font-bold' 
                       : 'bg-beige text-brown-deep/60'
@@ -236,7 +236,7 @@ export const BestSellers: React.FC = () => {
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUpOrLeave}
             onMouseLeave={handleMouseUpOrLeave}
-            className="flex items-stretch gap-4 sm:gap-5 overflow-x-auto no-scrollbar scroll-smooth py-2 px-1 snap-x snap-mandatory cursor-grab active:cursor-grabbing"
+            className="flex items-stretch gap-3 sm:gap-5 overflow-x-auto no-scrollbar scroll-smooth py-2 px-1 snap-x snap-mandatory touch-pan-x cursor-grab active:cursor-grabbing"
           >
             <AnimatePresence mode="popLayout">
               {filteredProducts.map((product) => (
@@ -247,7 +247,7 @@ export const BestSellers: React.FC = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.92 }}
                   transition={{ duration: 0.3 }}
-                  className="w-[215px] xs:w-[230px] sm:w-[250px] md:w-[260px] shrink-0 snap-start flex flex-col"
+                  className="w-[172px] xs:w-[190px] sm:w-[230px] md:w-[260px] shrink-0 snap-start flex flex-col"
                 >
                   <ProductCard product={product} compact={true} />
                 </motion.div>

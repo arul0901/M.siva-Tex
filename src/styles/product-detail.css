@@ -509,9 +509,17 @@
   background: #fff;
   border-radius: 2px;
   font-family: var(--font-secondary, 'Manrope', sans-serif);
-  font-size: 0.8125rem;
+  font-size: 1rem;
   outline: none;
   transition: border-color 0.2s ease;
+  min-height: 44px;
+}
+
+@media (min-width: 640px) {
+  .pdp-pincode-input {
+    font-size: 0.8125rem;
+    min-height: auto;
+  }
 }
 
 .pdp-pincode-input:focus {

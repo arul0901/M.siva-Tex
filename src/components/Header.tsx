@@ -20,6 +20,7 @@ export const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [shopDropdownOpen, setShopDropdownOpen] = useState(false);
   const [collectionsDropdownOpen, setCollectionsDropdownOpen] = useState(false);
+  const [mobileCatOpen, setMobileCatOpen] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,7 +59,9 @@ export const Header: React.FC = () => {
       <div className="header-announcement-bar">
         <Sparkles className="announcement-sparkle-icon animate-pulse" />
         <span className="announcement-text">
-          Complimentary Insured Shipping Across India on Orders Above ₹3,000 | Use Code: <span className="announcement-promo-code">WELCOME10</span> for 10% Off
+          <span className="hidden sm:inline">Complimentary Insured Shipping Across India on Orders Above ₹3,000 | </span>
+          <span className="sm:hidden">Free Shipping Above ₹3,000 • </span>
+          Use Code: <span className="announcement-promo-code">WELCOME10</span> for 10% Off
         </span>
         <button
           onClick={() => setIsConciergeOpen(true)}
@@ -419,19 +422,28 @@ export const Header: React.FC = () => {
                     Shop All Sarees
                   </button>
 
-                  <div className="pt-3 pb-2">
-                    <span className="mobile-drawer-cat-heading">Categories</span>
-                    <div className="mobile-drawer-cat-list">
-                      {['Kanchipuram Silk', 'Banarasi Silk', 'Soft Silk', 'Cotton Sarees', 'Bridal Silk', 'Organza Sarees', 'Georgette Sarees'].map(cat => (
-                        <button
-                          key={cat}
-                          onClick={() => navigateToCategory(cat)}
-                          className="mobile-drawer-cat-btn"
-                        >
-                          {cat}
-                        </button>
-                      ))}
-                    </div>
+                  <div className="pt-2 pb-1 border-t border-b border-[#D4AF37]/20 my-1">
+                    <button
+                      type="button"
+                      onClick={() => setMobileCatOpen(!mobileCatOpen)}
+                      className="w-full flex items-center justify-between py-2 text-left text-xs uppercase tracking-widest text-[#D4AF37] font-semibold"
+                    >
+                      <span>Handloom Categories</span>
+                      <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileCatOpen ? 'rotate-180' : ''}`} />
+                    </button>
+                    {mobileCatOpen && (
+                      <div className="mobile-drawer-cat-list pb-2">
+                        {['Kanchipuram Silk', 'Banarasi Silk', 'Soft Silk', 'Cotton Sarees', 'Bridal Silk', 'Organza Sarees', 'Georgette Sarees'].map(cat => (
+                          <button
+                            key={cat}
+                            onClick={() => navigateToCategory(cat)}
+                            className="mobile-drawer-cat-btn"
+                          >
+                            {cat}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
                   <button
@@ -488,7 +500,7 @@ export const Header: React.FC = () => {
                       setIsConciergeOpen(true);
                       setMobileMenuOpen(false);
                     }}
-                    className="mobile-drawer-concierge-btn"
+                    className="mobile-drawer-concierge-btn min-h-[44px]"
                   >
                     Book Video Consultation
                   </button>

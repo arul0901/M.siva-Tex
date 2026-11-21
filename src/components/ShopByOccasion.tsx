@@ -269,12 +269,82 @@ export const ShopByOccasion: React.FC = () => {
   };
 
   return (
-    <div
-      ref={containerRef}
-      className="occasion-scrolly-container"
-      id="shop-by-occasion"
-      aria-label="Curated By Celebration - Shop By Occasion"
-    >
+    <>
+      {/* ========================================================
+          Mobile Dedicated View (< md): Elegant Header + Horizontal Swipe Track
+          Zero sticky traps, zero cutoffs, silky touch-momentum scrolling
+          ======================================================== */}
+      <section className="md:hidden pt-8 pb-10 bg-[#FAF7F2] border-b border-gold/25" id="shop-by-occasion-mobile">
+        <div className="px-4 text-center mb-6">
+          <p className="text-[11px] font-secondary uppercase tracking-[0.25em] text-[#D4AF37] font-semibold mb-1">
+            Curated By Celebration
+          </p>
+          <h2 className="font-primary text-2xl sm:text-3xl text-[#4D0007] font-medium">
+            Shop By <span className="font-special italic font-normal">Occasion</span>
+          </h2>
+          <div className="w-12 h-0.5 bg-[#D4AF37]/60 mx-auto my-2.5" />
+          <p className="font-secondary text-xs text-brown-deep/75 max-w-xs mx-auto leading-relaxed">
+            Every drape is conceived for an auspicious moment — from sacred wedding mandaps to intimate festive evenings.
+          </p>
+          <div className="mt-3.5 flex items-center justify-center gap-3">
+            <button
+              onClick={() => {
+                setSelectedCategoryFilter(null);
+                setCurrentView('shop');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 border border-[#D4AF37] text-[#4D0007] text-[10.5px] uppercase tracking-wider font-medium rounded-xs hover:bg-[#4D0007] hover:text-[#FAF7F2] transition-colors"
+            >
+              <span>VIEW ALL COLLECTIONS</span>
+              <ArrowRight className="w-3 h-3" />
+            </button>
+          </div>
+          <div className="flex items-center justify-center gap-1.5 text-[11px] text-brown-deep/60 mt-3">
+            <span className="font-secondary">Swipe to explore</span>
+            <ArrowRight className="w-3 h-3 text-[#D4AF37]" />
+          </div>
+        </div>
+
+        {/* 7 Arched Occasion Cards in Touch-First Horizontal Scroll */}
+        <div className="flex gap-3 overflow-x-auto pb-4 pt-1 px-4 snap-x snap-mandatory no-scrollbar touch-pan-x">
+          {OCCASIONS.map((occ) => (
+            <div
+              key={occ.id}
+              onClick={() => handleCardClick(occ.filterCategory)}
+              className="w-[152px] shrink-0 snap-start flex flex-col cursor-pointer group select-none"
+            >
+              <div className="relative aspect-[9/14.8] w-full rounded-t-[54px] rounded-b-xs overflow-hidden bg-[#FAF7F2] border border-[#D4AF37]/35 shadow-xs transition-transform duration-300 group-hover:scale-102">
+                <img
+                  src={occ.image}
+                  alt={occ.name}
+                  loading="lazy"
+                  className="w-full h-full object-cover object-top"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-40" />
+              </div>
+              <div className="mt-2 py-1.5 px-2 text-center bg-white border border-[#D4AF37]/30 rounded-xs shadow-xs group-hover:bg-[#4D0007] group-hover:border-[#4D0007] transition-colors">
+                <span className="font-primary text-xs font-medium text-[#4D0007] group-hover:text-white truncate block">
+                  {occ.name}
+                </span>
+                <span className="text-[9.5px] font-secondary text-[#B18A52] group-hover:text-[#D4AF37] uppercase tracking-wider block mt-0.5">
+                  {occ.tag}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ========================================================
+          Desktop Scrollytelling View (md+):
+          Preserves the 3-phase interactive scroll journey
+          ======================================================== */}
+      <div
+        ref={containerRef}
+        className="hidden md:block occasion-scrolly-container"
+        id="shop-by-occasion"
+        aria-label="Curated By Celebration - Shop By Occasion"
+      >
       <div className="occasion-sticky-viewport">
         <div ref={stageRef} className="occasion-anim-stage">
           <section className="occasion-section">
@@ -410,5 +480,6 @@ export const ShopByOccasion: React.FC = () => {
         </div>
       </div>
     </div>
-  );
+  </>
+);
 };
